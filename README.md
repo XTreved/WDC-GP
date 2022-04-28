@@ -5,30 +5,30 @@ Below, Nick has summarised some info on using git that he's learnt for this proj
 
 ## How to use the git CLI to safely make changes to a repo
 
-<b>1</b> - `cd` To the directory where you want to keep the repo locally
-<b>2</b> - Run `git clone https://github.com/XTreved/WDC-GP`. This brings a copy of the whole repository into your directory.
-<b>3.1</b> - Run `git branch` to check what branch you are currently actively editing (should be master)
-<b>3.2</b> - Run `git branch [branch_name]` to create a new branch if needed
-<b>4</b> - Run `git checkout [branch_name]` to change the focus of your directory to the new branch. Checkout moves you between branches and is not like svn checkout.
-<b>5</b> - Make your changes
-<b>6</b> - `git add [your files]` to mark your files as part of the next commit
-<b>7</b> - `git commit -m "[your commit message]"` to commit your changes to your local copy of the branch
+1. `cd` To the directory where you want to keep the repo locally
+1. Run `git clone https://github.com/XTreved/WDC-GP`. This brings a copy of the whole repository into your directory.
+1. Run `git branch` to check what branch you are currently actively editing (should be master)
+    1. Run `git branch [branch_name]` to create a new branch if needed
+1. Run `git checkout [branch_name]` to change the focus of your directory to the new branch. Checkout moves you between branches and is not like svn checkout.
+1. Make your changes
+1. `git add [your files]` to mark your files as part of the next commit
+1. `git commit -m "[your commit message]"` to commit your changes to your local copy of the branch
 
 Now your changes are committed locally, it's time to finalise your changes by checking for conflicts with origin/master (the shared copy of master, see 'About git' below for info), resolving any conflicts, merging your local development branch with your local master branch and, finally, pushing your local master branch to the remote origin so everyone actually has your changes.
 
-<b>8</b>  - `git fetch` to bring down the latest copy of the origin branches
-<b>9</b> - `git merge origin/master` to attempt to merge your current checked-out branch with latest origin version of master. If there are major breaking conflicts, run `git merge --abort` to cancel merging, consult your teammates and decide what to do. Then re-try from step 8. If no conflicts were detected, merge will also automatically commit for you so you can skip to step 11.
+8. `git fetch` to bring down the latest copy of the origin branches
+9. `git merge origin/master` to attempt to merge your current checked-out branch with latest origin version of master. If there are major breaking conflicts, run `git merge --abort` to cancel merging, consult your teammates and decide what to do. Then re-try from step 8. If no conflicts were detected, merge will also automatically commit for you so you can skip to step 11.
 
 I recommend reading <a href="https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git">https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git</a> to learn more about how to resolve conflicts when merging.
 
 When your merge fails because of conflicts, git would have placed conflict markers in your files on this branch and told you which files it has done this for. You need to go back and edit these files, make the best decision about what to keep, then re `git add` the file which you have edited.
 
-<b>10</b> - Once all conflicts are resolved your branch is now merged with master, so run `git commit -m "[commit message]"` to save these changes.
+10. Once all conflicts are resolved your branch is now merged with master, so run `git commit -m "[commit message]"` to save these changes.
 
 Congrats. You just made changes to our code base, checked what your teammates have done since your changes and integrated their new code with your new work before publishing to the rest of your team.
 Now you just need to push your changes to the remote origin.
 
-<b>11</b> - `git push -u origin [branch_name]` this will push your changes upstream (-u) to the origin.
+11. `git push -u origin [branch_name]` this will push your changes upstream (-u) to the origin.
 
 All your changes to the code base are now stored in your branch, along with any other changes that other people made to master in the time it took you to make your changes.
 Now go to Github and create a Pull Request to pull your branch into master.
