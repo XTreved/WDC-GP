@@ -20,6 +20,8 @@ Now your changes are committed locally, it's time to finalise your changes by ch
 9 - `git rebase -i origin/master` to open the interactive (-i) rebase window, which will show you what actions are going to be taken. Once you close the window, the actions will be taken. If something bad is going to happen, just delete the command from the file before you close it.
 10 - If there are conflicts that rebase shows, you must run `git rebase --abort` and go back to fix your conflicts
 
+I recommend reading <a href="https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git">https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git</a> to learn more about how to resolve conflicts when merging.
+
 When your rebase fails because of conflicts, git would have placed conflict markers in your branch files. You need to go back and edit these files, make the best decision about what to keep, then re `git add` the file which you have edited.
 
 11 - `git rebase --continue` to continue rebasing your branch
