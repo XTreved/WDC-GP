@@ -44,6 +44,8 @@ Once you finish staging and committing your changes on a local branch, you shoul
 
 When you start working on something new, it's best to make a new branch. IE, when we start developing the express server backend, someone would make a branch for 'back_end_dev'. But you don't need to make new branches for smaller things, like we wouldn't need another for 'public_HTML_pages'.
 
+When merging your branches and resolving conflicts, it may be useful to go over <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line">this Github doc page</a>.
+
 I'm not making this up, I've just spent a few hours reading Github documentation and best practices and wanted to summarise it here. If you want to do the same, Github documentation is available at <a href=https://docs.github.com/en>https://docs.github.com/en</a>. 
 
 Let's do this dudes, I'm excited for us to make an awesome web app!
