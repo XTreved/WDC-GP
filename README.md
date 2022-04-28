@@ -17,7 +17,7 @@ Below, Nick has summarised some info on using git that he's learnt for this proj
 Now your changes are committed locally, it's time to finalise your changes by checking for conflicts with origin/master (the shared copy of master, see 'About git' below for info), resolving any conflicts, merging your local development branch with your local master branch and, finally, pushing your local master branch to the remote origin so everyone actually has your changes.
 
 <b>8</b>  - `git fetch` to bring down the latest copy of the origin branches
-<b>9</b> - `git merge origin/master` to attempt to merge your current checked-out branch with latest origin version of master. If there are major breaking conflicts, run `git merge --abort` to cancel merging, consult your teammates and decide what to do. Then re-try from step 8.
+<b>9</b> - `git merge origin/master` to attempt to merge your current checked-out branch with latest origin version of master. If there are major breaking conflicts, run `git merge --abort` to cancel merging, consult your teammates and decide what to do. Then re-try from step 8. If no conflicts were detected, merge will also automatically commit for you so you can skip to step 11.
 
 I recommend reading <a href="https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git">https://www.simplilearn.com/tutorials/git-tutorial/merge-conflicts-in-git</a> to learn more about how to resolve conflicts when merging.
 
