@@ -1,0 +1,1 @@
+This is our project. Please make a branch when you start working on something so we don't commit straight to master.
