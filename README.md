@@ -11,7 +11,7 @@ Below, Nick has summarised some info on using git that he's learnt for this proj
     1. Run `git branch [branch_name]` to create a new branch if needed
 1. Run `git checkout [branch_name]` to change the focus of your directory to the new branch. Checkout moves you between branches and is not like svn checkout.
 1. Make your changes
-1. `git add [your files]` to mark your files as part of the next commit
+1. `git add [your files]` to mark your files as part of the next commit. Remember that you must also add files you've modified, not just new files.
 1. `git commit -m "[your commit message]"` to commit your changes to your local copy of the branch
 
 Now your changes are committed locally, it's time to finalise your changes by checking for conflicts with origin/master (the shared copy of master, see 'About git' below for info), resolving any conflicts, merging your local development branch with your local master branch and, finally, pushing your local master branch to the remote origin so everyone actually has your changes.
@@ -28,10 +28,10 @@ When your merge fails because of conflicts, git would have placed conflict marke
 Congrats. You just made changes to our code base, checked what your teammates have done since your changes and integrated their new code with your new work before publishing to the rest of your team.
 Now you just need to push your changes to the remote origin.
 
-11. `git push -u origin [branch_name]` this will push your changes upstream (-u) to the origin.
+11. `git push -u origin master` this will push your changes upstream (-u) to the origin copy of master.
+    1. Alternatively, if you want to keep the work seperate from master for now (this is advised when work is incomplete), run `git push -u origin [your_branch]`. This pushes the local copy of your branch to the origin copy of your branch and does NOT update master. You will need to do step 12 if you do this.
 
-All your changes to the code base are now stored in your branch, along with any other changes that other people made to master in the time it took you to make your changes.
-Now go to Github and create a Pull Request to pull your branch into master.
+12. Go to Github and make a pull request for your brunch. This pulls your branch changes into master. Don't wait to long to do this or it might be a nightmare resolving new conflicts!
 
 ## About git
 Git works by keeping work on branches. In git, all work lives on a branch at any given point. The master branch is the top-level branch and all other branches come from it. Therefore, with multiple people working on one repository at once, a single branch on your local machine can contain both newer and older code compared to the master branch.
@@ -46,3 +46,23 @@ When you start working on something new, it's best to make a new branch. IE, whe
 When merging your branches and resolving conflicts, it may be useful to go over <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line">this Github doc page</a>.
 
 I'm not making this up, I've just spent a few hours reading Github documentation and best practices and wanted to summarise it here. If you want to do the same, Github documentation is available at <a href=https://docs.github.com/en>https://docs.github.com/en</a>. 
+
+## Changing your default text editor for git command line
+The default editor on macs will be vim. This is a little annoying when you go to make a merge as it will open a file to make you write a commit message...
+
+You can change the text editor that git uses like this:
+`git config --global core.editor "<your editor>"`
+
+Some editors to use:
+| Editor | Command |
+| ----- | ------- |
+| Sublime | `subl -n -w` |
+| TextEdit | `open -e -W -n` |
+| Vim | `vim` |
+
+
+If you use VS Code, you may want to use this as your git default editor as well.
+
+1. Open the command palette in VS Code (Command + Shift + P)
+1. Run `Shell Command: Install 'code' command in PATH`
+1. In your terminal, run `git config --global core.editor "code --wait"`
