@@ -3,9 +3,9 @@
 
 
 ## To-Do
-[x] task completed
-[ ] Working web scraper (person delegated to task)
-[ ] front end interface
+- [x] task completed
+- [ ] Working web scraper (person delegated to task)
+- [ ] front end interface
 
 ## Web scraper
 - created json templates (Person name)
