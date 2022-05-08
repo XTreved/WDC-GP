@@ -1,6 +1,16 @@
 body {
-  padding: 50px;
+  padding: 0px;
+  margin: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+header {
+  padding: 1em 1em 3em 1em;
+  /* background: linear-gradient(to top, #0B5ABD, #FF0159); */
+  background: linear-gradient(to bottom, rgba(17, 176, 1, 1.0), rgba(84, 255, 241, 1.0));
+  text-align: center;
+  font-size: larger;
+  color: white;
 }
 
 a {
