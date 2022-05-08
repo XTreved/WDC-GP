@@ -15,6 +15,7 @@
 
 ## Front End
 - Heading
-
+- Username/Password input box
+- Attempted styling
 
 
