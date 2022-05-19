@@ -31,7 +31,18 @@ Now you just need to push your changes to the remote origin.
 11. `git push -u origin master` this will push your changes upstream (-u) to the origin copy of master.
     1. Alternatively, if you want to keep the work seperate from master for now (this is advised when work is incomplete), run `git push -u origin [your_branch]`. This pushes the local copy of your branch to the origin copy of your branch and does NOT update master. You will need to do step 12 if you do this.
 
-12. Go to Github and make a pull request for your brunch. This pulls your branch changes into master. Don't wait to long to do this or it might be a nightmare resolving new conflicts!
+12. Go to Github and make a pull request for your branch. This pulls your branch changes into master. Don't wait to long to do this or it might be a nightmare resolving new conflicts!
+
+## Accessing Branches
+To view all branches on your local machine, run `git branch`
+
+To view all branches on your local machine AND on the remote, `git branch -a` or just for remote branches, `git branch -r`
+
+To make a new branch, `git branch [name]`
+
+To checkout an existing branch, `git checkout [name]`
+
+To checkout a branch that exists remotely, first `git fetch origin` then `git checkout origin/[name]`. Then you can make changes and push as normal.
 
 ## About git
 Git works by keeping work on branches. In git, all work lives on a branch at any given point. The master branch is the top-level branch and all other branches come from it. Therefore, with multiple people working on one repository at once, a single branch on your local machine can contain both newer and older code compared to the master branch.
