@@ -33,8 +33,23 @@ prevDB = false;
 if (prevDB == false) {
   const db = new SQL.Database();
 
+  let sqlString = "";
+
   // if it is new then i will also need to add all of the tables for the first time
-  let sqlstring = "CREATE TABLE Users_Subjects ( \
+
+  // Login_Data (needed first as it is referenced)
+  sqlString = "CREATE TABLE Login_Data ( \
+                  User_ID INTEGER PRIMARY KEY, \
+                  Given_Name TEXT, \
+                  Family_Name TEXT, \
+                  Username TEXT, \
+                  Password TEXT);"
+  // now run the command
+  db.run(sqlString);
+
+
+  // Users_Subjects
+  sqlString = "CREATE TABLE Users_Subjects ( \
                   Subject_Area TEXT, \
                   Term TEXT, \
                   Subject_ID INTEGER, \
@@ -43,8 +58,16 @@ if (prevDB == false) {
                   User_ID INTEGER \
                   Scrape_Timestamps, \
                   PRIMARY KEY (Subject_Area, Term, Subject_ID, Course_title), \
-                  FOREIGN KEY (User_ID), \
-                  FOREIGN KEY (Scrape_Timestamps)"
+                  FOREIGN KEY (User_ID) \
+                    REFERENCES Login_Data (User_ID), \
+                      ON UPDATE CASCADE \
+                      ON DELETE CASCADE \
+                  FOREIGN KEY (Scrape_Timestamps) \
+                    REFERENCES Timestamps (Scrape_Timestamps) \
+                      ON UPDATE CASCADE \
+                      ON DELETE CASCADE);"
+  // now run the command
+  db.run(sqlString);
 } 
 else {
   // prevDBData is an Unit8Array that represents an SQLite DB file
