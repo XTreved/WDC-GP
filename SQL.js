@@ -129,26 +129,43 @@ else {
 }
 
 
+// this will take in a users names and id and create a spot in out database to save there data, 
+// login like username and password should be delt with using some form of secure login 
+function CreateNewUser(givenName, familyName, ID) {
+
+  // will returns void
+}
+
+
+// this may not be needed but is here to be able to grab a users ID to use to search their specific classes
+function GetUserID(givenName, familyName) {
+
+  // will return users ID (int)
+}
+
+
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
 // here i will get all if the data from the current timestamp and put it into a form that can be accessed buy our front end to be used
 function GetAllData(timestamp, subject, term, subjectID, course) {
   
   // will return json with all the data
-};
+}
 
 
 // this will get all of the timestamps for this specific subject so that the user can choose which one to use to do other things with
 function GetTimestamps(subject, term, subjectID, course) {
   
   // will return a list of the timestamps saved, (in the form of int's)
-};
+}
 
 
 // this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
 function AddNewData(scrapeData) {
 
-  // will not return anything, maybe a success or fail message
-};
+  // will return void
+}
+
+
 
 
 
