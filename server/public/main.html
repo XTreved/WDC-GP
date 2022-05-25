@@ -3,8 +3,12 @@
 
   <head>
     <title>Subject Planner</title>
-    <link rel="stylesheet" href="stylesheets/style.css">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="/javascripts/page.js" defer></script>
   </head>
 
   <body>
@@ -13,15 +17,33 @@
             <h1>Time Table (WAP)</h1>
         </header>
 
-        <main>
-            <div class="center">
-                <h2>Login</h2>
-                <form>
-                    <input id="username" class="inputBox" type="text" placeholder="Username"> <br>
-                    <input id="password" class="inputBox" type="password" placeholder="Password"> <br>
-                    <input id="submit" class="inputBox" type="submit" value="Login">
-                </form>
+        <main id="app">
+            <div class="center borderStyling" v-if="showLoginPage">
+                <div class="loginPage">
+                  <h2 class="title">Login</h2>
+                  <form>
+                      <input id="username" class="inputBox" type="text" placeholder="Username"> <br>
+                      <input id="password" class="inputBox" type="password" placeholder="Password"> <br>
+                      <input id="submit" class="inputBox" type="submit" value="Login">
+                  </form>
+                </div>
             </div>
+
+
+            <div class="overviewPage" v-if="showOverviewPage">
+              <h2 class="title">Home page</h2>
+              
+              <ul class="listStyling">
+                <li v-for="subject in subjects">
+                  <div class="cardList borderStyling">
+                    <h3> {{ subject.title }}</h3>
+                    <p> {{ subject.day }} </p>
+                  </div>
+                </li>
+              </ul>
+
+            </div>
+
         </main>
     </div>
   </body>

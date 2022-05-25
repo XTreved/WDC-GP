@@ -2,13 +2,13 @@ body {
   padding: 0px;
   margin: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: white;
+  background-color: plum;
 }
 
 header {
   padding: 1em 1em 3em 1em;
   /* background: linear-gradient(to top, #0B5ABD, #FF0159); */
-  background-image: linear-gradient(to bottom, #00fff2, white);
+  /* background-image: linear-gradient(to bottom, #00fff2, white); */
   text-align: center;
   font-size: larger;
   color: black;
@@ -17,7 +17,7 @@ header {
 .center {
   margin: auto;
   height: 15em;
-  width: 20em;
+  width: 30em;
   top: 0;
   bottom: 0;
   left: 0;
@@ -28,9 +28,38 @@ header {
 
   background-color: white;
 
+
+}
+
+.borderStyling {
   border-radius: 40px;
   border: 2px solid black;
+
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.20), 0px 20px 25px rgba(0, 0, 0, 0.4);
 }
+
+.title {
+  text-align: center;
+}
+
+
+
+.listStyling {
+  list-style: none;
+  padding: 0em;
+  margin: 0em;
+  
+}
+
+.cardList {
+
+  margin: 2em 10em;
+  padding: 1em 3em;
+
+  background-color: white;
+}
+
+
 
 /* Another way to align text, the only issue is that it messes with background, or gradient background
 .parent {
