@@ -1,0 +1,62 @@
+body {
+  padding: 0px;
+  margin: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: white;
+}
+
+header {
+  padding: 1em 1em 3em 1em;
+  /* background: linear-gradient(to top, #0B5ABD, #FF0159); */
+  background-image: linear-gradient(to bottom, #00fff2, white);
+  text-align: center;
+  font-size: larger;
+  color: black;
+}
+
+.center {
+  margin: auto;
+  height: 15em;
+  width: 20em;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  position: fixed;
+  text-align: center;
+
+  background-color: white;
+
+  border-radius: 40px;
+  border: 2px solid black;
+}
+
+/* Another way to align text, the only issue is that it messes with background, or gradient background
+.parent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
+.child {
+  padding: 1em 5em 5em 5em;
+  margin: auto;
+  text-align: center;
+
+  background-color: white;
+
+  border-radius: 40px;
+  border: 2px solid #014286;
+}
+*/
+
+.inputBox {
+  margin: 0.5em;
+  padding: 0.5em;
+  width: 10em;
+
+  border: 2px solid black;
+  border-radius: 0.5em;
+}

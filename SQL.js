@@ -43,17 +43,69 @@ if (prevDB == false) {
                   Given_Name TEXT, \
                   Family_Name TEXT, \
                   Username TEXT, \
-                  Password TEXT);"
+                  Password TEXT);";
   // now run the command
   db.run(sqlString);
+  console.log("Created Loging_Data table\n");
 
 
+  // Class_Times
+  sqlString = "CREATE TABLE Class_Times ( \
+                  ID INTEGER PRIMARY KEY, \
+                  Beginning_Date INTEGER, \
+                  Ending_Date INTEGER, \
+                  Day TEXT, \
+                  Beginning_Time INTEGER, \
+                  Ending_Time INTEGER, \
+                  Location TEXT);";
+  db.run(sqlString);
+  console.log("Created Class_Times table\n");
+
+
+  // Class_Data
+  sqlString = "CREATE TABLE Class_Data ( \
+                  Class_Number INTEGER PRIMARY KEY, \
+                  Section TEXT, \
+                  Size INTEGER, \
+                  Available INTEGER, \
+                  Notes TEXT, \
+                  FOREIGN KEY (ID) \
+                    REFERENCES Class_Times (ID), \
+                      ON UPDATE CASCADE \
+                      ON DELETE CASCADE);";
+  db.run(sqlString);
+  console.log("Created Class_Data table\n");
+
+
+  // Class_Details
+  sqlString = "CREATE TABLE Class_Details ( \
+                  Class_Type TEXT PRIMARY KEY, \
+                  FOREIGN KEY (Class_Number) \
+                      REFERENCES Class_Data (Class_Number), \
+                        ON UPDATE CASCADE \
+                        ON DELETE CASCADE);";
+  db.run(sqlString);
+  console.log("Created Class_Details table\n");
+
+
+  // Scrape_Tiestamps
+  sqlString = "CREATE TABLE Scrape_Timestamps ( \
+                  Scrape_Timestamps PRIMARY KEY, \
+                  FOREIGN KEY (Class_Type) \
+                    REFERENCES Class_Details (Class-Type) \
+                      ON UPDATE CASCADE \
+                      ON DELETE CASCADE);";
+  db.run(sqlString);
+  console.log("Created Scrape_Timestamps table\n");
+
+
+  // may need commas after the end of the foreign keys
   // Users_Subjects
   sqlString = "CREATE TABLE Users_Subjects ( \
                   Subject_Area TEXT, \
                   Term TEXT, \
                   Subject_ID INTEGER, \
-                  Course_title TEXT, \
+                  Course_Title TEXT, \
                   Timestamp INTEGER, \
                   User_ID INTEGER \
                   Scrape_Timestamps, \
@@ -65,9 +117,12 @@ if (prevDB == false) {
                   FOREIGN KEY (Scrape_Timestamps) \
                     REFERENCES Timestamps (Scrape_Timestamps) \
                       ON UPDATE CASCADE \
-                      ON DELETE CASCADE);"
+                      ON DELETE CASCADE);";
   // now run the command
   db.run(sqlString);
+  console.log("Created Users_Subjects table\n");
+
+  
 } 
 else {
   // prevDBData is an Unit8Array that represents an SQLite DB file
