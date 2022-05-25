@@ -14,8 +14,5 @@
 
 # Other exclusions
 .DS_Store
-<<<<<<< HEAD
+server/.DS_Store
 server/node_modules
-=======
-server/node_modules
->>>>>>> e1c8f75c6c3870dbae8c175e17d0ab95dc777f75
