@@ -1,6 +1,52 @@
 // https://www.sqlitetutorial.net/sqlite-foreign-key/
 
 
+//JSON Object from webscraper
+Data = {
+  Subject_Area: "Comp Sci", 
+  Course_Title: "Puzzle Based Learning",
+  Term: "Semester 1",
+  Subject_Id: "1010",              //could be 1010UAC so needs to be a string not int
+  Units: 3,
+  Career: "Undergraduate",
+  Campus: "North Terrace",
+  Scrape_Timestamp: 1234,           // must be in int format, Sql cannot store date/time data
+  Class_Details: {
+    Lecture: [                      // this is an array of objects, eg make a new object for each of the classes
+      {
+        Class_Number: 1234,
+        Section: "LE01",
+        Size: 250,
+        Available: 50,              // On course planner if a class is full itll say "FULL", may want to store this as 0 if the class if full so we can keep it of type int;
+        Class_Times: [
+          {                         // have one of these objects for each class time then append it to this list
+            Start_Date: 1,          // having the day and month separanted helps so that we can comvert it into a date time later
+            Start_Month: "Mar",
+            End_Date: 5,
+            End_Month: "Apr",
+            Days: "Tuesday",
+            Start_Time: "11am",     // may want to use 24 hour time is it is easier, although couse planner uses 12 hour time
+            End_Time: "12pm",
+            Location: "Darling West, G14, Darling West Lecture Theatre",      // can just use the whole location as one string no need to separate it more 
+            Note: "Blah Blah Blah"                                            // put the note at the bottom here
+          }
+        ]
+      }
+    ],
+    Workshop: [                     // same data here as in the lecture object, can leave any of these empty is there is not data to fill in there                   
+
+    ],
+
+    Practical: [                    // same data here as in the lecture object, can leave any of these empty is there is not data to fill in there
+      
+    ]           
+  }
+}
+
+
+
+
+
 var Sqljs = require('sql.js');
 
 // needed to work asynchronously???
