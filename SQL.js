@@ -40,6 +40,8 @@ Data = {
     Practical: [                    // same data here as in the lecture object, can leave any of these empty is there is not data to fill in there
       
     ]           
+
+    // if there are ano other types of classes other than lecture, workshop, practical add them here, but let James know so i have to same format of the JSON as the web scraper so i dont ignore some data
   }
 }
 
