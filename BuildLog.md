@@ -3,6 +3,9 @@
 
 https://myuni.adelaide.edu.au/courses/75039/pages/2022-web-application-group-project-specification
 
+
+## Install dependencies
+- npm install puppeteer
 ## To-Do
 - [x] task completed
 - [ ] Working web scraper (person delegated to task)
