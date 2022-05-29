@@ -8,6 +8,7 @@ console.log(JSONdata.data);
 // imports
 const puppeteer = require("puppeteer");
 const fs = require('fs'); // used to write contents to json file
+//const lectureObjArr = require('./scrapeLecture.js');
 
 // global variables
 scrapeComplete = false; 
@@ -27,15 +28,21 @@ data = {};
 	updateJSON("Course_Title", Course_Title);
 
 	// extracting CourseDetails from table
-	CourseDetails = await page.evaluate(() => {
+	data = await page.evaluate(() => {
 		headings_elements = document.querySelectorAll(".lightblue, td.odd, td.even");
 		headings_array = Array.from(headings_elements);
-		return headings_array.map(heading => heading.textContent).splice(0, 20);
+		return headings_array.map(heading => heading.textContent);
 	});
+	const CourseDetails = data.splice(0, 20);
 	for (let i = 0; i < CourseDetails.length - 1; i += 2) {
 		updateJSON(CourseDetails[i], CourseDetails[i + 1]);
 	}
-	transferJSON(this.data); // export it to another file
+	
+
+
+
+
+	// transferJSON(this.data); // export it to another file
 	this.scrapeComplete = true;
 	// console.log(this.data);
 	await browser.close();
@@ -50,6 +57,7 @@ function updateJSON(key, value) {
 		console.log(`value not added to json ${e}`);
 	}
 }
+
 
 function transferJSON(jsonObject) {
 	
