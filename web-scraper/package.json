@@ -1,0 +1,22 @@
+{
+  "name": "web-scraper",
+  "version": "1.0.0",
+  "description": "course planner scraper",
+  "main": "SQL.js",
+  "scripts": {
+    "test": "echo \"error: no test specified\"",
+    "start": "node pageScraper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "WDC-GP"
+  },
+  "author": "quack",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^14.1.1"
+  },
+  "keywords": [
+    "quack"
+  ]
+}

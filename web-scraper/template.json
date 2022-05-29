@@ -1,0 +1,41 @@
+{
+    "Subject_Area": "", 
+    "Course_Title": "",
+    "Term": "",
+    "Subject_Id": "",              
+    "Units": 0,
+    "Career": "",
+    "Campus": "",
+    "Scrape_Timestamp": 0,      
+    "Class_Details": {
+        "Lecture": [               
+        {
+            "Class_Number": 0,
+            "Section": "",
+            "Size": 0,
+            "vailable": 0,         
+            "Class_Times": [
+            {                      
+                "Start_Date": 0,   
+                "Start_Month": "",
+                "End_Date": 0,
+                "End_Month": "",
+                "Days": "",
+                "Start_Time": "",  
+                "End_Time": "",
+                "Location": "",    
+                "Note": ""         
+            }
+          ]
+        }
+      ],
+      "Workshop": [                  
+  
+      ],
+  
+      "Practical": [                 
+        
+      ]           
+
+    }
+}
