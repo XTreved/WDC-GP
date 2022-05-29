@@ -4,7 +4,7 @@
 !*.*
 # unignore directories
 !*/
-# re-ignore object files 
+# re-ignore object files s
 *.o
 
 #unignore makefiles
