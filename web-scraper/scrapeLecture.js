@@ -104,15 +104,6 @@ function formatLectureArray(arr) {
 function UpdateLectureObj(key, value, LectureObj) { // index corresponds to repeat classes
     try {
         LectureObj[key] = value;
-        // console.log("data" + key + " added to json: " + value);
-        // if (key == 'Dates' || key == 'Days' || key == 'Time' || key == 'Location') {
-        //     if (LectureObj[key] == null)
-        //         LectureObj[key] = [value];
-        //     else
-        //         LectureObj[key].push(value);
-        // }
-        // else
-        //     LectureObj[key] = value;
     }
     catch (e) {
         console.log(`value not added to json ${e}`);
