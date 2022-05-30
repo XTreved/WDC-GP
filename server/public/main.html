@@ -14,12 +14,14 @@
   <body>
     <div>
         <header>
-            <h1>Time Table (WAP)</h1>
+            <h1>Time Table Planner</h1>
         </header>
 
         <main id="app">
-            <div class="center borderStyling" v-if="showLoginPage">
-                <div class="loginPage">
+
+            <!-- Login Page -->
+            <div class="center borderStyling" v-if="selected === 'login'">
+                <div id="login">
                   <h2 class="title">Login</h2>
                   <form>
                       <input id="username" class="inputBox" type="text" placeholder="Username"> <br>
@@ -29,8 +31,8 @@
                 </div>
             </div>
 
-
-            <div class="overviewPage" v-if="showOverviewPage">
+            <!-- Home Page -->
+            <div id="home" v-if="selected === 'home'">
               <h2 class="title">Home page</h2>
               
               <ul class="listStyling">
@@ -40,8 +42,12 @@
                     <p> {{ subject.day }} </p>
                   </div>
                 </li>
+                <li>
+                  <div class="cardList borderStyling">
+                    <h3>ADD A SUBJECT HERE</h3>
+                  </div>
+                </li>
               </ul>
-
             </div>
 
         </main>

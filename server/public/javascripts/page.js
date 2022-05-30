@@ -12,13 +12,9 @@ var vueinst = new Vue({
     data: {
         
         /* Show or hide each section */
-        showLoginPage: false,
-        showOverviewPage: true,
-        showCalendarPage: false,
-        showCourseAddingPage: false,
+        selected: "login", // login, home, calendar, scraper
 
-
-        /* Overview page */
+        /* Home page testing */
         subjects: SAMPLE_SUBJECTS
     }
 });
