@@ -7,30 +7,34 @@ body {
 
 header {
   padding: 1em 1em 3em 1em;
-  /* background: linear-gradient(to top, #0B5ABD, #FF0159); */
-  /* background-image: linear-gradient(to bottom, #00fff2, white); */
   text-align: center;
   font-size: larger;
   color: black;
 }
 
+/* This is for styling the title of each page */
+.title {
+  text-align: center;
+}
+
 .center {
+  /* This section affects the positioning of the div on the page, displaying it right in the middle of the page  */
   margin: auto;
-  height: 15em;
-  width: 30em;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-
   position: fixed;
+  /*-------------------------------------------------------------------------------------------------------------*/
+
+  /* This makes the white box on the login page */
   text-align: center;
-
   background-color: white;
-
-
+  height: 15em;
+  width: 30em;
 }
 
+/* Styling the borders of the divs and input boxes */
 .borderStyling {
   border-radius: 40px;
   border: 2px solid black;
@@ -38,12 +42,18 @@ header {
   box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.20), 0px 20px 25px rgba(0, 0, 0, 0.4);
 }
 
-.title {
-  text-align: center;
+/* Styling the input boxes, login page */
+.inputBox {
+  margin: 0.5em;
+  padding: 0.5em;
+  width: 10em;
+
+  border: 2px solid black;
+  border-radius: 0.5em;
 }
 
 
-
+/* Styling the lists, home page */
 .listStyling {
   list-style: none;
   padding: 0em;
@@ -51,6 +61,7 @@ header {
   
 }
 
+/* Styling each of the cards, home page */
 .cardList {
 
   margin: 2em 10em;
@@ -81,11 +92,4 @@ header {
 }
 */
 
-.inputBox {
-  margin: 0.5em;
-  padding: 0.5em;
-  width: 10em;
 
-  border: 2px solid black;
-  border-radius: 0.5em;
-}

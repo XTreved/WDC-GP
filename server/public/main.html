@@ -26,9 +26,9 @@
                 <div id="login" v-if="selected === 'login'">
                   <h2 class="title">Login</h2>
                   <form>
-                      <input id="username" class="inputBox" type="text" placeholder="Username"> <br>
-                      <input id="password" class="inputBox" type="password" placeholder="Password"> <br>
-                      <input id="submit" class="inputBox" type="submit" value="Login">
+                      <input class="inputBox" type="text" placeholder="Username"> <br>
+                      <input class="inputBox" type="password" placeholder="Password"> <br>
+                      <input class="inputBox" type="submit" value="Login">
                   </form>
                 </div>
 
@@ -36,9 +36,9 @@
                 <div id="signup" v-if="selected === 'signup'">
                   <h2 class="title">Signup</h2>
                   <form>
-                    <input id="newUsername" class="inputBox" type="text" placeholder="Username"> <br>
-                    <input id="newPassword" class="inputBox" type="password" placeholder="Password"> <br>
-                    <input id="submit" class="inputBox" type="submit" value="Signup">
+                    <input class="inputBox" type="text" placeholder="Username"> <br>
+                    <input class="inputBox" type="password" placeholder="Password"> <br>
+                    <input class="inputBox" type="submit" value="Signup">
                   </form>
                 </div>
             </div>
@@ -51,15 +51,15 @@
                 <!-- Displaying current subjects -->
                 <li v-for="subject in tracked_subjects">
                   <div class="cardList borderStyling">
-                    <h3> {{ tracked_subjects.title }}</h3>
-                    <p> {{ tracked_subjects.day }} </p>
+                    <h3> {{ subject.title }}</h3>
+                    <p> {{ subject.day }} </p>
                   </div>
                 </li>
 
                 <!-- Adding a new subject option -->
                 <li>
-                  <div class="cardList borderStyling">
-                    <h3>ADD A SUBJECT HERE</h3>
+                  <div class="cardList borderStyling" v-on:click="selected = 'scraper'">
+                    <h3>+</h3>
                   </div>
                 </li>
               </ul>
@@ -79,7 +79,7 @@
             </div>
 
             <!-- Scraper Page -->
-            <div id="scraper" v-if="selected === 'scraper'">
+            <div id="scraper" class="center" v-if="selected === 'scraper'">
               <h2>Track a New Course</h2>
               <form>
                 <label>Subject Title</label>
@@ -101,6 +101,8 @@
                 <input list="subjectAvailability" type="text" placeholder="eg.....">
                 <datalist id="subjectAvailability"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.availability" /></datalist>
                 <br/><br/>
+
+                <input class="inputBox" type="submit" value="ADD SUBJECT">
 
               </form>
             </div>
