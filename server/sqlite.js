@@ -191,8 +191,17 @@ function CreateNewUser(givenName, familyName, ID) {
   
   // this will get all of the timestamps for this specific subject so that the user can choose which one to use to do other things with
   function GetTimestamps(subject, term, subjectID, course) {
+
+    sqlString = "SELECT Scrape_Timestamps \
+                    FROM Users_Subjects, \
+                    WHERE Users_Subjects.Subject_Area = " + subject + ", \
+                    AND Users_Subjects.Term = " + term + ", \
+                    AND Users_Subjects.Subject_ID = " + subjectID + ", \
+                    AND Users_Subjects.Course_Title = " + course + ";"
+    var returnArray = db.run(sqlString);
     
     // will return a list of the timestamps saved, (in the form of int's)
+    return returnArray;
   }
   
   
@@ -201,6 +210,7 @@ function CreateNewUser(givenName, familyName, ID) {
   
     // will return void
   }
+
 
 
   // to add to the database, write the command you want as a string then db.run(string) it
