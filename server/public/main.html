@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="stylesheets/style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src='https://unpkg.com/v-calendar'></script>
     <script src="/javascripts/page.js" defer></script>
   </head>
 
@@ -20,13 +21,24 @@
         <main id="app">
 
             <!-- Login Page -->
-            <div class="center borderStyling" v-if="selected === 'login'">
-                <div id="login">
+            <div class="center borderStyling" v-if="selected === 'login' || selected === 'signup'">
+                <!-- Login -->
+                <div id="login" v-if="selected === 'login'">
                   <h2 class="title">Login</h2>
                   <form>
                       <input id="username" class="inputBox" type="text" placeholder="Username"> <br>
                       <input id="password" class="inputBox" type="password" placeholder="Password"> <br>
                       <input id="submit" class="inputBox" type="submit" value="Login">
+                  </form>
+                </div>
+
+                <!-- Signup -->
+                <div id="signup" v-if="selected === 'signup'">
+                  <h2 class="title">Signup</h2>
+                  <form>
+                    <input id="newUsername" class="inputBox" type="text" placeholder="Username"> <br>
+                    <input id="newPassword" class="inputBox" type="password" placeholder="Password"> <br>
+                    <input id="submit" class="inputBox" type="submit" value="Signup">
                   </form>
                 </div>
             </div>
@@ -36,12 +48,15 @@
               <h2 class="title">Home page</h2>
               
               <ul class="listStyling">
-                <li v-for="subject in subjects">
+                <!-- Displaying current subjects -->
+                <li v-for="subject in tracked_subjects">
                   <div class="cardList borderStyling">
-                    <h3> {{ subject.title }}</h3>
-                    <p> {{ subject.day }} </p>
+                    <h3> {{ tracked_subjects.title }}</h3>
+                    <p> {{ tracked_subjects.day }} </p>
                   </div>
                 </li>
+
+                <!-- Adding a new subject option -->
                 <li>
                   <div class="cardList borderStyling">
                     <h3>ADD A SUBJECT HERE</h3>
@@ -49,7 +64,46 @@
                 </li>
               </ul>
             </div>
+            
+            <!-- Calendar Page -->
+            <div id="calendar" v-if="selected === 'calendar'">
+              <h2>Testing Calendar</h2>
+              <!-- <v-calendar class="calendar"
+              :masks="masks"
+              :attributes = "attributes"
+              is-expanded>
+                
+              </v-calendar> -->
 
+
+            </div>
+
+            <!-- Scraper Page -->
+            <div id="scraper" v-if="selected === 'scraper'">
+              <h2>Track a New Course</h2>
+              <form>
+                <label>Subject Title</label>
+                <input list="subjectTitle" type="text" placeholder="eg.....">
+                <datalist id="subjectTitle"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.title" /> </datalist>
+                <br/><br/>
+
+                <label>Subject Id</label>
+                <input list="subjectId" type="text" placeholder="eg.....">
+                <datalist id="subjectId"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.id" /></datalist>
+                <br/><br/>
+
+                <label>Subject Area</label>
+                <input list="subjectArea" type="text" placeholder="eg.....">
+                <datalist id="subjectArea"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.area" /></datalist>
+                <br/><br/>
+
+                <label>Subject Availability</label>
+                <input list="subjectAvailability" type="text" placeholder="eg.....">
+                <datalist id="subjectAvailability"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.availability" /></datalist>
+                <br/><br/>
+
+              </form>
+            </div>
         </main>
     </div>
   </body>
