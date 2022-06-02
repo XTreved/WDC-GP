@@ -83,10 +83,7 @@ db.serialize(() => {
     
     // Login_Data (needed first as it is referenced)
     sqlString = "CREATE TABLE if not exists Login_Data ( \
-                    User_ID INTEGER PRIMARY KEY AUTOINCREMENT, \
-                    Given_Name TEXT, \
-                    Family_Name TEXT, \
-                    Username TEXT, \
+                    Username INTEGER PRIMARY KEY, \
                     Password TEXT);";
     // now run the command
     db.run(sqlString);
@@ -149,7 +146,7 @@ db.serialize(() => {
                     Subject_ID INTEGER, \
                     Course_Title TEXT, \
                     Timestamp INTEGER, \
-                    User_ID INTEGER, \
+                    Username INTEGER, \
                     Scrape_Timestamps INTEGER, \
                     PRIMARY KEY (Subject_Area, Term, Subject_ID, Course_title), \
                     FOREIGN KEY (User_ID) \
@@ -170,15 +167,16 @@ db.close();
 
 // this will take in a users names and id and create a spot in out database to save there data, 
 // login like username and password should be delt with using some form of secure login 
-function CreateNewUser(givenName, familyName, ID) {
+function CreateNewUser(username, password) {
   
   // will returns void
 }
 
 
+// NOT NEEDED
 // this may not be needed but is here to be able to grab a users ID to use to search their specific classes
-function GetUserID(givenName, familyName) {
-  sqlString = "SELECT User_ID, \
+function GetUserID(username) {
+  sqlString = "SELECT Username, \
                   FROM Login_Data, \
                   WHERE Given_Name = " + givenName + ", \
                   AND Family_Name = " + familyName + ", \
