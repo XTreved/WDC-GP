@@ -15,12 +15,6 @@ const SAMPLE_SUBJECTS = [
     { title: 'Postgraduate Professions Internship', id: '7500', area: 'PROF',     availability: 'Trimester 1'}
 ]
 
-
-
-const LOGIN_DATA = [
-    { username: 'LN',      password: 'WDC'}
-]
-
 var vueinst = new Vue({
     el: '#app',
     data: {
