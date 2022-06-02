@@ -170,46 +170,58 @@ db.close();
 // login like username and password should be delt with using some form of secure login 
 function CreateNewUser(givenName, familyName, ID) {
 
-    // will returns void
-  }
-  
-  
-  // this may not be needed but is here to be able to grab a users ID to use to search their specific classes
-  function GetUserID(givenName, familyName) {
-  
-    // will return users ID (int)
-  }
-  
-  
-  // may need to do something with user login here so i know which user probably just ID will do as it is unique
-  // here i will get all if the data from the current timestamp and put it into a form that can be accessed buy our front end to be used
-  function GetAllData(timestamp, subject, term, subjectID, course) {
-    
-    // will return json with all the data
-  }
-  
-  
-  // this will get all of the timestamps for this specific subject so that the user can choose which one to use to do other things with
-  function GetTimestamps(subject, term, subjectID, course) {
+  // will returns void
+}
 
-    sqlString = "SELECT Scrape_Timestamps \
-                    FROM Users_Subjects, \
-                    WHERE Users_Subjects.Subject_Area = " + subject + ", \
-                    AND Users_Subjects.Term = " + term + ", \
-                    AND Users_Subjects.Subject_ID = " + subjectID + ", \
-                    AND Users_Subjects.Course_Title = " + course + ";"
-    var returnArray = db.run(sqlString);
-    
-    // will return a list of the timestamps saved, (in the form of int's)
-    return returnArray;
-  }
+
+// this may not be needed but is here to be able to grab a users ID to use to search their specific classes
+function GetUserID(givenName, familyName) {
+
+  // will return users ID (int)
+}
+
+
+// may need to do something with user login here so i know which user probably just ID will do as it is unique
+// here i will get all if the data from the current timestamp and put it into a form that can be accessed buy our front end to be used
+function GetAllData(timestamp, subject, term, subjectID, course) {
   
+  // will return json with all the data
+}
+
+
+// this will get all of the timestamps for this specific subject so that the user can choose which one to use to do other things with
+function GetTimestamps(subject, term, subjectID, course) {
+  sqlString = "SELECT Scrape_Timestamps, \
+                  FROM Users_Subjects, \
+                  WHERE Users_Subjects.Subject_Area = " + subject + ", \
+                  AND Users_Subjects.Term = " + term + ", \
+                  AND Users_Subjects.Subject_ID = " + subjectID + ", \
+                  AND Users_Subjects.Course_Title = " + course + ";"
+  var returnVal = db.run(sqlString);
   
-  // this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
-  function AddNewData(scrapeData) {
-  
-    // will return void
-  }
+  // will return a list of the timestamps saved, (in the form of int's)
+  return returnVal;
+}
+
+// this wil get all of the subjects the the user has previously scraped, this is to be able to show them on out front end
+function GetUsersSubjects(userID) {
+  sqlString = "SELECT Subject_Area, Term, Subject_ID, Course_Title, \
+                  FROM Users_Subjects, \
+                  WHERE Users_Subjects.User_ID = " + userID + ";";
+  var returnVal = db.run(sqlString);
+
+  // need to format the return type but need data to see what it would output.
+
+// will return a list of the subjects saved, each element in the list will be a object with: Subject, Term, Course, SubjectID
+return returnVal;
+}
+
+
+// this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
+function AddNewData(scrapeData) {
+
+  // will return void
+}
 
 
 
