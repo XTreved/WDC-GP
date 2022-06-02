@@ -25,12 +25,14 @@ header {
   left: 0;
   right: 0;
   position: fixed;
-  /*-------------------------------------------------------------------------------------------------------------*/
-
-  /* This makes the white box on the login page */
   text-align: center;
-  background-color: white;
   height: 15em;
+  /*-------------------------------------------------------------------------------------------------------------*/
+}
+
+.whiteBox {
+  /* This makes the white box on the login page */
+  background-color: white;
   width: 30em;
 }
 

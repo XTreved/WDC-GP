@@ -16,12 +16,17 @@ const SAMPLE_SUBJECTS = [
 ]
 
 
+
+const LOGIN_DATA = [
+    { username: 'LN',      password: 'WDC'}
+]
+
 var vueinst = new Vue({
     el: '#app',
     data: {
         
         /* Show or hide each section */
-        selected: "login", // login, signup, home, calendar, scraper
+        selected: "scraper", // login, signup, home, calendar, scraper
 
         /* Home page testing */
         tracked_subjects: TRACKED_SUBJECTS,
