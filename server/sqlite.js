@@ -2,6 +2,8 @@
 // https://github.com/TryGhost/node-sqlite3/wiki/API
 // https://www.npmjs.com/package/sqlite3
 
+// npm install sqlite3
+
 
 
 /*
@@ -54,7 +56,7 @@ Data = {
 
 
 // import sqlite3 and load the database, or else it will create one it it doesnt exist
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('SavedDatabase');
 
 /* Test Code
@@ -81,7 +83,7 @@ db.serialize(() => {
     
     // Login_Data (needed first as it is referenced)
     sqlString = "CREATE TABLE if not exists Login_Data ( \
-                    User_ID INTEGER PRIMARY KEY, \
+                    User_ID INTEGER PRIMARY KEY AUTOINCREMENT, \
                     Given_Name TEXT, \
                     Family_Name TEXT, \
                     Username TEXT, \
@@ -169,22 +171,38 @@ db.close();
 // this will take in a users names and id and create a spot in out database to save there data, 
 // login like username and password should be delt with using some form of secure login 
 function CreateNewUser(givenName, familyName, ID) {
-
+  
   // will returns void
 }
 
 
 // this may not be needed but is here to be able to grab a users ID to use to search their specific classes
 function GetUserID(givenName, familyName) {
-
+  sqlString = "SELECT User_ID, \
+                  FROM Login_Data, \
+                  WHERE Given_Name = " + givenName + ", \
+                  AND Family_Name = " + familyName + ", \
+                  ;";
+  var returnVal = db.run(sqlString);
+  console.log(returnVal);
   // will return users ID (int)
+  return returnVal;
 }
 
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
 // here i will get all if the data from the current timestamp and put it into a form that can be accessed buy our front end to be used
 function GetAllData(timestamp, subject, term, subjectID, course) {
+  sqlString = "SELECT Scrape_Timestamps, \
+                  FROM Users_Subjects, \
+                  WHERE Users_Subjects.Subject_Area = " + subject + ", \
+                  AND Users_Subjects.Term = " + term + ", \
+                  AND Users_Subjects.Subject_ID = " + subjectID + ", \
+                  AND Users_Subjects.Course_Title = " + course + ";"
+  var returnVal = db.run(sqlString);
   
+  // will return a list of the timestamps saved, (in the form of int's)
+  return returnVal;
   // will return json with all the data
 }
 
@@ -224,6 +242,9 @@ function AddNewData(scrapeData) {
 }
 
 
+function Test() {
+  console.log("Test blah blah\n");
+}
 
   // to add to the database, write the command you want as a string then db.run(string) it
 /* There example
