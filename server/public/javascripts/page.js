@@ -20,7 +20,7 @@ var vueinst = new Vue({
     data: {
         
         /* Show or hide each section */
-        selected: "scraper", // login, signup, home, calendar, scraper
+        selected: "login", // login, signup, home, calendar, scraper
 
         /* Home page testing */
         tracked_subjects: TRACKED_SUBJECTS,
@@ -29,3 +29,44 @@ var vueinst = new Vue({
         sample_subjects: SAMPLE_SUBJECTS
     }
 });
+
+function login() {
+
+    let username = document.getElementsByName('Username')[0].value;
+    let password = document.getElementsByName('Password')[0].value;
+
+    let login_form = { username: username, password: password};
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("Login Successful");
+            vueinst.selected = "home";
+        }
+    };
+
+    xhttp.open("POST", "users/login", true);
+    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.send(JSON.stringify(login_form));
+}
+
+function signup() {
+    let username = document.getElementsByName('newUsername')[0].value;
+    let password = document.getElementsByName('newPassword')[0].value;
+
+    let signup_form = { username: username, password: password};
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("Signup Successful");
+            vueinst.selected = "login";
+        }
+    };
+
+    xhttp.open("POST", "users/signup", true);
+    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.send(JSON.stringify(signup_form));
+}
