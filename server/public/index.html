@@ -8,7 +8,6 @@
 
     <link rel="stylesheet" href="stylesheets/style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src='https://unpkg.com/v-calendar'></script>
     <script src="/javascripts/page.js" defer></script>
   </head>
 
@@ -25,21 +24,17 @@
                 <!-- Login -->
                 <div id="login" v-if="selected === 'login'">
                   <h2 class="title">Login</h2>
-                  <form>
-                      <input class="inputBox" type="text" placeholder="Username" name="Username"> <br>
-                      <input class="inputBox" type="password" placeholder="Password" name="Password"> <br>
-                      <input class="inputBox" type="submit" value="Login" onclick="login()">
-                  </form>
+                  <input class="inputBox" type="text" placeholder="Username" name="Username"> <br>
+                  <input class="inputBox" type="password" placeholder="Password" name="Password"> <br>
+                  <input class="inputBox" type="submit" value="Login" onclick="login()">
                 </div>
 
                 <!-- Signup -->
                 <div id="signup" v-if="selected === 'signup'">
                   <h2 class="title">Signup</h2>
-                  <form>
-                    <input class="inputBox" type="text" placeholder="Username" name="newUsername"> <br>
-                    <input class="inputBox" type="password" placeholder="Password" name="newPassword"> <br>
-                    <input class="inputBox" type="submit" value="Signup" onclick="signup()">
-                  </form>
+                  <input class="inputBox" type="text" placeholder="Username" name="newUsername"> <br>
+                  <input class="inputBox" type="password" placeholder="Password" name="newPassword"> <br>
+                  <input class="inputBox" type="submit" value="Signup" onclick="signup()">
                 </div>
             </div>
 
