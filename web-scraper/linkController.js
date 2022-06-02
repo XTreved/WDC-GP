@@ -2,6 +2,7 @@
     this file uses puppeteer to choose the link to the given SUBJECT and then choose the given COURSE
     Example: https://github.com/puppeteer/puppeteer/issues/3535
 */
+
 // inclusions
 const { ConsoleMessage } = require("puppeteer");
 const puppeteer = require("puppeteer");
@@ -35,8 +36,6 @@ const puppeteer = require("puppeteer");
     await browser.close();
 })();
 
-
-
 function getLink(course, subject) {
     let default_link = "https://access.adelaide.edu.au/courses/search.asp";
 
@@ -45,6 +44,25 @@ function getLink(course, subject) {
 var subject = "COMP SCI";
 var course = ""
 getLink(subject);
+
+async function startBrowser() { // starts browser and returns an instance of it
+	let browser;
+	try {
+		console.log("Opening chrome browser via non-headless chrome");
+		console.log("browser pop-up is for testing");
+		browser = await puppeteer.launch({ // launch browser instance
+			headless: false, // runs with an interface so we can watch script
+			// change headless: true after testing complete
+			args: ["--disable-setuid-sandbox"],
+			'ignoreHTTPSErrors': true
+		});
+	} catch (err) {
+		console.log("Could not create a browser instance => : ", err);
+	}
+	return browser;
+}
+
+
 
 /*
 subject link samples
