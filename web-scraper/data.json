@@ -1,14 +1,38 @@
 {
-    "Subject_Area": "COMP SCI 2207 ",
-    "Course_Title": " Web & Database Computing",
-    "Career:": "Undergraduate",
-    "Units:": "3",
-    "Term:": "Semester 1",
-    "Campus:": "North Terrace",
-    "Contact:": "Up to 6 hours per week",
-    "Available for Study Abroad and Exchange:": "Yes",
-    "Available for Non-Award Study:": "No",
-    "Pre-Requisite:": "COMP SCI 1102, COMP SCI 1202, COMP SCI 2009, COMP SCI 2202, or (COMP SCI 1013 and COMP SCI 1015)",
-    "Incompatible:": "COMP SCI 1003, COMP SCI 1105, COMP SCI 2002",
-    "Assessment:": "Written exam and/or assignments"
+    "course_details": {
+        "Subject_Area": "COMP SCI 2207 ",
+        "Course_Title": " Web & Database Computing",
+        "Career:": "Undergraduate",
+        "Units:": "3",
+        "Term:": "Semester 1",
+        "Campus:": "North Terrace",
+        "Contact:": "Up to 6 hours per week",
+        "Available for Study Abroad and Exchange:": "Yes",
+        "Available for Non-Award Study:": "No",
+        "Pre-Requisite:": "COMP SCI 1102, COMP SCI 1202, COMP SCI 2009, COMP SCI 2202, or (COMP SCI 1013 and COMP SCI 1015)",
+        "Incompatible:": "COMP SCI 1003, COMP SCI 1105, COMP SCI 2002",
+        "Assessment:": "Written exam and/or assignments"
+    },
+    "class_details": {
+        "Lecture": [
+            "{\"Class Nbr\":\"11571\",\"Section\":\"LE01\",\"Size\":\"520\",\"Available\":\"57\",\"Dates\":\"1 Mar -  5 Apr\",\"Days\":\"Tuesday\",\"Time\":\"2pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}",
+            "{\"Class Nbr\":\"11571\",\"Section\":\"LE01\",\"Size\":\"520\",\"Available\":\"57\",\"Dates\":\"26 Apr -  31 May\",\"Days\":\"Tuesday\",\"Time\":\"2pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}"
+        ],
+        "Workshop": [
+            "{\"Class Nbr\":\"11564\",\"Section\":\"WR07\",\"Size\":\"80\",\"Available\":\"FULL\",\"Dates\":\"9 Mar -  6 Apr\",\"Days\":\"Wednesday\",\"Time\":\"1pm - 2pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11564\",\"Section\":\"WR07\",\"Size\":\"80\",\"Available\":\"FULL\",\"Dates\":\"27 Apr -  8 Jun\",\"Days\":\"Wednesday\",\"Time\":\"1pm - 2pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11566\",\"Section\":\"WR05\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"10 Mar -  7 Apr\",\"Days\":\"Thursday\",\"Time\":\"10am - 11am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11566\",\"Section\":\"WR05\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"28 Apr -  9 Jun\",\"Days\":\"Thursday\",\"Time\":\"10am - 11am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11567\",\"Section\":\"WR04\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"11 Mar -  8 Apr\",\"Days\":\"Friday\",\"Time\":\"2pm - 3pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11567\",\"Section\":\"WR04\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"29 Apr -  10 Jun\",\"Days\":\"Friday\",\"Time\":\"2pm - 3pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11568\",\"Section\":\"WR03\",\"Size\":\"80\",\"Available\":\"63\",\"Dates\":\"10 Mar -  7 Apr\",\"Days\":\"Thursday\",\"Time\":\"9am - 10am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11568\",\"Section\":\"WR03\",\"Size\":\"80\",\"Available\":\"63\",\"Dates\":\"28 Apr -  9 Jun\",\"Days\":\"Thursday\",\"Time\":\"9am - 10am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11569\",\"Section\":\"WR02\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"9 Mar -  6 Apr\",\"Days\":\"Wednesday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11569\",\"Section\":\"WR02\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"27 Apr -  8 Jun\",\"Days\":\"Wednesday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11570\",\"Section\":\"WR01\",\"Size\":\"80\",\"Available\":\"59\",\"Dates\":\"11 Mar -  8 Apr\",\"Days\":\"Friday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, B18, Teaching Room\"}",
+            "{\"Class Nbr\":\"11570\",\"Section\":\"WR01\",\"Size\":\"80\",\"Available\":\"59\",\"Dates\":\"29 Apr -  10 Jun\",\"Days\":\"Friday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, B18, Teaching Room\"}",
+            "{\"Class Nbr\":\"19529\",\"Section\":\"WR08\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"10 Mar -  7 Apr\",\"Days\":\"Thursday\",\"Time\":\"3pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}",
+            "{\"Class Nbr\":\"19529\",\"Section\":\"WR08\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"28 Apr -  9 Jun\",\"Days\":\"Thursday\",\"Time\":\"3pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}"
+        ]
+    }
 }
