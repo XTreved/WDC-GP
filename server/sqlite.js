@@ -143,17 +143,15 @@ db.serialize(() => {
     sqlString = "CREATE TABLE if not exists Users_Subjects ( \
                     Subject_Area TEXT, \
                     Term TEXT, \
-                    Subject_ID INTEGER, \
                     Course_Title TEXT, \
                     Timestamp INTEGER, \
                     Username INTEGER, \
-                    Scrape_Timestamps INTEGER, \
-                    PRIMARY KEY (Subject_Area, Term, Subject_ID, Course_title), \
-                    FOREIGN KEY (User_ID) \
-                        REFERENCES Login_Data (User_ID) \
+                    PRIMARY KEY (Subject_Area, Term, Course_title), \
+                    FOREIGN KEY (Username) \
+                        REFERENCES Login_Data (Username) \
                         ON UPDATE CASCADE \
                         ON DELETE CASCADE, \
-                    FOREIGN KEY (Scrape_Timestamps) \
+                    FOREIGN KEY (Timestamp) \
                         REFERENCES Timestamps (Scrape_Timestamps) \
                         ON UPDATE CASCADE \
                         ON DELETE CASCADE);";
@@ -234,7 +232,69 @@ return returnVal;
 
 
 // this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
-function AddNewData(scrapeData) {
+function AddNewData(scrapeData, username) {
+  /*
+  Subject_Area
+Term
+Course_Title
+Timestamp
+Username
+  */
+
+  courseInfo = scrapeData['course_details'];
+
+  var subjectArea = courseInfo['Subject_Area'];
+  var courseTitle = courseInfo['Course_Title'];
+  var career = courseInfo['Career'];
+  var term = courseInfo['Term'];
+  var campus = courseInfo['Campus'];
+  var subjectID = "BLANK";
+  var timestamp = "BLANK"
+
+  // add the values to the DB
+  // NEEDS TO BE PREPARED
+  var sqlPrepare = "INSERT INTO Users_Subjects (Subject_Area, Term, Course_Title, Timestamp, Username) VALUES (?, ?, ?, ?, ?);";
+  var sqlStatement = db.compileStatement(sqlPrepare);
+
+  // add the values into the statement
+  sqlStatement.bindLong(1, subjectArea);
+  sqlStatement.bindLong(2, term);
+  sqlStatement.bindLong(3, courseTitle);
+  sqlStatement.bindLong(4, timestamp);
+  sqlStatement.bindLong(5, username);
+
+  sqlStatement.executeInsert();
+
+
+  if (scrapeData['class_details']['Lecture'] != null) {
+    var lectureDataString = scrapeData['class_details']['Lecture'];
+    for (var row in lectureDataString) {
+      var lectureData = JSON.stringify(row);
+
+      var classNum = lectureData['Class Nbr'];
+      var section = lectureData['Section'];
+      var size = lectureData['Size'];
+      var available = lectureData['Available'];
+      var dates = lectureData['Dates'];
+      var days = lectureData['Days'];
+      var notes = lectureData['Notes'];
+      var location = lectureData['Location']
+
+      // may be more things i cant see
+
+      // format dates into start and end
+      var datesArr = dates.split(" ");
+      var startDate = datesArr[0];
+      var endDate = datesArr[2];
+
+
+      // add the lecture data to the DB
+    }
+
+
+    
+  }
+
 
   // will return void
 }
