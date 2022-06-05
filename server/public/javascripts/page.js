@@ -22,11 +22,32 @@ var vueinst = new Vue({
         /* Show or hide each section */
         selected: "login", // login, signup, home, calendar, scraper
 
+        /* Login page login status */
+        loginPageStatus: "Please enter your Username and Password",
+        loginError: false,
+
         /* Home page testing */
         tracked_subjects: TRACKED_SUBJECTS,
 
         /* Scraper page testing */
-        sample_subjects: SAMPLE_SUBJECTS
+        sample_subjects: SAMPLE_SUBJECTS,
+
+
+
+    
+    }, methods: {
+        /* Display error texts on the login page */
+        loginErrorFormat: function() {
+
+            /* Change styling of error message */
+            this.loginError = true;
+
+            /* Revert changes after a certain amount of time */
+            setTimeout(() => {  
+                this.loginPageStatus = "Please enter your Username and Password";
+                this.loginError = false;
+            }, 5000);
+        }
     }
 });
 
@@ -43,6 +64,15 @@ function login() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Login Successful");
             vueinst.selected = "home";
+
+
+        } else if (this.readyState == 4 && this.status == 401) {
+            vueinst.loginPageStatus = "Incorrect Username or Password"
+            vueinst.loginErrorFormat();
+
+        } else if (this.readyState == 4 && this.status == 400){
+            vueinst.loginPageStatus = "Bad Request"
+            vueinst.loginErrorFormat();
         }
     };
 
@@ -62,7 +92,17 @@ function signup() {
     xhttp.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Signup Successful");
+            
             vueinst.selected = "login";
+            vueinst.loginErrorFormat();
+
+        } else if (this.readyState == 4 && this.status == 403) {
+            vueinst.loginPageStatus = "Username Taken"
+            vueinst.loginErrorFormat();
+
+        } else if (this.readyState == 4 && this.status == 400){
+            vueinst.loginPageStatus = "Bad Request"
+            vueinst.loginErrorFormat();
         }
     };
 

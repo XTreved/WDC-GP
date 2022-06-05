@@ -24,17 +24,22 @@
                 <!-- Login -->
                 <div id="login" v-if="selected === 'login'">
                   <h2 class="title">Login</h2>
-                  <input class="inputBox" type="text" placeholder="Username" name="Username"> <br>
-                  <input class="inputBox" type="password" placeholder="Password" name="Password"> <br>
-                  <input class="inputBox" type="submit" value="Login" onclick="login()">
+                  <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
+                  <input class="inputBox" type="text" placeholder="Username" name="Username">         <br/>
+                  <input class="inputBox" type="password" placeholder="Password" name="Password">     <br/>
+                  <input class="inputBox" type="submit" value="Login" onclick="login()">              <br/>
+                  <input class="options" type="submit" value="Signup Now" v-on:click="selected = 'signup'">
+                  
                 </div>
 
                 <!-- Signup -->
                 <div id="signup" v-if="selected === 'signup'">
                   <h2 class="title">Signup</h2>
-                  <input class="inputBox" type="text" placeholder="Username" name="newUsername"> <br>
-                  <input class="inputBox" type="password" placeholder="Password" name="newPassword"> <br>
-                  <input class="inputBox" type="submit" value="Signup" onclick="signup()">
+                  <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
+                  <input class="inputBox" type="text" placeholder="Username" name="newUsername">      <br/>
+                  <input class="inputBox" type="password" placeholder="Password" name="newPassword">  <br/>
+                  <input class="inputBox" type="submit" value="Signup" onclick="signup()">            <br/>
+                  <input class="options" type="submit" value="Login Now" v-on:click="selected = 'login'">
                 </div>
             </div>
 
@@ -54,7 +59,7 @@
                 <!-- Adding a new subject option -->
                 <li>
                   <div class="cardList borderStyling" v-on:click="selected = 'scraper'">
-                    <h3>+</h3>
+                    <h3 class="title">+</h3>
                   </div>
                 </li>
               </ul>

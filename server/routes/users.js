@@ -40,7 +40,7 @@ router.post('/signup', function(req, res, next) {
     }
 
   } else {
-    console.log("Error with login");
+    console.log("bad request");
     res.sendStatus(400);
   }
 });

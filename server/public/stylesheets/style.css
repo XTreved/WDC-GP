@@ -17,8 +17,8 @@ header {
   text-align: center;
 }
 
+/* This affects the positioning of the div on the page, displaying it right in the middle of the page  */
 .center {
-  /* This section affects the positioning of the div on the page, displaying it right in the middle of the page  */
   margin: auto;
   top: 0;
   bottom: 0;
@@ -26,12 +26,11 @@ header {
   right: 0;
   position: fixed;
   text-align: center;
-  height: 15em;
-  /*-------------------------------------------------------------------------------------------------------------*/
+  height: 20em;
 }
 
+/* This makes the white box on the login page */
 .whiteBox {
-  /* This makes the white box on the login page */
   background-color: white;
   width: 30em;
 }
@@ -54,6 +53,21 @@ header {
   border-radius: 0.5em;
 }
 
+/* Change the box for signup now and loging now */
+.options {
+  margin: 1em;
+  padding: 0.25em;
+  width: 7.5em;
+
+  border: 2px solid black;
+  border-radius: 0.5em;
+}
+
+.errorText {
+  color: red;
+  font-weight: bold;
+}
+
 
 /* Styling the lists, home page */
 .listStyling {
@@ -70,6 +84,12 @@ header {
   padding: 1em 3em;
 
   background-color: white;
+}
+
+/* Darken the card background and change the cursor to make it look like a clikable item */
+.cardList:hover {
+  background-color: rgb(234, 234, 234) !important;
+  cursor: pointer;
 }
 
 
