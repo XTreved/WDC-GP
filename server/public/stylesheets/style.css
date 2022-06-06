@@ -39,10 +39,11 @@ header {
 /* This is for the popup menu for the scraper and calendar */
 .popupMenu {
   background-color: white;
-  height: 40em;
-  width: 50em;
+  height: 45em;
+  width: 80em;
 }
 
+/* This will darken the background, only appears when calendar or scraper page is active */
 .darkenPage {
   padding: 0px;
   margin: 0px;
@@ -84,9 +85,9 @@ header {
   width: 1.5em;
   height: 1.5em;
   display: block;
-  background-color: red;
+  background-color: rgb(255, 78, 78);
 
-  border: 1px solid red;
+  border: 1px solid rgb(255, 78, 78);
   border-radius: 50%;
 }
 

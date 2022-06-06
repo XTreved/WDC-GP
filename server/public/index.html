@@ -43,14 +43,18 @@
                 </div>
             </div>
 
+
+
+
+
             <!-- Home Page -->
             <div id="home" v-if="selected === 'home'">
               <h2 class="title">Home page</h2>
               
               <ul class="listStyling">
                 <!-- Displaying current subjects -->
-                <li v-for="subject in tracked_subjects" v-on:click="miniWindow = 'calendar'; darkenScreen = true">
-                  <div class="cardList borderStyling">
+                <li v-for="subject in tracked_subjects">
+                  <div class="cardList borderStyling" v-on:click="miniWindow = 'calendar'; darkenScreen = true">
                     <h3> {{ subject.title }}</h3>
                     <p> {{ subject.day }} </p>
                   </div>
@@ -65,6 +69,10 @@
               </ul>
             </div>
             
+
+
+
+
             <!-- Calendar Page -->
             <div id="calendar" class="center popupMenu borderStyling" v-if="miniWindow === 'calendar'">
               <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
@@ -78,6 +86,9 @@
 
 
             </div>
+
+
+
 
             <!-- Scraper Page -->
             <div id="scraper" class="center popupMenu borderStyling" v-if="miniWindow === 'scraper'">
