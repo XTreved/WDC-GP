@@ -166,25 +166,16 @@ db.close();
 // this will take in a users names and id and create a spot in out database to save there data, 
 // login like username and password should be delt with using some form of secure login 
 function CreateNewUser(username, password) {
+  var sqlPrepare = "INSERT INTO Login_Data VALUES (?, ?);";
+  var sqlStatement = db.compileStatement(sqlPrepare);
+
+  sqlStatement.bindLong(1, username);
+  sqlStatement.bindLong(2, password);
+
+  sqlStatement.executeInsert();
   
   // will returns void
 }
-
-
-// NOT NEEDED
-// this may not be needed but is here to be able to grab a users ID to use to search their specific classes
-function GetUserID(username) {
-  sqlString = "SELECT Username, \
-                  FROM Login_Data, \
-                  WHERE Given_Name = " + givenName + ", \
-                  AND Family_Name = " + familyName + ", \
-                  ;";
-  var returnVal = db.run(sqlString);
-  console.log(returnVal);
-  // will return users ID (int)
-  return returnVal;
-}
-
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
 // here i will get all if the data from the current timestamp and put it into a form that can be accessed buy our front end to be used
@@ -201,7 +192,6 @@ function GetAllData(timestamp, subject, term, subjectID, course) {
   return returnVal;
   // will return json with all the data
 }
-
 
 // this will get all of the timestamps for this specific subject so that the user can choose which one to use to do other things with
 function GetTimestamps(subject, term, subjectID, course) {
@@ -230,16 +220,8 @@ function GetUsersSubjects(userID) {
 return returnVal;
 }
 
-
 // this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
 function AddNewData(scrapeData, username) {
-  /*
-  Subject_Area
-Term
-Course_Title
-Timestamp
-Username
-  */
 
   courseInfo = scrapeData['course_details'];
 
@@ -248,7 +230,6 @@ Username
   var career = courseInfo['Career'];
   var term = courseInfo['Term'];
   var campus = courseInfo['Campus'];
-  var subjectID = "BLANK";
   var timestamp = "BLANK"
 
   // add the values to the DB
@@ -276,7 +257,7 @@ Username
       var size = lectureData['Size'];
       var available = lectureData['Available'];
       var dates = lectureData['Dates'];
-      var days = lectureData['Days'];
+      var day = lectureData['Days'];
       var notes = lectureData['Notes'];
       var location = lectureData['Location']
 
@@ -287,8 +268,70 @@ Username
       var startDate = datesArr[0];
       var endDate = datesArr[2];
 
+      var startTime = "BLANK";
+      var endTime = "BLANK";
+
 
       // add the lecture data to the DB
+      // Scrape_Timestamps
+      var sqlPrepare = "INSERT INTO Scrape_Timestamps (Scrape_Timestamps, Class_Type) VALUES (?, ?);";
+      var sqlStatement = db.compileStatement(sqlPrepare);
+
+      sqlStatement.bindLong(1, timestamp);
+      sqlStatement.bindLong(2, 'Lecture');
+
+      sqlStatement.executeInsert();
+      
+
+      // Class_Details
+      var sqlPrepare = "INSERT INTO Class_Details (Class_Type, Class_Number) VALUES (?, ?);";
+      var sqlStatement = db.compileStatement(sqlPrepare);
+
+      sqlStatement.bindLong(1, 'Lecture');
+      sqlStatement.bindLong(2, classNum);
+
+      sqlStatement.executeInsert();
+
+
+      // Class_Times
+      var sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
+      var sqlStatement = db.compileStatement(sqlPrepare);
+
+      sqlStatement.bindLong(1, startDate);
+      sqlStatement.bindLong(2, endDate);
+      sqlStatement.bindLong(3, day);
+      sqlStatement.bindLong(4, startTime);
+      sqlStatement.bindLong(5, endTime);
+      sqlStatement.bindLong(6, location);
+
+      sqlStatement.executeInsert();
+
+      // now i need to get the id to insert into the class data table
+      sqlString = "SELECT ID, \
+                      FROM Class_Times \
+                      Where Class_Times.Beginning_Date = " + startDate + " \
+                      AND Class_Times.Ending_Date = " + endDate + " \
+                      AND Class_Times.Day = " + day + " \
+                      AND Class_TImes.Beginning_Time = " + startTime + " \
+                      AND Class_TImes.Ending_Time = " + endTime + " \
+                      AND Class_TImes.Location = " + location + ";";
+      var ID = db.run(sqlString);
+
+      // Class_Data
+      var sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
+      var sqlStatement = db.compileStatement(sqlPrepare);
+
+      sqlStatement.bindLong(1, classNum);
+      sqlStatement.bindLong(2, section);
+      sqlStatement.bindLong(3, size);
+      sqlStatement.bindLong(4, available);
+      sqlStatement.bindLong(5, notes);
+      sqlStatement.bindLong(6, ID);
+
+      sqlStatement.executeInsert();
+
+      // now all data should be added for atleast the lecture table
+
     }
 
 
@@ -301,7 +344,11 @@ Username
 
 
 function Test() {
-  console.log("Test blah blah\n");
+  console.log("Starting Test\n");
+
+  // add some data to the DB
+  // then check the timestamps
+  
 }
 
   // to add to the database, write the command you want as a string then db.run(string) it
