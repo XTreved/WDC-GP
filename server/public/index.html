@@ -11,7 +11,7 @@
     <script src="/javascripts/page.js" defer></script>
   </head>
 
-  <body>
+  <body onload="showCourses()">
     <div id="app" v-bind:class="{ darkenPage : darkenScreen }">
         <header>
             <h1>Time Table Planner</h1>
@@ -107,7 +107,7 @@
 
                 <label>Subject Area</label>
                 <input list="subjectArea" type="text" placeholder="eg.....">
-                <datalist id="subjectArea"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.area" /></datalist>
+                <datalist id="subjectArea"> <option v-for="subject in courses" :key="subject" :value="subject" /></datalist>
                 <br/><br/>
 
                 <label>Subject Availability</label>
