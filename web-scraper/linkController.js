@@ -50,11 +50,15 @@ const promiseA = (async () => {
     await page.goto(masterLink, { waitUntil: 'networkidle2' }); // master link 
     await page.waitForSelector('select[name=subject]');
     await page.select('select[name=subject]', formValue);
-    await page.click('input[name=action]');
+
+    await Promise.all([
+        page.waitForNavigation(),
+        page.click('input[name=action]'),
+    ]);
 
     const sublink = await page.url();
-    console.log("current page url is: " + sublink); // await page.goto(sublink, { waitUntil: 'networkidle2' }); 
-    await page.goto(sublink, { waitUntil: 'networkidle2' });
+    console.log("current page url is: " + sublink);
+    await page.goto(sublink, { waitUntil: 'networkidle2' });     
 
     /*
     ==== MANUAL LINK SELECTION ====
