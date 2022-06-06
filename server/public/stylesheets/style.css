@@ -1,6 +1,7 @@
-body {
+html, body {
   padding: 0px;
   margin: 0px;
+  height: 100%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: plum;
 }
@@ -26,13 +27,27 @@ header {
   right: 0;
   position: fixed;
   text-align: center;
-  height: 20em;
 }
 
 /* This makes the white box on the login page */
 .whiteBox {
   background-color: white;
+  height: 20em;
   width: 30em;
+}
+
+/* This is for the popup menu for the scraper and calendar */
+.popupMenu {
+  background-color: white;
+  height: 40em;
+  width: 50em;
+}
+
+.darkenPage {
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Styling the borders of the divs and input boxes */
@@ -53,7 +68,7 @@ header {
   border-radius: 0.5em;
 }
 
-/* Change the box for signup now and loging now */
+/* Change the box for signup now and login now */
 .options {
   margin: 1em;
   padding: 0.25em;
@@ -61,6 +76,18 @@ header {
 
   border: 2px solid black;
   border-radius: 0.5em;
+}
+
+.closeButton {
+  margin: 1em;
+  margin-right: auto;
+  width: 1.5em;
+  height: 1.5em;
+  display: block;
+  background-color: red;
+
+  border: 1px solid red;
+  border-radius: 50%;
 }
 
 .errorText {
@@ -79,8 +106,7 @@ header {
 
 /* Styling each of the cards, home page */
 .cardList {
-
-  margin: 2em 10em;
+  margin: 2em 20em;
   padding: 1em 3em;
 
   background-color: white;

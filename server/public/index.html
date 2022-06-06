@@ -12,12 +12,12 @@
   </head>
 
   <body>
-    <div>
+    <div id="app" v-bind:class="{ darkenPage : darkenScreen }">
         <header>
             <h1>Time Table Planner</h1>
         </header>
 
-        <main id="app">
+        <main>
 
             <!-- Login Page -->
             <div class="center whiteBox borderStyling" v-if="selected === 'login' || selected === 'signup'">
@@ -25,10 +25,10 @@
                 <div id="login" v-if="selected === 'login'">
                   <h2 class="title">Login</h2>
                   <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
-                  <input class="inputBox" type="text" placeholder="Username" name="Username">         <br/>
-                  <input class="inputBox" type="password" placeholder="Password" name="Password">     <br/>
-                  <input class="inputBox" type="submit" value="Login" onclick="login()">              <br/>
-                  <input class="options" type="submit" value="Signup Now" v-on:click="selected = 'signup'">
+                  <input class="inputBox" type="text"     placeholder="Username"  name="Username">    <br/>
+                  <input class="inputBox" type="password" placeholder="Password"  name="Password">    <br/>
+                  <input class="inputBox" type="submit"   value="Login"           onclick="login()">  <br/>
+                  <input class="options"  type="submit"   value="Signup Now"      v-on:click="selected = 'signup'">
                   
                 </div>
 
@@ -36,10 +36,10 @@
                 <div id="signup" v-if="selected === 'signup'">
                   <h2 class="title">Signup</h2>
                   <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
-                  <input class="inputBox" type="text" placeholder="Username" name="newUsername">      <br/>
-                  <input class="inputBox" type="password" placeholder="Password" name="newPassword">  <br/>
-                  <input class="inputBox" type="submit" value="Signup" onclick="signup()">            <br/>
-                  <input class="options" type="submit" value="Login Now" v-on:click="selected = 'login'">
+                  <input class="inputBox" type="text"     placeholder="Username"  name="newUsername">  <br/>
+                  <input class="inputBox" type="password" placeholder="Password"  name="newPassword">  <br/>
+                  <input class="inputBox" type="submit"   value="Signup"          onclick="signup()">  <br/>
+                  <input class="options"  type="submit"   value="Login Now"       v-on:click="selected = 'login'">
                 </div>
             </div>
 
@@ -49,7 +49,7 @@
               
               <ul class="listStyling">
                 <!-- Displaying current subjects -->
-                <li v-for="subject in tracked_subjects">
+                <li v-for="subject in tracked_subjects" v-on:click="miniWindow = 'calendar'; darkenScreen = true">
                   <div class="cardList borderStyling">
                     <h3> {{ subject.title }}</h3>
                     <p> {{ subject.day }} </p>
@@ -58,7 +58,7 @@
 
                 <!-- Adding a new subject option -->
                 <li>
-                  <div class="cardList borderStyling" v-on:click="selected = 'scraper'">
+                  <div class="cardList borderStyling" v-on:click="miniWindow = 'scraper'; darkenScreen = true">
                     <h3 class="title">+</h3>
                   </div>
                 </li>
@@ -66,7 +66,8 @@
             </div>
             
             <!-- Calendar Page -->
-            <div id="calendar" v-if="selected === 'calendar'">
+            <div id="calendar" class="center popupMenu borderStyling" v-if="miniWindow === 'calendar'">
+              <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
               <h2>Testing Calendar</h2>
               <!-- <v-calendar class="calendar"
               :masks="masks"
@@ -79,7 +80,8 @@
             </div>
 
             <!-- Scraper Page -->
-            <div id="scraper" class="center" v-if="selected === 'scraper'">
+            <div id="scraper" class="center popupMenu borderStyling" v-if="miniWindow === 'scraper'">
+              <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
               <h2 class="title">Track a New Course</h2>
               <form>
                 <label>Subject Title</label>
@@ -109,7 +111,6 @@
         </main>
     </div>
   </body>
-
 </html>
 
 

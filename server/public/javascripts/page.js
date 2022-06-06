@@ -20,20 +20,19 @@ var vueinst = new Vue({
     data: {
         
         /* Show or hide each section */
-        selected: "login", // login, signup, home, calendar, scraper
+        selected:           "home",         // login, signup, home, calendar, scraper
+        miniWindow:         "",             // This will be for the calendar/scraper screen
+        darkenScreen:       false,
 
         /* Login page login status */
-        loginPageStatus: "Please enter your Username and Password",
-        loginError: false,
+        loginPageStatus:    "Please enter your Username and Password",
+        loginError:         false,
 
         /* Home page testing */
-        tracked_subjects: TRACKED_SUBJECTS,
+        tracked_subjects:   TRACKED_SUBJECTS,
 
         /* Scraper page testing */
-        sample_subjects: SAMPLE_SUBJECTS,
-
-
-
+        sample_subjects:    SAMPLE_SUBJECTS,
     
     }, methods: {
         /* Display error texts on the login page */
@@ -47,7 +46,12 @@ var vueinst = new Vue({
                 this.loginPageStatus = "Please enter your Username and Password";
                 this.loginError = false;
             }, 5000);
-        }
+        },
+
+        hidePopUpMenu: function() {
+            this.darkenScreen = false;
+            this.miniWindow = "";
+        },
     }
 });
 
