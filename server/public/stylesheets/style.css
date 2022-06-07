@@ -1,36 +1,57 @@
-body {
+html, body {
   padding: 0px;
   margin: 0px;
+  height: 100%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: plum;
 }
 
 header {
   padding: 1em 1em 3em 1em;
-  /* background: linear-gradient(to top, #0B5ABD, #FF0159); */
-  /* background-image: linear-gradient(to bottom, #00fff2, white); */
   text-align: center;
   font-size: larger;
   color: black;
 }
 
+/* This is for styling the title of each page */
+.title {
+  text-align: center;
+}
+
+/* This affects the positioning of the div on the page, displaying it right in the middle of the page  */
 .center {
   margin: auto;
-  height: 15em;
-  width: 30em;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-
   position: fixed;
   text-align: center;
-
-  background-color: white;
-
-
 }
 
+/* This makes the white box on the login page */
+.whiteBox {
+  background-color: white;
+  height: 20em;
+  width: 30em;
+}
+
+/* This is for the popup menu for the scraper and calendar */
+.popupMenu {
+  background-color: white;
+  height: 45em;
+  width: 80em;
+}
+
+/* This will darken the background, only appears when calendar or scraper page is active */
+.darkenPage {
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Styling the borders of the divs and input boxes */
 .borderStyling {
   border-radius: 40px;
   border: 2px solid black;
@@ -38,12 +59,45 @@ header {
   box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.20), 0px 20px 25px rgba(0, 0, 0, 0.4);
 }
 
-.title {
-  text-align: center;
+/* Styling the input boxes, login page */
+.inputBox {
+  margin: 0.5em;
+  padding: 0.5em;
+  width: 10em;
+
+  border: 2px solid black;
+  border-radius: 0.5em;
+}
+
+/* Change the box for signup now and login now */
+.options {
+  margin: 1em;
+  padding: 0.25em;
+  width: 7.5em;
+
+  border: 2px solid black;
+  border-radius: 0.5em;
+}
+
+.closeButton {
+  margin: 1em;
+  margin-right: auto;
+  width: 1.5em;
+  height: 1.5em;
+  display: block;
+  background-color: rgb(255, 78, 78);
+
+  border: 1px solid rgb(255, 78, 78);
+  border-radius: 50%;
+}
+
+.errorText {
+  color: red;
+  font-weight: bold;
 }
 
 
-
+/* Styling the lists, home page */
 .listStyling {
   list-style: none;
   padding: 0em;
@@ -51,12 +105,18 @@ header {
   
 }
 
+/* Styling each of the cards, home page */
 .cardList {
-
-  margin: 2em 10em;
+  margin: 2em 20em;
   padding: 1em 3em;
 
   background-color: white;
+}
+
+/* Darken the card background and change the cursor to make it look like a clikable item */
+.cardList:hover {
+  background-color: rgb(234, 234, 234) !important;
+  cursor: pointer;
 }
 
 
@@ -81,11 +141,4 @@ header {
 }
 */
 
-.inputBox {
-  margin: 0.5em;
-  padding: 0.5em;
-  width: 10em;
 
-  border: 2px solid black;
-  border-radius: 0.5em;
-}
