@@ -383,3 +383,5 @@ does the password get incripted on the client side before being sent to the serv
 
 sql has encription methods doesnt it
 */
+
+
