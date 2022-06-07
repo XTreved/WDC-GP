@@ -1,32 +1,3 @@
-const courseChoices = [ // this data was an can be scraped if new courses are added to university
-    'ABORIG', 'ACCTFIN', 'ACCTING', 'ACUCARE', 'AGRIBUS', 'AGRIC',
-    'AGRONOMY', 'AN BEHAV', 'ANAT SC', 'ANIML SC', 'ANTH', 'APP BIOL',
-    'APP DATA', 'APP MTH', 'ARCH', 'ARTH', 'ARTS', 'ARTSEXP',
-    'ASIA', 'AUST', 'BIOCHEM', 'BIOINF', 'BIOLOGY', 'BIOMED',
-    'BIOMET', 'BIOSTATS', 'BIOTECH', 'BUSANA', 'C&ENVENG', 'CEME',
-    'CHEM', 'CHEM ENG', 'CHIN', 'CLAS', 'COMMERCE', 'COMMGMT',
-    'COMMLAW', 'COMP SCI', 'CONMGNT', 'CORPFIN', 'CRARTS', 'CRIM',
-    'CRWR', 'CULTST', 'CYBER', 'DATA', 'DENT', 'DESST',
-    'DEVT', 'ECON', 'ECOTOUR', 'EDUC', 'ELEC ENG', 'ENG',
-    'ENGL', 'ENTREP', 'ENV BIOL', 'EXCHANGE', 'FILM', 'FOOD SC',
-    'FREN', 'GEN PRAC', 'GEND', 'GENETICS', 'GEOG', 'GEOLOGY',
-    'GERM', 'GSSA', 'HEALTH', 'HIST', 'HLTH SC', 'HONECMS',
-    'HORTICUL', 'INDO', 'INTBUS', 'ITAL', 'JAPN', 'LARCH',
-    'LAW', 'LING', 'MANAGEMT', 'MARKETNG', 'MATHS', 'MDIA',
-    'MECH ENG', 'MEDIC ST', 'MEDICINE', 'MGRE', 'MICRO', 'MINING',
-    'MUSCLASS', 'MUSCOMP', 'MUSEP', 'MUSEUM', 'MUSGEN', 'MUSHONS',
-    'MUSICOL', 'MUSJAZZ', 'MUSONIC', 'MUSPERF', 'MUSPOP', 'MUSSUPST',
-    'MUSTHEAT', 'NURSING', 'OB&GYNAE', 'OCCTH', 'ODONT', 'OENOLOGY',
-    'OPHTHAL', 'ORALHLTH', 'ORT&TRAU', 'PAEDIAT', 'PALAEO', 'PATHOL',
-    'PEACE', 'PETROENG', 'PETROGEO', 'PHARM', 'PHIL',  'PHYSICS',
-    'PHYSIOL', 'PHYSIOTH', 'PLANNING', 'PLANT SC', 'POLICY', 'POLIS',
-    'PROF', 'PROJMGNT', 'PROP', 'PSYCHIAT', 'PSYCHOL', 'PUB HLTH',
-    'PURE MTH', 'RUR HLTH', 'SCIENCE', 'SOCI', 'SOIL&WAT', 'SPAN',
-    'SPATIAL', 'SPEECH', 'STATS', 'SURGERY', 'TECH', 'TESOL',
-    'TRADE', 'UAC', 'UACOL', 'VET SC', 'VET TECH', 'VITICULT',
-    'WINE'
-]
-
 var vueinst = new Vue({
     el: '#app',
     data: {
@@ -45,7 +16,7 @@ var vueinst = new Vue({
 
         // Scraper page testing
         sample_subjects:    [],
-        courses:            courseChoices,
+        courseArea:         [],
     
     }, methods: {
         // Display error texts on the login page
@@ -211,5 +182,20 @@ function showCourses(){
 
     xhttp.open("GET", "/getCourses", true);
     xhttp.send();
+}
 
+/* Get the data for course area, used in scraper page */
+function courseArea() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            vueinst.courseArea = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("GET", "/getCourseArea", true);
+    xhttp.send();
 }

@@ -11,7 +11,7 @@
     <script src="/javascripts/page.js" defer></script>
   </head>
 
-  <body onload="showCourses()">
+  <body onload="showCourses(); courseArea()">
     <div id="app" v-bind:class="{ darkenPage : darkenScreen }">
         <header>
             <h1>Time Table Planner</h1>
@@ -56,7 +56,7 @@
                 <li v-for="subject in tracked_subjects">
                   <div v-bind:id="subject.title" class="cardList borderStyling">
                     <button class="deleteButton" onclick="alert('delete')"></button>
-                    <div v-on:click="miniWindow = 'calendar'; darkenScreen = true">
+                    <div v-on:click="miniWindow = 'calendar'; darkenScreen = true" >
                       <h3> {{ subject.title }}</h3>
                       <p> {{ subject.day }} </p>
                     </div>
@@ -101,7 +101,7 @@
 
                 <label>Subject Area</label>
                 <input list="subjectArea" type="text" placeholder="eg.....">
-                <datalist id="subjectArea"> <option v-for="subject in courses" :key="subject" :value="subject" /></datalist>
+                <datalist id="subjectArea"> <option v-for="subject in courseArea" :key="subject" :value="subject" /></datalist>
                 <br/><br/>
 
                 <label>Subject Id</label>

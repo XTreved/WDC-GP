@@ -114,13 +114,14 @@ header {
   list-style: none;
   padding: 0em;
   margin: 0em;
-  
+
+  overflow: auto;
 }
 
 /* Styling each of the cards, home page */
 .cardList {
   margin: 2em 20em;
-  padding: 1em 2em;
+  padding: 0.5em 1.5em;
 
   background-color: white;
 }
@@ -130,6 +131,8 @@ header {
   background-color: rgb(234, 234, 234) !important;
   cursor: pointer;
 }
+
+
 
 
 
