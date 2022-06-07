@@ -47,7 +47,7 @@ header {
 .darkenPage {
   padding: 0px;
   margin: 0px;
-  height: 100%;
+  overflow: auto;
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -91,6 +91,18 @@ header {
   border-radius: 50%;
 }
 
+.deleteButton {
+  margin: 2em;
+  margin-left: auto;
+  width: 1.5em;
+  height: 1.5em;
+  float: right;
+  background-color: rgb(255, 78, 78);
+
+  border: 1px solid rgb(255, 78, 78);
+  border-radius: 50%;
+}
+
 .errorText {
   color: red;
   font-weight: bold;
@@ -108,7 +120,7 @@ header {
 /* Styling each of the cards, home page */
 .cardList {
   margin: 2em 20em;
-  padding: 1em 3em;
+  padding: 1em 2em;
 
   background-color: white;
 }

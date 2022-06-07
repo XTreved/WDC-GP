@@ -1,5 +1,4 @@
 var express = require('express');
-const { RouteTest } = require('../sqlite.js');
 var router = express.Router();
 
 
@@ -7,6 +6,8 @@ var router = express.Router();
 const TRACKED_SUBJECTS = [
   { title:'ADDS',         day:'Monday'},
   { title:'SPC',          day:'Tuesday'},
+  { title:'WDC',          day:'Wednesday'},
+  { title:'WDC',          day:'Wednesday'},
   { title:'WDC',          day:'Wednesday'}
 ];
 
@@ -44,9 +45,6 @@ router.get('/getCourses', function(req, res, next) {
 
 
 module.exports = router;
-
-
-console.log(RouteTest("Testing THIS WORKED YSYSYS"));
 
 
 

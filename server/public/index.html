@@ -54,9 +54,12 @@
               <ul class="listStyling">
                 <!-- Displaying current subjects -->
                 <li v-for="subject in tracked_subjects">
-                  <div v-bind:id="subject.title" class="cardList borderStyling" v-on:click="miniWindow = 'calendar'; darkenScreen = true">
-                    <h3> {{ subject.title }}</h3>
-                    <p> {{ subject.day }} </p>
+                  <div v-bind:id="subject.title" class="cardList borderStyling">
+                    <button class="deleteButton" onclick="alert('delete')"></button>
+                    <div v-on:click="miniWindow = 'calendar'; darkenScreen = true">
+                      <h3> {{ subject.title }}</h3>
+                      <p> {{ subject.day }} </p>
+                    </div>
                   </div>
                 </li>
 
@@ -94,7 +97,7 @@
             <div id="scraper" class="center popupMenu borderStyling" v-if="miniWindow === 'scraper'">
               <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
               <h2 class="title">Track a New Course</h2>
-              <form>
+              <form onsubmit="return false">
 
                 <label>Subject Area</label>
                 <input list="subjectArea" type="text" placeholder="eg.....">
