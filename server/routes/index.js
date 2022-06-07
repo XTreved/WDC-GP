@@ -46,6 +46,8 @@ router.get('/getCourses', function(req, res, next) {
 module.exports = router;
 
 
+console.log(RouteTest("Testing THIS WORKED YSYSYS"));
+
 
 
 
