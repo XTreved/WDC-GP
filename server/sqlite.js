@@ -286,16 +286,8 @@ function AddNewData(scrapeData, username) {
   
         // Class_Times
         var sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
-        db.run(sqlPrepare, [classTypes[type], classNum]);
-  
-        sqlStatement.bindLong(1, startDate);
-        sqlStatement.bindLong(2, endDate);
-        sqlStatement.bindLong(3, day);
-        sqlStatement.bindLong(4, startTime);
-        sqlStatement.bindLong(5, endTime);
-        sqlStatement.bindLong(6, location);
-  
-        sqlStatement.executeInsert();
+        db.run(sqlPrepare, [startDate, endDate, day, startTime, endTime, location, classNum]);
+
   
         // now i need to get the id to insert into the class data table
         sqlString = "SELECT ID, \
@@ -310,17 +302,7 @@ function AddNewData(scrapeData, username) {
   
         // Class_Data
         var sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
-        var sqlStatement = db.compileStatement(sqlPrepare);
-  
-        sqlStatement.bindLong(1, classNum);
-        sqlStatement.bindLong(2, section);
-        sqlStatement.bindLong(3, size);
-        sqlStatement.bindLong(4, available);
-        sqlStatement.bindLong(5, notes);
-        sqlStatement.bindLong(6, ID);
-  
-        sqlStatement.executeInsert();
-  
+        db.run(sqlPrepare, [classNum, section, size, available, notes, ID]);
       }
     }
   }
