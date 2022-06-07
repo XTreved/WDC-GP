@@ -348,7 +348,7 @@ function Test() {
 
   // add some data to the DB
   // then check the timestamps
-  
+
 }
 
   // to add to the database, write the command you want as a string then db.run(string) it
@@ -357,4 +357,19 @@ let sqlstr = "CREATE TABLE hello (a int, b char); \
 INSERT INTO hello VALUES (0, 'hello'); \
 INSERT INTO hello VALUES (1, 'world');";
 db.run(sqlstr);
+*/
+
+
+
+/*
+Need a timestamp from web-scraper in the form of a long int easier to sort
+local storage 
+session storage
+
+
+ask ian about sql being on server so it needs routes from the client to be able to access the database
+
+does the password get incripted on the client side before being sent to the server, or does the plain text password get sent to the server and then encripted on ther server side
+
+sql has encription methods doesnt it
 */
