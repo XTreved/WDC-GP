@@ -32,7 +32,7 @@ var vueinst = new Vue({
     data: {
         
         // Show or hide each section
-        selected:           "login",         // login, signup, home, calendar, scraper
+        selected:           "home",         // login, signup, home, calendar, scraper
         miniWindow:         "",             // This will be for the calendar/scraper screen
         darkenScreen:       false,
 

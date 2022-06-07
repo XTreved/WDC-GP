@@ -54,7 +54,7 @@
               <ul class="listStyling">
                 <!-- Displaying current subjects -->
                 <li v-for="subject in tracked_subjects">
-                  <div class="cardList borderStyling" v-on:click="miniWindow = 'calendar'; darkenScreen = true">
+                  <div v-bind:id="subject.title" class="cardList borderStyling" v-on:click="miniWindow = 'calendar'; darkenScreen = true">
                     <h3> {{ subject.title }}</h3>
                     <p> {{ subject.day }} </p>
                   </div>
