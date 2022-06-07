@@ -241,7 +241,7 @@ function AddNewData(scrapeData, username) {
   db.run(sqlPrepare, [subjectArea, term, courseTitle, timestamp, username])
 
 
-  classTypes = ["Lecture", "Practical", "Workshop"]
+  classTypes = ["Lecture", "Practical"]
   for (var type in classTypes) {
     if (scrapeData['class_details'][classTypes[type]] != null) {
       var dataString = scrapeData['class_details'][classTypes[type]];
@@ -261,12 +261,12 @@ function AddNewData(scrapeData, username) {
         // may be more things i cant see
   
         // format dates into start and end
-        //dates = "28 Feb -  6 Apr";
+        dates = "28 Feb -  6 Apr";
         var datesArr = dates.split(" ");
         var startDate = datesArr[0] + " " + datesArr[1];
         var endDate = datesArr[4] + " " + datesArr[5];
         
-        //times = "1pm - 3pm";
+        times = "1pm - 3pm";
         var timesArr = times.split(" ");
         var startTime = timesArr[0];
         var endTime = timesArr[2];
@@ -275,34 +275,35 @@ function AddNewData(scrapeData, username) {
         // add the lecture data to the DB
         
         // Scrape_Timestamps
-        var sqlPrepare = "INSERT INTO Scrape_Timestamps (Scrape_Timestamps, Class_Type) VALUES (?, ?);";
-        db.run(sqlPrepare, [timestamp, classTypes[type]]);
-        
-  
-        // Class_Details
-        var sqlPrepare = "INSERT INTO Class_Details (Class_Type, Class_Number) VALUES (?, ?);";
-        db.run(sqlPrepare, [classTypes[type], classNum]);
-  
-  
-        // Class_Times
-        var sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
-        db.run(sqlPrepare, [startDate, endDate, day, startTime, endTime, location, classNum]);
-
-  
-        // now i need to get the id to insert into the class data table
-        sqlString = "SELECT ID, \
-                        FROM Class_Times \
-                        Where Class_Times.Beginning_Date = " + startDate + " \
-                        AND Class_Times.Ending_Date = " + endDate + " \
-                        AND Class_Times.Day = " + day + " \
-                        AND Class_TImes.Beginning_Time = " + startTime + " \
-                        AND Class_TImes.Ending_Time = " + endTime + " \
-                        AND Class_TImes.Location = " + location + ";";
-        var ID = db.run(sqlString);
-  
-        // Class_Data
-        var sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
-        db.run(sqlPrepare, [classNum, section, size, available, notes, ID]);
+        db.serialize(function() {
+          var sqlPrepare = "INSERT INTO Scrape_Timestamps (Scrape_Timestamps, Class_Type) VALUES (?, ?);";
+          db.run(sqlPrepare, [timestamp, classTypes[type]]);
+          
+    
+          // Class_Details
+          var sqlPrepare = "INSERT INTO Class_Details (Class_Type, Class_Number) VALUES (?, ?);";
+          db.run(sqlPrepare, [classTypes[type], classNum]);
+    
+    
+          // Class_Times
+          var sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
+          db.run(sqlPrepare, [startDate, endDate, day, startTime, endTime, location]);
+    
+          // now i need to get the id to insert into the class data table
+          sqlString = "SELECT ID, \
+                          FROM Class_Times \
+                          Where Class_Times.Beginning_Date = " + startDate + " \
+                          AND Class_Times.Ending_Date = " + endDate + " \
+                          AND Class_Times.Day = " + day + " \
+                          AND Class_TImes.Beginning_Time = " + startTime + " \
+                          AND Class_TImes.Ending_Time = " + endTime + " \
+                          AND Class_TImes.Location = " + location + ";";
+          var ID = db.run(sqlString);
+    
+          // Class_Data
+          var sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
+          db.run(sqlPrepare, [classNum, section, size, available, notes, ID]);
+        });
       }
     }
   }
@@ -362,6 +363,9 @@ function Test() {
   AddNewData(data, "username");
 }
 
+function RouteTest(anything) {
+  return "This Worked YAYAYAYAYA";
+}
 
 Test();
 
