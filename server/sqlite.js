@@ -223,6 +223,8 @@ return returnVal;
 // this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
 function AddNewData(scrapeData, username) {
 
+  //console.log(scrapeData);
+
   courseInfo = scrapeData['course_details'];
 
   var subjectArea = courseInfo['Subject_Area'];
@@ -230,134 +232,156 @@ function AddNewData(scrapeData, username) {
   var career = courseInfo['Career'];
   var term = courseInfo['Term'];
   var campus = courseInfo['Campus'];
-  var timestamp = "BLANK"
+  var timestamp = scrapeData["Time"];
 
   // add the values to the DB
+
   // NEEDS TO BE PREPARED
   var sqlPrepare = "INSERT INTO Users_Subjects (Subject_Area, Term, Course_Title, Timestamp, Username) VALUES (?, ?, ?, ?, ?);";
-  var sqlStatement = db.compileStatement(sqlPrepare);
-
-  // add the values into the statement
-  sqlStatement.bindLong(1, subjectArea);
-  sqlStatement.bindLong(2, term);
-  sqlStatement.bindLong(3, courseTitle);
-  sqlStatement.bindLong(4, timestamp);
-  sqlStatement.bindLong(5, username);
-
-  sqlStatement.executeInsert();
+  db.run(sqlPrepare, [subjectArea, term, courseTitle, timestamp, username])
 
 
-  if (scrapeData['class_details']['Lecture'] != null) {
-    var lectureDataString = scrapeData['class_details']['Lecture'];
-    for (var row in lectureDataString) {
-      var lectureData = JSON.stringify(row);
-
-      var classNum = lectureData['Class Nbr'];
-      var section = lectureData['Section'];
-      var size = lectureData['Size'];
-      var available = lectureData['Available'];
-      var dates = lectureData['Dates'];
-      var day = lectureData['Days'];
-      var notes = lectureData['Notes'];
-      var location = lectureData['Location']
-
-      // may be more things i cant see
-
-      // format dates into start and end
-      var datesArr = dates.split(" ");
-      var startDate = datesArr[0];
-      var endDate = datesArr[2];
-
-      var startTime = "BLANK";
-      var endTime = "BLANK";
-
-
-      // add the lecture data to the DB
-      // Scrape_Timestamps
-      var sqlPrepare = "INSERT INTO Scrape_Timestamps (Scrape_Timestamps, Class_Type) VALUES (?, ?);";
-      var sqlStatement = db.compileStatement(sqlPrepare);
-
-      sqlStatement.bindLong(1, timestamp);
-      sqlStatement.bindLong(2, 'Lecture');
-
-      sqlStatement.executeInsert();
-      
-
-      // Class_Details
-      var sqlPrepare = "INSERT INTO Class_Details (Class_Type, Class_Number) VALUES (?, ?);";
-      var sqlStatement = db.compileStatement(sqlPrepare);
-
-      sqlStatement.bindLong(1, 'Lecture');
-      sqlStatement.bindLong(2, classNum);
-
-      sqlStatement.executeInsert();
-
-
-      // Class_Times
-      var sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
-      var sqlStatement = db.compileStatement(sqlPrepare);
-
-      sqlStatement.bindLong(1, startDate);
-      sqlStatement.bindLong(2, endDate);
-      sqlStatement.bindLong(3, day);
-      sqlStatement.bindLong(4, startTime);
-      sqlStatement.bindLong(5, endTime);
-      sqlStatement.bindLong(6, location);
-
-      sqlStatement.executeInsert();
-
-      // now i need to get the id to insert into the class data table
-      sqlString = "SELECT ID, \
-                      FROM Class_Times \
-                      Where Class_Times.Beginning_Date = " + startDate + " \
-                      AND Class_Times.Ending_Date = " + endDate + " \
-                      AND Class_Times.Day = " + day + " \
-                      AND Class_TImes.Beginning_Time = " + startTime + " \
-                      AND Class_TImes.Ending_Time = " + endTime + " \
-                      AND Class_TImes.Location = " + location + ";";
-      var ID = db.run(sqlString);
-
-      // Class_Data
-      var sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
-      var sqlStatement = db.compileStatement(sqlPrepare);
-
-      sqlStatement.bindLong(1, classNum);
-      sqlStatement.bindLong(2, section);
-      sqlStatement.bindLong(3, size);
-      sqlStatement.bindLong(4, available);
-      sqlStatement.bindLong(5, notes);
-      sqlStatement.bindLong(6, ID);
-
-      sqlStatement.executeInsert();
-
-      // now all data should be added for atleast the lecture table
-
+  classTypes = ["Lecture", "Practical", "Workshop"]
+  for (var type in classTypes) {
+    if (scrapeData['class_details'][classTypes[type]] != null) {
+      var dataString = scrapeData['class_details'][classTypes[type]];
+      for (var row in dataString) {
+        var data = JSON.stringify(dataString[row]);
+  
+        var classNum = data['Class Nbr'];
+        var section = data['Section'];
+        var size = data['Size'];
+        var available = data['Available'];
+        var dates = data['Dates'];
+        var day = data['Days'];
+        var notes = data['Notes'];
+        var location = data['Location']
+        var times = data['Time'];
+  
+        // may be more things i cant see
+  
+        // format dates into start and end
+        //dates = "28 Feb -  6 Apr";
+        var datesArr = dates.split(" ");
+        var startDate = datesArr[0] + " " + datesArr[1];
+        var endDate = datesArr[4] + " " + datesArr[5];
+        
+        //times = "1pm - 3pm";
+        var timesArr = times.split(" ");
+        var startTime = timesArr[0];
+        var endTime = timesArr[2];
+  
+  
+        // add the lecture data to the DB
+        
+        // Scrape_Timestamps
+        var sqlPrepare = "INSERT INTO Scrape_Timestamps (Scrape_Timestamps, Class_Type) VALUES (?, ?);";
+        db.run(sqlPrepare, [timestamp, classTypes[type]]);
+        
+  
+        // Class_Details
+        var sqlPrepare = "INSERT INTO Class_Details (Class_Type, Class_Number) VALUES (?, ?);";
+        db.run(sqlPrepare, [classTypes[type], classNum]);
+  
+  
+        // Class_Times
+        var sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
+        db.run(sqlPrepare, [classTypes[type], classNum]);
+  
+        sqlStatement.bindLong(1, startDate);
+        sqlStatement.bindLong(2, endDate);
+        sqlStatement.bindLong(3, day);
+        sqlStatement.bindLong(4, startTime);
+        sqlStatement.bindLong(5, endTime);
+        sqlStatement.bindLong(6, location);
+  
+        sqlStatement.executeInsert();
+  
+        // now i need to get the id to insert into the class data table
+        sqlString = "SELECT ID, \
+                        FROM Class_Times \
+                        Where Class_Times.Beginning_Date = " + startDate + " \
+                        AND Class_Times.Ending_Date = " + endDate + " \
+                        AND Class_Times.Day = " + day + " \
+                        AND Class_TImes.Beginning_Time = " + startTime + " \
+                        AND Class_TImes.Ending_Time = " + endTime + " \
+                        AND Class_TImes.Location = " + location + ";";
+        var ID = db.run(sqlString);
+  
+        // Class_Data
+        var sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
+        var sqlStatement = db.compileStatement(sqlPrepare);
+  
+        sqlStatement.bindLong(1, classNum);
+        sqlStatement.bindLong(2, section);
+        sqlStatement.bindLong(3, size);
+        sqlStatement.bindLong(4, available);
+        sqlStatement.bindLong(5, notes);
+        sqlStatement.bindLong(6, ID);
+  
+        sqlStatement.executeInsert();
+  
+      }
     }
-
-
-    
   }
-
-
   // will return void
 }
 
 
 function Test() {
-  console.log("Starting Test\n");
+  console.log("Starting Test");
 
-  // add some data to the DB
-  // then check the timestamps
+  data = {
+    "Time": "2022-06-06T12:32:49.857Z",
+    "course_details": {
+        "Subject_Area": "COMP SCI 2103 ",
+        "Course_Title": " Algorithm Design & Data Structures",
+        "Career": "Undergraduate",
+        "Units": "3",
+        "Term": "Semester 1",
+        "Campus": "North Terrace",
+        "Contact": "Up to 6 hours per week",
+        "Restriction": "Not available to B. Information Technology students",
+        "Available for Study Abroad and Exchange": "Yes",
+        "Available for Non-Award Study": "No",
+        "Pre-Requisite": "COMP SCI 1102 or COMP SCI 1202",
+        "Incompatible": "COMP SCI 1103, COMP SCI 1203, COMP SCI 2004, COMP SCI 2202, COMP SCI 2202B"
+    },
+    "class_details": {
+        "Lecture": [
+            "{\"Class Nbr\":\"Location\",\"Section\":\"15519\",\"Size\":\"LE01\",\"Available\":\"410\",\"Dates\":\"37\",\"Days\":\"28 Feb -  6 Apr\",\"Time\":\"Monday, Wednesday\",\"Location\":\"3pm - 4pm\"}",
+            "{\"Class Nbr\":\"Location\",\"Section\":\"15519\",\"Size\":\"LE01\",\"Available\":\"410\",\"Dates\":\"The Braggs, G60, Bragg Lecture Theatre\",\"Days\":\"1 Mar -  5 Apr\",\"Time\":\"Tuesday\",\"Location\":\"10am - 11am\"}"
+        ],
+        "Practical": [
+            "{\"Class Nbr\":\"Location\",\"Section\":\"15520\",\"Size\":\"PR10\",\"Available\":\"40\",\"Dates\":\"2\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"1pm - 3pm\"}",
+            "{\"Class Nbr\":\"Location\",\"Section\":\"15520\",\"Size\":\"PR10\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"1pm - 3pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15521\",\"Size\":\"PR09\",\"Available\":\"40\",\"Dates\":\"1\",\"Days\":\"3 Mar -  7 Apr\",\"Time\":\"Thursday\",\"Location\":\"3pm - 5pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15521\",\"Size\":\"PR09\",\"Available\":\"40\",\"Dates\":\"Engineering & Mathematics, EM105, CAT Suite\",\"Days\":\"28 Apr -  2 Jun\",\"Time\":\"Thursday\",\"Location\":\"3pm - 5pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15522\",\"Size\":\"PR08\",\"Available\":\"40\",\"Dates\":\"4\",\"Days\":\"2 Mar -  6 Apr\",\"Time\":\"Wednesday\",\"Location\":\"9am - 11am\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15522\",\"Size\":\"PR08\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"27 Apr -  1 Jun\",\"Time\":\"Wednesday\",\"Location\":\"9am - 11am\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15523\",\"Size\":\"PR07\",\"Available\":\"40\",\"Dates\":\"4\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15523\",\"Size\":\"PR07\",\"Available\":\"40\",\"Dates\":\"Engineering & Mathematics, EM105, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15524\",\"Size\":\"PR06\",\"Available\":\"40\",\"Dates\":\"5\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15524\",\"Size\":\"PR06\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B16, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15525\",\"Size\":\"PR05\",\"Available\":\"40\",\"Dates\":\"3\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15525\",\"Size\":\"PR05\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15526\",\"Size\":\"PR04\",\"Available\":\"40\",\"Dates\":\"2\",\"Days\":\"2 Mar -  6 Apr\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15526\",\"Size\":\"PR04\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B16, CAT Suite\",\"Days\":\"27 Apr -  1 Jun\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15528\",\"Size\":\"PR02\",\"Available\":\"40\",\"Dates\":\"1\",\"Days\":\"2 Mar -  6 Apr\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15528\",\"Size\":\"PR02\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"27 Apr -  1 Jun\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15529\",\"Size\":\"PR01\",\"Available\":\"39\",\"Dates\":\"5\",\"Days\":\"3 Mar -  7 Apr\",\"Time\":\"Thursday\",\"Location\":\"9am - 11am\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15529\",\"Size\":\"PR01\",\"Available\":\"39\",\"Dates\":\"Engineering & Mathematics, EM105, CAT Suite\",\"Days\":\"28 Apr -  2 Jun\",\"Time\":\"Thursday\",\"Location\":\"9am - 11am\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"19524\",\"Size\":\"PR11\",\"Available\":\"35\",\"Dates\":\"FULL\",\"Days\":\"3 Mar -  7 Apr\",\"Time\":\"Thursday\",\"Location\":\"12pm - 2pm\"}",
+            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"19524\",\"Size\":\"PR11\",\"Available\":\"35\",\"Dates\":\"MyUni, OL, Online Class\",\"Days\":\"28 Apr -  2 Jun\",\"Time\":\"Thursday\",\"Location\":\"12pm - 2pm\"}"
+      ]
+    }
+  };
 
+  AddNewData(data, "username");
 }
 
-  // to add to the database, write the command you want as a string then db.run(string) it
-/* There example
-let sqlstr = "CREATE TABLE hello (a int, b char); \
-INSERT INTO hello VALUES (0, 'hello'); \
-INSERT INTO hello VALUES (1, 'world');";
-db.run(sqlstr);
-*/
+
+Test();
 
 
 
