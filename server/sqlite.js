@@ -159,7 +159,7 @@ db.serialize(() => {
     db.run(sqlString);
 });
 console.log("Created/Loaded all Tables");
-db.close();
+
 
 
 
@@ -167,12 +167,7 @@ db.close();
 // login like username and password should be delt with using some form of secure login 
 function CreateNewUser(username, password) {
   var sqlPrepare = "INSERT INTO Login_Data VALUES (?, ?);";
-  var sqlStatement = db.compileStatement(sqlPrepare);
-
-  sqlStatement.bindLong(1, username);
-  sqlStatement.bindLong(2, password);
-
-  sqlStatement.executeInsert();
+  db.run(sqlPrepare, [username, password]);
   
   // will returns void
 }
@@ -363,11 +358,13 @@ function Test() {
   AddNewData(data, "username");
 }
 
+
 function RouteTest(anything) {
   return "This Worked YAYAYAYAYA";
 }
 
-Test();
+
+//Test();
 
 
 
@@ -383,5 +380,3 @@ does the password get incripted on the client side before being sent to the serv
 
 sql has encription methods doesnt it
 */
-
-
