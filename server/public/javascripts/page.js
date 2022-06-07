@@ -58,7 +58,7 @@ var vueinst = new Vue({
             setTimeout(() => {  
                 this.loginPageStatus = "Please enter your Username and Password";
                 this.loginError = false;
-            }, 5000);
+            }, 3000);
         },
 
         hidePopUpMenu: function() {
@@ -157,9 +157,9 @@ function signup() {
 function addCourse() {
 
     // Get the provided username or password
-    let subjectTitle = document.getElementById('subjectTitle')[0].value;
-    let subjectId = document.getElementById('subjectId')[0].value;
     let subjectArea = document.getElementById('subjectArea')[0].value;
+    let subjectId = document.getElementById('subjectId')[0].value;
+    let subjectTitle = document.getElementById('subjectTitle')[0].value;
     let subjectAvailability = document.getElementById('subjectAvailability')[0].value;
 
     let subjectForm = { Course_Title: subjectTitle, Subject_Area: subjectId, Term: subjectAvailability}; // Called subject Area but meant to be subject Id
