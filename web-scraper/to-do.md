@@ -1,0 +1,4 @@
+- [x] get linkController to work and format to json object
+- [x] get linkController to write out to json objects
+- [x] scrape form data and write to courseData.json
+- [x] add time stamp to scrape

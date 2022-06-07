@@ -3,126 +3,29 @@
 
   <head>
     <title>Subject Planner</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="stylesheets/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/page.js" defer></script>
+    <script src="../server/sqlite.js"></script>
   </head>
 
-  <body onload="showCourses()">
-    <div id="app" v-bind:class="{ darkenPage : darkenScreen }">
+  <body>
+    <div>
         <header>
-            <h1>Time Table Planner</h1>
+            <h1>Time Table (WAP)</h1>
         </header>
 
         <main>
-
-            <!-- Login Page -->
-            <div class="center whiteBox borderStyling" v-if="selected === 'login' || selected === 'signup'">
-                <!-- Login -->
-                <div id="login" v-if="selected === 'login'">
-                  <h2 class="title">Login</h2>
-                  <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
-                  <input class="inputBox" type="text"     placeholder="Username"  name="Username">    <br/>
-                  <input class="inputBox" type="password" placeholder="Password"  name="Password">    <br/>
-                  <input class="inputBox" type="submit"   value="Login"           onclick="login()">  <br/>
-                  <input class="options"  type="submit"   value="Signup Now"      v-on:click="selected = 'signup'">
-                  
-                </div>
-
-                <!-- Signup -->
-                <div id="signup" v-if="selected === 'signup'">
-                  <h2 class="title">Signup</h2>
-                  <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
-                  <input class="inputBox" type="text"     placeholder="Username"  name="newUsername">  <br/>
-                  <input class="inputBox" type="password" placeholder="Password"  name="newPassword">  <br/>
-                  <input class="inputBox" type="submit"   value="Signup"          onclick="signup()">  <br/>
-                  <input class="options"  type="submit"   value="Login Now"       v-on:click="selected = 'login'">
-                </div>
-            </div>
-
-
-
-
-
-            <!-- Home Page -->
-            <div id="home" v-if="selected === 'home'">
-              <h2 class="title">Home page</h2>
-              
-              <ul class="listStyling">
-                <!-- Displaying current subjects -->
-                <li v-for="subject in tracked_subjects">
-                  <div class="cardList borderStyling" v-on:click="miniWindow = 'calendar'; darkenScreen = true">
-                    <h3> {{ subject.title }}</h3>
-                    <p> {{ subject.day }} </p>
-                  </div>
-                </li>
-
-                <!-- Adding a new subject option -->
-                <li>
-                  <div class="cardList borderStyling" v-on:click="miniWindow = 'scraper'; darkenScreen = true">
-                    <h3 class="title">+</h3>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            
-
-
-
-
-            <!-- Calendar Page -->
-            <div id="calendar" class="center popupMenu borderStyling" v-if="miniWindow === 'calendar'">
-              <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
-              <h2>Testing Calendar</h2>
-              <!-- <v-calendar class="calendar"
-              :masks="masks"
-              :attributes = "attributes"
-              is-expanded>c
-                
-              </v-calendar> -->
-
-
-            </div>
-
-
-
-
-            <!-- Scraper Page -->
-            <div id="scraper" class="center popupMenu borderStyling" v-if="miniWindow === 'scraper'">
-              <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
-              <h2 class="title">Track a New Course</h2>
-              <form>
-
-                <label>Subject Area</label>
-                <input list="subjectArea" type="text" placeholder="eg.....">
-                <datalist id="subjectArea"> <option v-for="subject in courses" :key="subject" :value="subject" /></datalist>
-                <br/><br/>
-
-                <label>Subject Id</label>
-                <input list="subjectId" type="text" placeholder="eg.....">
-                <datalist id="subjectId"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.id" /></datalist>
-                <br/><br/>
-
-                <label>Subject Title</label>
-                <input list="subjectTitle" type="text" placeholder="eg.....">
-                <datalist id="subjectTitle"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.title" /> </datalist>
-                <br/><br/>
-
-                <label>Subject Availability</label>
-                <input list="subjectAvailability" type="text" placeholder="eg.....">
-                <datalist id="subjectAvailability"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.availability" /></datalist>
-                <br/><br/>
-
-                <input class="inputBox" type="submit" value="ADD SUBJECT">
-
-              </form>
+            <div class="center">
+                <h2>Login</h2>
+                <form>
+                    <input id="username" class="inputBox" type="text" placeholder="Username"> <br>
+                    <input id="password" class="inputBox" type="password" placeholder="Password"> <br>
+                    <input id="submit" class="inputBox" type="submit" value="Login">
+                </form>
             </div>
         </main>
     </div>
   </body>
+
 </html>
 
 
