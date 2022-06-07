@@ -185,7 +185,7 @@ function showCourses(){
 }
 
 /* Get the data for course area, used in scraper page */
-function courseArea() {
+function getCourseArea() {
     let xhttp = new XMLHttpRequest();
 
     xhttp.onload = function() {
