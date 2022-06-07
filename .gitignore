@@ -11,7 +11,7 @@
 !Makefile
 
 #web scraper exclusions
-WebScraper/node_modules
+web-scraper/node_modules
 
 # Other exclusions
 <<<<<<< HEAD

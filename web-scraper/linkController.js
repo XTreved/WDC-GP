@@ -1,138 +1,145 @@
-// inclusions
-// const { ConsoleMessage } = require("puppeteer");
 const puppeteer = require("puppeteer");
-var formValue = "COMP SCI";
-var subjectValue = "";
-var sublink = "https://access.adelaide.edu.au/courses/details.asp?year=2022&course=108960+1+4210+1"; // i am in proces of automating this 
+const fs = require("fs"); // used to write contents to json file
+// const { ConsoleMessage } = require("puppeteer");
 
+masterLink = 'https://access.adelaide.edu.au/courses/search.asp?year=2022.org'; // master link may be subject to change
 
+courseChoices = [ // this data was an can be scraped if new courses are added to university
+    'ABORIG', 'ACCTFIN', 'ACCTING', 'ACUCARE', 'AGRIBUS', 'AGRIC',
+    'AGRONOMY', 'AN BEHAV', 'ANAT SC', 'ANIML SC', 'ANTH', 'APP BIOL',
+    'APP DATA', 'APP MTH', 'ARCH', 'ARTH', 'ARTS', 'ARTSEXP',
+    'ASIA', 'AUST', 'BIOCHEM', 'BIOINF', 'BIOLOGY', 'BIOMED',
+    'BIOMET', 'BIOSTATS', 'BIOTECH', 'BUSANA', 'C&ENVENG', 'CEME',
+    'CHEM', 'CHEM ENG', 'CHIN', 'CLAS', 'COMMERCE', 'COMMGMT',
+    'COMMLAW', 'COMP SCI', 'CONMGNT', 'CORPFIN', 'CRARTS', 'CRIM',
+    'CRWR', 'CULTST', 'CYBER', 'DATA', 'DENT', 'DESST',
+    'DEVT', 'ECON', 'ECOTOUR', 'EDUC', 'ELEC ENG', 'ENG',
+    'ENGL', 'ENTREP', 'ENV BIOL', 'EXCHANGE', 'FILM', 'FOOD SC',
+    'FREN', 'GEN PRAC', 'GEND', 'GENETICS', 'GEOG', 'GEOLOGY',
+    'GERM', 'GSSA', 'HEALTH', 'HIST', 'HLTH SC', 'HONECMS',
+    'HORTICUL', 'INDO', 'INTBUS', 'ITAL', 'JAPN', 'LARCH',
+    'LAW', 'LING', 'MANAGEMT', 'MARKETNG', 'MATHS', 'MDIA',
+    'MECH ENG', 'MEDIC ST', 'MEDICINE', 'MGRE', 'MICRO', 'MINING',
+    'MUSCLASS', 'MUSCOMP', 'MUSEP', 'MUSEUM', 'MUSGEN', 'MUSHONS',
+    'MUSICOL', 'MUSJAZZ', 'MUSONIC', 'MUSPERF', 'MUSPOP', 'MUSSUPST',
+    'MUSTHEAT', 'NURSING', 'OB&GYNAE', 'OCCTH', 'ODONT', 'OENOLOGY',
+    'OPHTHAL', 'ORALHLTH', 'ORT&TRAU', 'PAEDIAT', 'PALAEO', 'PATHOL',
+    'PEACE', 'PETROENG', 'PETROGEO', 'PHARM', 'PHIL',  'PHYSICS',
+    'PHYSIOL', 'PHYSIOTH', 'PLANNING', 'PLANT SC', 'POLICY', 'POLIS',
+    'PROF', 'PROJMGNT', 'PROP', 'PSYCHIAT', 'PSYCHOL', 'PUB HLTH',
+    'PURE MTH', 'RUR HLTH', 'SCIENCE', 'SOCI', 'SOIL&WAT', 'SPAN',
+    'SPATIAL', 'SPEECH', 'STATS', 'SURGERY', 'TECH', 'TESOL',
+    'TRADE', 'UAC', 'UACOL', 'VET SC', 'VET TECH', 'VITICULT',
+    'WINE'
+]
 
-(async () => {
+var formValue = courseChoices[37]; // front end uses this data to pass select course to this file
+console.log(`navigating to the course: ${formValue}`);
+
+const promiseA = (async () => {
     const browser = await puppeteer.launch({
-        headless: false, // we can see the changes live if headless = true
-        slowMo: 250, // slow down by 250ms
+        headless: true,
+        // slowMo: 250, 
         defaultViewport: {
             width: 1100,
             height: 600
         }
     });
     const page = await browser.newPage();
-    await page.goto('https://access.adelaide.edu.au/courses/search.asp?year=2022.org', { waitUntil: 'networkidle2' });
+
+    await page.goto(masterLink, { waitUntil: 'networkidle2' }); // master link 
     await page.waitForSelector('select[name=subject]');
     await page.select('select[name=subject]', formValue);
-    await page.click('input[name=action]');
-    // next page go to subject
 
-    await page.goto('https://access.adelaide.edu.au/courses/search.asp?year=2022&m=r&title=&subject=COMP+SCI&catalogue=&action=Search&term=&career=&campus=&class=&sort=', { waitUntil: 'networkidle2' });
-    // scraping clases to match up with scraped links, we can then navigate to the according page based on the class which aligns with the link
+    await Promise.all([
+        page.waitForNavigation(),
+        page.click('input[name=action]'),
+    ]);
+
+    const sublink = await page.url();
+    console.log("current page url is: " + sublink);
+    await page.goto(sublink, { waitUntil: 'networkidle2' });     
+
     /*
-    const classes = await page.evaluate(() => {
-        const subjectArray = document.querySelectorAll('tbody > .odd, .even');
-        let array = [];
-        for (let i = 0; i < subjectArray.length; i++) {
-            array.push(subjectArray[i].innerText);
-        }
-        return array;
-    });
-    // console.log(classes);
-
-    // scraping all the links to subpages to then be directed to 
-    const links = await page.evaluate(() => {
-        const linkArray = document.querySelectorAll('tbody > tr > td .odd a, td .even a');
-        let array = [];
-        for (let i = 0; i < linkArray.length; i++) {
-            array.push(linkArray[i].href);
-        }
-        return array;
-    }); 
+    ==== MANUAL LINK SELECTION ====
+    let sublink = 'https://access.adelaide.edu.au/courses/search.asp?year=2022&m=r&title=&subject=COMP+SCI&catalogue=&action=Search&term=&career=&campus=&class=&sort=';
+    await page.goto(sublink, { waitUntil: 'networkidle2' }); 
     */
-    // console.log(links);
-    // LinkArr = ProcessLinks(links);
-    // lookup = formatArray(classes, LinkArr);
 
-    await page.goto(sublink);
-    const url = await page.url();
-    console.log("current page url is: " + url);
+    const classes = await page.evaluate(() => {
+        const subjectArray = document.querySelectorAll('div.content > p > table tr');
+        let res = [];
+        for (let i = 1; i < subjectArray.length; i++) {
+            let row = (subjectArray[i]).querySelectorAll('td');
+            let rowArr = [];
+            for (col of row) {
+                rowArr.push(col.innerText);
+            }
+            res.push(rowArr);
+        }
+        return res;
+    });
+
+    const links = await page.evaluate(() => {
+        const linkArray = document.querySelectorAll('div.content > p > table tr');
+        let res = []
+        for (let i = 1; i < linkArray.length; i++) {
+            res.push(linkArray[i].querySelector('a').href);
+        }
+        return res;
+    });
+
+    obj = partitionData(classes, links)
+    transferJSON(obj);
     await browser.close();
 })();
 
-
-// supporting functions to synthesize data
-// formats array in form [semester, subject, name];
-function formatArray(arr, links) {
-    // formatting is not calibrated for some annoying reason
-    let link = 0;
-    let formatted = [];
-    for (let i = 0; i < arr.length - 7; i += 7) {
-        let row = [arr[i], arr[i + 1], arr[i + 2], links[link]];
-        console.log("adding: " + arr[i + 1] + " " + links[link]);
-        link += 1;
-        formatted.push(row);
+function partitionData(classarr, linkarr) {
+    let jsonData = {};
+    let linkIndex = 0;
+    for (row of classarr) {
+        let courseName = row[1];
+        let semester = row[0];
+        jsonData[courseName] = {};
+        jsonData[courseName][semester] = {
+            link: linkarr[linkIndex],
+            courseName: row[2],
+            units: row[2],
+            career: row[3],
+            campus: row[4],
+        }
+        linkIndex++;
     }
-    return formatted;
-}
-// remove every second link
-function ProcessLinks(array) {
-    let i = array.length;
-    let n = 2; // The "nth" element to remove
-    while (i--) (i + 1) % n === 0 && (array.splice(i, 1));
-    return array;
+    return jsonData;
 }
 
-// (async () => {
-//     const browser = await puppeteer.launch();
-//     const page = await browser.newPage();
-//     await page.goto('https://en.wikipedia.org', { waitUntil: 'networkidle2' });
+// WARNING constantly reading and writing to json file may burn disk, export data directly to needed file
+function transferJSON(jsonObject) {
+    try {
+        let jsonString = JSON.stringify(jsonObject, null, 4); // third parameter = spaces for formatting
+        console.log(jsonString);
+        fs.writeFileSync("courseSelection.json", jsonString);
+        console.log("JSON data is saved to courseSelection.json"); // console.log(jsonString);
+    } catch (err) {
+        console.error(err);
+    }
+}
 
-//     await page.waitForSelector('input[name=search]');
-
-//     // await page.type('input[name=search]', 'Adenosine triphosphate');
-//     await page.$eval('input[name=search]', el => el.value = 'Adenosine triphosphate');
-
-//     await page.click('input[type="submit"]');
-//     await page.waitForSelector('#mw-content-text');
-//     const text = await page.evaluate(() => {
-//         const anchor = document.querySelector('#mw-content-text');
-//         return anchor.textContent;
-//     });
-//     console.log(text);
-//     await browser.close();
-// })();
-
-// (async () => {
-//     const browser = await puppeteer.launch({
-//         headless: true, // we can see the changes live if headless = true
-//         slowMo: 250, // slow down by 250ms
-//         defaultViewport: {
-//             width: 1100,
-//             height: 600
-//         }
-//     });
-//     const page = await browser.newPage();
-//     let url = "https://access.adelaide.edu.au/courses/search.asp";
-//     console.log(`Fetching page data for : ${url}...`);
-//     await page.goto(url);
-
-//     // Array.from(document.querySelectorAll(selector) ==  page.$$('#subject');
-//     courses = await page.evaluate(() => {
-//         let array = document.querySelector("#subject");
-//         headings_array = Array.from(array);
-//         return headings_array;
-//     });
-
-//     console.log(courses);
-//     await browser.close();
-// })();
-
+// module.exports.promiseA = promiseA;
 
 /*
-    Main page:
-    https://access.adelaide.edu.au/courses/search.asp?year=2022
 
-    Subject Selection
-    https://access.adelaide.edu.au/courses/search.asp?year=2022&m=r&title=&subject=COMP+SCI&catalogue=&action=Search&term=&career=&campus=&class=&sort=https://access.adelaide
-    
-    COMP SCI 2207 - Web & Database Computing
-    https://access.adelaide.edu.au/courses/details.asp?year=2022&course=108960+1+4210+1
-    
-*/
+  ==== APPENDIX ==== 
+  - scraping course choices
+
+  const courseChoices = await page.evaluate(() => {
+      const selection = document.querySelectorAll('table tbody > tr select#subject > option');
+      res = [];
+      for (let i = 1; i < selection.length; i++) {
+          res.push(selection[i].value);
+      }
+      return res;
+  });
+  console.dir(courseChoices, {'maxArrayLength': null});
+
+  */
