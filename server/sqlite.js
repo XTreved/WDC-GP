@@ -360,7 +360,7 @@ function Test() {
 
 
 function RouteTest(anything) {
-  return "This Worked YAYAYAYAYA";
+  return "This Worked YAYAYAYAYA" + anything;
 }
 
 
@@ -380,3 +380,4 @@ does the password get incripted on the client side before being sent to the serv
 
 sql has encription methods doesnt it
 */
+console.log(RouteTest("YGGGSDGSFGD"));
