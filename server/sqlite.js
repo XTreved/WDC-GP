@@ -212,9 +212,10 @@ function CheckPassword(username, password) {
           correctPass = true;
         }
       }
+      console.log(correctPass);
+      return correctPass;
     });
-    console.log(correctPass);
-    return correctPass;
+
 }
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
