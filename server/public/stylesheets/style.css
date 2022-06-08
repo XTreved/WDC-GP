@@ -107,11 +107,13 @@ header {
   list-style: none;
   padding: 0em;
   margin: 0em;
+  align-content: center;
 }
 
 /* Styling each of the cards, home page */
 .cardList {
-  margin: 2em 20em;
+  margin: 2em auto;
+  width: 50em;
   padding: 0.5em 1.5em;
 
   background-color: white;
