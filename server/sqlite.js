@@ -4,7 +4,7 @@
 
 // npm install sqlite3
 
-const hashes = require('jshashes');
+//const hashes = require('jshashes');
 
 // import sqlite3 and load the database, or else it will create one it it doesnt exist
 const sqlite3 = require('sqlite3');
@@ -107,15 +107,16 @@ db.serialize(() => {
 
 function Hash(password) {
 
-    // make the instance
-    var sha256 = new hashes.SHA256;
+  // make the instance
+  var sha256 = new hashes.SHA256;
 
-    // salt the password
-    //var salt = 
+  // salt the password
+  var salt = sha256.hex(32); // random number for the salt
+  var hashedP = sha256.hex(password + salt);
 
 
 
-  return password;
+return hashedP;
 }
 
 
