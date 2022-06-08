@@ -12,6 +12,7 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
+    "promise": "^8.1.0",
     "sqlite3": "^5.0.8",
     "v-calendar": "^2.4.1"
   }
