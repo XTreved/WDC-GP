@@ -25,21 +25,24 @@
                 <div id="login" v-if="selected === 'login'">
                   <h2 class="title">Login</h2>
                   <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
-                  <input class="inputBox" type="text"     placeholder="Username"  name="Username">    <br/>
-                  <input class="inputBox" type="password" placeholder="Password"  name="Password">    <br/>
-                  <input class="inputBox" type="submit"   value="Login"           onclick="login()">  <br/>
-                  <input class="options"  type="submit"   value="Signup Now"      v-on:click="selected = 'signup'">
-                  
+                  <form onsubmit="return false">
+                    <input class="inputBox" type="text"     placeholder="Username"  name="Username">    <br/>
+                    <input class="inputBox" type="password" placeholder="Password"  name="Password">    <br/>
+                    <input class="inputBox" type="submit"   value="Login"           onclick="login()">  <br/>
+                    <input class="options"  type="submit"   value="Signup Now"      v-on:click="selected = 'signup'">
+                  </form>
                 </div>
 
                 <!-- Signup -->
                 <div id="signup" v-if="selected === 'signup'">
                   <h2 class="title">Signup</h2>
                   <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
-                  <input class="inputBox" type="text"     placeholder="Username"  name="newUsername">  <br/>
-                  <input class="inputBox" type="password" placeholder="Password"  name="newPassword">  <br/>
-                  <input class="inputBox" type="submit"   value="Signup"          onclick="signup()">  <br/>
-                  <input class="options"  type="submit"   value="Login Now"       v-on:click="selected = 'login'">
+                  <form onsubmit="return false">
+                    <input class="inputBox" type="text"     placeholder="Username"  name="newUsername">  <br/>
+                    <input class="inputBox" type="password" placeholder="Password"  name="newPassword">  <br/>
+                    <input class="inputBox" type="submit"   value="Signup"          onclick="signup()">  <br/>
+                    <input class="options"  type="submit"   value="Login Now"       v-on:click="selected = 'login'">
+                  </form>
                 </div>
             </div>
 
