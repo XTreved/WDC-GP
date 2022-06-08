@@ -33,24 +33,22 @@ router.post('/login', function(req, res, next) {
 */
 
 router.post('/login', function(req, res, next) {
-  sqlFile.db.serialize(() => {
-    if('username' in req.body && 'password' in req.body){
+  if('username' in req.body && 'password' in req.body){
 
-      var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
-  
-      if(correctPass){
-        console.log("Login Successful");
-        res.sendStatus(200);
-      } else {
-        console.log("Incorrect username or password");
-        res.sendStatus(401);
-      }
-  
+    var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
+
+    if(correctPass){
+      console.log("Login Successful");
+      res.sendStatus(200);
     } else {
-      console.log("bad request");
-      res.sendStatus(400);
+      console.log("Incorrect username or password");
+      res.sendStatus(401);
     }
-  });
+
+  } else {
+    console.log("bad request");
+    res.sendStatus(400);
+  }
 });
 
 // Sign up section -- need to convert this to work with mysql
