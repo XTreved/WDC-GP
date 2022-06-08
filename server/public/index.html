@@ -12,7 +12,7 @@
   </head>
 
   <body onload="showCourses(); getCourseArea()">
-    <div id="app" v-bind:class="{ darkenPage : darkenScreen }">
+    <div id="app">
         <header>
             <h1>Time Table Planner</h1>
         </header>
@@ -56,7 +56,7 @@
                 <li v-for="subject in tracked_subjects">
                   <div v-bind:id="subject.title" class="cardList borderStyling">
                     <button class="deleteButton" onclick="alert('delete')"></button>
-                    <div v-on:click="miniWindow = 'calendar'; darkenScreen = true" >
+                    <div v-on:click="miniWindow = 'calendar'" onclick="changeBackgroundColor('rgba(0, 0, 0, 0.5)')">
                       <h3> {{ subject.title }}</h3>
                       <p> {{ subject.day }} </p>
                     </div>
@@ -65,7 +65,7 @@
 
                 <!-- Adding a new subject option -->
                 <li>
-                  <div class="cardList borderStyling" v-on:click="miniWindow = 'scraper'; darkenScreen = true">
+                  <div class="cardList borderStyling" v-on:click="miniWindow = 'scraper'" onclick="changeBackgroundColor('rgba(0, 0, 0, 0.5)')">
                     <h3 class="title">+</h3>
                   </div>
                 </li>
@@ -78,7 +78,7 @@
 
             <!-- Calendar Page -->
             <div id="calendar" class="center popupMenu borderStyling" v-if="miniWindow === 'calendar'">
-              <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
+              <button class="closeButton" v-on:click="hidePopUpMenu()" onclick="changeBackgroundColor('plum')"></button>
               <h2>Testing Calendar</h2>
               <!-- <v-calendar class="calendar"
               :masks="masks"
@@ -95,7 +95,7 @@
 
             <!-- Scraper Page -->
             <div id="scraper" class="center popupMenu borderStyling" v-if="miniWindow === 'scraper'">
-              <button class="closeButton" v-on:click="hidePopUpMenu()"></button>
+              <button class="closeButton" v-on:click="hidePopUpMenu()" onclick="changeBackgroundColor('plum')"></button>
               <h2 class="title">Track a New Course</h2>
               <form onsubmit="return false">
 

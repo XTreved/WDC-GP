@@ -5,7 +5,6 @@ var vueinst = new Vue({
         // Show or hide each section
         selected:           "home",         // login, signup, home, calendar, scraper
         miniWindow:         "",             // This will be for the calendar/scraper screen
-        darkenScreen:       false,
 
         // Login page login status
         loginPageStatus:    "Please enter your Username and Password",
@@ -33,12 +32,14 @@ var vueinst = new Vue({
         },
 
         hidePopUpMenu: function() {
-            this.darkenScreen = false;
             this.miniWindow = "";
         },
     }
 });
 
+function changeBackgroundColor(color){
+    document.body.style.backgroundColor = color;
+}
 
 
 
