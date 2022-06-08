@@ -192,7 +192,6 @@ function getCourseArea() {
     xhttp.onload = function() {
 
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
             vueinst.courseArea = JSON.parse(this.responseText);
         }
     };

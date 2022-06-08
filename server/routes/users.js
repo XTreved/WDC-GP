@@ -32,11 +32,10 @@ router.post('/login', function(req, res, next) {
 });
 */
 
-router.post('/login', function(req, res, next) {
+router.post('/login', async function(req, res, next) {
   if('username' in req.body && 'password' in req.body){
 
     var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
-
 
     if(correctPass){
       console.log("Login Successful");
