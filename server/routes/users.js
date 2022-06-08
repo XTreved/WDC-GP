@@ -38,7 +38,7 @@ router.post('/login', function(req, res, next) {
     var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
 
 
-    if(req.body.username in usersDatabase && correctPass){
+    if(correctPass){
       console.log("Login Successful");
       res.sendStatus(200);
     } else {

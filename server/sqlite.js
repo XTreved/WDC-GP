@@ -171,9 +171,9 @@ db.serialize(() => {
 
 function Hash(password) {
 
-    var hashedP = "dfg";
+    //var hashedP = "dfg";
 
-  return hashedP;
+  return password;
 }
 
 // this will take in a users names and id and create a spot in out database to save there data, 
@@ -207,11 +207,13 @@ function CheckPassword(username, password) {
       }
       for (row of rows) {
         if (row.Password == hashedPassword) {
+          console.log(row.Password)
+          console.log(hashedPassword);
           correctPass = true;
         }
       }
     });
-    
+    console.log(correctPass);
     return correctPass;
 }
 
