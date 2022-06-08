@@ -70,6 +70,7 @@ router.post('/login', async (req, res) => {
   
 }});
 
+
 // Sign up section -- need to convert this to work with mysql
 router.post('/signup', async (req, res) => {
 

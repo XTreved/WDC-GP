@@ -114,8 +114,6 @@ function Hash(password) {
   var salt = sha256.hex(32); // random number for the salt
   var hashedP = sha256.hex(password + salt);
 
-
-
 return hashedP;
 }
 
@@ -270,7 +268,7 @@ function AddNewData(scrapeData, username) {
   db.run(sqlPrepare, [subjectArea, term, courseTitle, timestamp, username])
 
 
-  classTypes = ["Lecture", "Practical"]
+  classTypes = ["Lecture", "Practical", "Workshop"]
   for (var type in classTypes) {
     if (scrapeData['class_details'][classTypes[type]] != null) {
       var dataString = scrapeData['class_details'][classTypes[type]];
