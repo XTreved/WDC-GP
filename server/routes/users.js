@@ -32,23 +32,25 @@ router.post('/login', function(req, res, next) {
 });
 */
 
-router.post('/login', async function(req, res, next) {
-  if('username' in req.body && 'password' in req.body){
+router.post('/login', function(req, res, next) {
+  sqlFile.db.serialize(() => {
+    if('username' in req.body && 'password' in req.body){
 
-    var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
-
-    if(correctPass){
-      console.log("Login Successful");
-      res.sendStatus(200);
+      var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
+  
+      if(correctPass){
+        console.log("Login Successful");
+        res.sendStatus(200);
+      } else {
+        console.log("Incorrect username or password");
+        res.sendStatus(401);
+      }
+  
     } else {
-      console.log("Incorrect username or password");
-      res.sendStatus(401);
+      console.log("bad request");
+      res.sendStatus(400);
     }
-
-  } else {
-    console.log("bad request");
-    res.sendStatus(400);
-  }
+  });
 });
 
 // Sign up section -- need to convert this to work with mysql
@@ -56,7 +58,7 @@ router.post('/signup', function(req, res, next) {
 
 
   if('username' in req.body && 'password' in req.body){
-    sqlFile.CreateNewUser(req.body.username, req.body.password);
+    var result = sqlFile.CreateNewUser(req.body.username, req.body.password);
 
     res.sendStatus(200);
   } else {

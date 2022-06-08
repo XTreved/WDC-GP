@@ -6,58 +6,9 @@
 
 
 
-/*
-//JSON Object from webscraper
-Data = {
-  Subject_Area: "Comp Sci", 
-  Course_Title: "Puzzle Based Learning",
-  Term: "Semester 1",
-  Subject_Id: "1010",              //could be 1010UAC so needs to be a string not int
-  Units: 3,
-  Career: "Undergraduate",
-  Campus: "North Terrace",
-  Scrape_Timestamp: 1234,           // must be in int format, Sql cannot store date/time data
-  Class_Details: {
-    Lecture: [                      // this is an array of objects, eg make a new object for each of the classes
-      {
-        Class_Number: 1234,
-        Section: "LE01",
-        Size: 250,
-        Available: 50,              // On course planner if a class is full itll say "FULL", may want to store this as 0 if the class if full so we can keep it of type int;
-        Class_Times: [
-          {                         // have one of these objects for each class time then append it to this list
-            Start_Date: 1,          // having the day and month separanted helps so that we can comvert it into a date time later
-            Start_Month: "Mar",
-            End_Date: 5,
-            End_Month: "Apr",
-            Days: "Tuesday",
-            Start_Time: "11am",     // may want to use 24 hour time is it is easier, although couse planner uses 12 hour time
-            End_Time: "12pm",
-            Location: "Darling West, G14, Darling West Lecture Theatre",      // can just use the whole location as one string no need to separate it more 
-            Note: "Blah Blah Blah"                                            // put the note at the bottom here
-          }
-        ]
-      }
-    ],
-    Workshop: [                     // same data here as in the lecture object, can leave any of these empty is there is not data to fill in there                   
-
-    ],
-
-    Practical: [                    // same data here as in the lecture object, can leave any of these empty is there is not data to fill in there
-      
-    ]           
-
-    // if there are ano other types of classes other than lecture, workshop, practical add them here, but let James know so i have to same format of the JSON as the web scraper so i dont ignore some data
-  }
-}
-
-*/
-
-
-
 // import sqlite3 and load the database, or else it will create one it it doesnt exist
 const sqlite3 = require('sqlite3');
-let db = new sqlite3.Database(':memory:', (err) => {
+let db = new sqlite3.Database('savedDatabase', (err) => {
   if (err) 
   {
     console.log("Error occured: " + err.message);
@@ -68,21 +19,6 @@ let db = new sqlite3.Database(':memory:', (err) => {
   }
 });
 
-/* Test Code
-db.serialize(() => {
-    db.run("CREATE TABLE lorem (info TEXT)");
-
-    const stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-    for (let i = 0; i < 10; i++) {
-        stmt.run("Ipsum " + i);
-    }
-    stmt.finalize();
-
-    db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
-        console.log(row.id + ": " + row.info);
-    });
-});
-*/
 
 // create or load in the tables
 db.serialize(() => {
@@ -181,10 +117,32 @@ function Hash(password) {
 function CreateNewUser(username, password) {
   var sqlPrepare = "INSERT INTO Login_Data (Username, Password) VALUES (?, ?);";
 
-  // hash the password here
-  var hashedPassword = Hash(password);
+  // check that the username isnt already in the database
+  uniqueUsername = true;
 
-  db.run(sqlPrepare, [username, hashedPassword]);
+  sqlString = "SELECT Username \
+                  FROM Login_Data;";
+  var result = db.all(sqlString, (err, rows) => {
+    if(err){
+      console.log(err);
+    }
+    for (row of rows) {
+      if (row.Username == username) {
+        uniqueUsername = false;
+        console.log("Unique Username: " + uniqueUsername + " Create User Aborted");
+        return 1;
+      }
+    }
+    console.log("Unique Username: " + uniqueUsername);
+    // hash the password here
+    var hashedPassword = Hash(password);
+
+    db.run(sqlPrepare, [username, hashedPassword]);
+    return 0;
+  });
+
+  
+  
 
   // will returns void
 }
@@ -436,3 +394,4 @@ function Testing(blah) {
 module.exports.Testing = Testing;
 module.exports.CreateNewUser = CreateNewUser;
 module.exports.CheckPassword = CheckPassword
+module.exports.db = db;
