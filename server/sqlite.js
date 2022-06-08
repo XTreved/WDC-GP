@@ -183,30 +183,32 @@ function CreateNewUser(username, password) {
 }
 
 function CheckPassword(username, password) {
-  /*
-  db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
-    console.log(row.id + ": " + row.info);
-});
-*/
-  sqlString = "SELECT Username, Password \
-                  FROM Login_Data \
-                  WHERE Login_Data.Username = " + username + ";";
-  var result = db.all(sqlString, (err, rows) => {
-    if(err){
-      console.log(err);
-    }
-    for (row of rows) {
-      console.log(row.Password)
-    }
-  });
+    /*
+    db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
+      console.log(row.id + ": " + row.info);
+    });
+    */
+    sqlString = "SELECT Password \
+                    FROM Login_Data \
+                    WHERE Username = ?";
+    var result = db.all(sqlString, [username], (err, rows) => {
+      if(err){
+        console.log(err);
+      }
+      for (row of rows) {
+        console.log(row)
+        var grabPass = row.Password;
+        console.log(row.Password);
+      }
+    });
+    
+    //console.log(row.password);
+    
+    console.log("Given Username: " + username);
+    console.log("Given Password: " + password);
+    console.log("Grabbed Password: " + grabPass);
+    console.log("Done");
   
-  //console.log(row.password);
-
-
-
-  console.log("Given Username: " + username);
-  console.log("Given Password: " + password);
-  console.log("SQL Result: " + result);
 }
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique

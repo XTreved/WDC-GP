@@ -35,12 +35,10 @@ router.post('/login', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   if('username' in req.body && 'password' in req.body){
     console.log("Running check password");
-    var result = sqlFile.CheckPassword(req.body.username, req.body.password);
+    
+    sqlFile.CheckPassword(req.body.username, req.body.password);
 
     console.log("Done checking password");
-    console.log("Result: " + result[0]);
-
-
 
     if(req.body.username in usersDatabase && usersDatabase[req.body.username].password === req.body.password){
       console.log("Login Successful");
