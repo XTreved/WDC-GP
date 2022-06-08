@@ -57,7 +57,16 @@ Data = {
 
 // import sqlite3 and load the database, or else it will create one it it doesnt exist
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database('SavedDatabase');
+let db = new sqlite3.Database(':memory:', (err) => {
+  if (err) 
+  {
+    console.log("Error occured: " + err.message);
+  }
+  else
+  {
+    console.log("Database connected");
+  }
+});
 
 /* Test Code
 db.serialize(() => {
@@ -83,7 +92,7 @@ db.serialize(() => {
     
     // Login_Data (needed first as it is referenced)
     sqlString = "CREATE TABLE if not exists Login_Data ( \
-                    Username INTEGER PRIMARY KEY, \
+                    Username TEXT PRIMARY KEY, \
                     Password TEXT);";
     // now run the command
     db.run(sqlString);
@@ -158,18 +167,46 @@ db.serialize(() => {
     // now run the command
     db.run(sqlString);
 });
-console.log("Created/Loaded all Tables");
-
 
 
 
 // this will take in a users names and id and create a spot in out database to save there data, 
 // login like username and password should be delt with using some form of secure login 
 function CreateNewUser(username, password) {
-  var sqlPrepare = "INSERT INTO Login_Data VALUES (?, ?);";
+  var sqlPrepare = "INSERT INTO Login_Data (Username, Password) VALUES (?, ?);";
+
   db.run(sqlPrepare, [username, password]);
+
+  return "Successful creation";
   
   // will returns void
+}
+
+function CheckPassword(username, password) {
+  /*
+  db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
+    console.log(row.id + ": " + row.info);
+});
+*/
+  sqlString = "SELECT Username, Password \
+                  FROM Login_Data \
+                  WHERE Login_Data.Username = " + username + ";";
+  var result = db.all(sqlString, (err, rows) => {
+    if(err){
+      console.log(err);
+    }
+    for (row of rows) {
+      console.log(row.Password)
+    }
+  });
+  
+  //console.log(row.password);
+
+
+
+  console.log("Given Username: " + username);
+  console.log("Given Password: " + password);
+  console.log("SQL Result: " + result);
 }
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
@@ -380,4 +417,13 @@ does the password get incripted on the client side before being sent to the serv
 
 sql has encription methods doesnt it
 */
-console.log(RouteTest("YGGGSDGSFGD"));
+
+function Testing(blah) {
+  console.log('testing');
+  console.log(blah);
+}
+
+
+module.exports.Testing = Testing;
+module.exports.CreateNewUser = CreateNewUser;
+module.exports.CheckPassword = CheckPassword
