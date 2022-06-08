@@ -50,8 +50,20 @@ router.post('/login', function(req, res, next) {
 
   if('username' in req.body && 'password' in req.body){
 
-    var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
-    afterCheck(correctPass);
+    var correctPass = false;
+
+    console.log(correctPass);
+    correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
+
+    console.log("Test " + correctPass);
+
+    if(correctPass == false){
+      console.log("Login Successful");
+      res.sendStatus(200);
+    } else {
+      console.log("Incorrect username or password");
+      res.sendStatus(401);
+    }
 
   } else {
     console.log("bad request");

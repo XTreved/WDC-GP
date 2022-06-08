@@ -28,7 +28,7 @@ db.serialize(() => {
     
     // Login_Data (needed first as it is referenced)
     sqlString = "CREATE TABLE if not exists Login_Data ( \
-                    Username TEXT PRIMARY KEY, \
+                    Username TEXT PRIMARY KEY UNIQUE, \
                     Password TEXT);";
     // now run the command
     db.run(sqlString);
@@ -160,13 +160,12 @@ function CheckPassword(username, password) {
       console.log(row.id + ": " + row.info);
     });
     */
-    var correctPass = false;
     var hashedPassword = Hash(password);
 
     sqlString = "SELECT Password \
                     FROM Login_Data \
                     WHERE Username = ?";
-    var result = db.all(sqlString, [username], (err, rows) => {
+    db.all(sqlString, [username], (err, rows) => {
       if(err){
         console.log(err);
       }
@@ -174,11 +173,10 @@ function CheckPassword(username, password) {
         if (row.Password == hashedPassword) {
           console.log(row.Password)
           console.log(hashedPassword);
-          correctPass = true;
+          return true;
         }
       }
-      console.log(correctPass);
-      return correctPass;
+      return false;
     });
 
 }
