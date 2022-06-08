@@ -34,13 +34,11 @@ router.post('/login', function(req, res, next) {
 
 router.post('/login', function(req, res, next) {
   if('username' in req.body && 'password' in req.body){
-    console.log("Running check password");
-    
-    sqlFile.CheckPassword(req.body.username, req.body.password);
 
-    console.log("Done checking password");
+    var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
 
-    if(req.body.username in usersDatabase && usersDatabase[req.body.username].password === req.body.password){
+
+    if(req.body.username in usersDatabase && correctPass){
       console.log("Login Successful");
       res.sendStatus(200);
     } else {
@@ -59,7 +57,7 @@ router.post('/signup', function(req, res, next) {
 
 
   if('username' in req.body && 'password' in req.body){
-    var result = sqlFile.CreateNewUser(req.body.username, req.body.password);
+    sqlFile.CreateNewUser(req.body.username, req.body.password);
 
     res.sendStatus(200);
   } else {

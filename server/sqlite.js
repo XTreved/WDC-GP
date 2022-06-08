@@ -169,16 +169,23 @@ db.serialize(() => {
 });
 
 
+function Hash(password) {
+
+    var hashedP = "dfg";
+
+  return hashedP;
+}
 
 // this will take in a users names and id and create a spot in out database to save there data, 
 // login like username and password should be delt with using some form of secure login 
 function CreateNewUser(username, password) {
   var sqlPrepare = "INSERT INTO Login_Data (Username, Password) VALUES (?, ?);";
 
-  db.run(sqlPrepare, [username, password]);
+  // hash the password here
+  var hashedPassword = Hash(password);
 
-  return "Successful creation";
-  
+  db.run(sqlPrepare, [username, hashedPassword]);
+
   // will returns void
 }
 
@@ -188,6 +195,9 @@ function CheckPassword(username, password) {
       console.log(row.id + ": " + row.info);
     });
     */
+    var correctPass = false;
+    var hashedPassword = Hash(password);
+
     sqlString = "SELECT Password \
                     FROM Login_Data \
                     WHERE Username = ?";
@@ -196,19 +206,13 @@ function CheckPassword(username, password) {
         console.log(err);
       }
       for (row of rows) {
-        console.log(row)
-        var grabPass = row.Password;
-        console.log(row.Password);
+        if (row.Password == hashedPassword) {
+          correctPass = true;
+        }
       }
     });
     
-    //console.log(row.password);
-    
-    console.log("Given Username: " + username);
-    console.log("Given Password: " + password);
-    console.log("Grabbed Password: " + grabPass);
-    console.log("Done");
-  
+    return correctPass;
 }
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
