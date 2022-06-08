@@ -46,6 +46,7 @@ function afterCheck(correctPass) {
 }
 */
 
+
 router.post('/login', function(req, res, next) {
 
   if('username' in req.body && 'password' in req.body){
@@ -66,6 +67,7 @@ router.post('/login', function(req, res, next) {
     res.sendStatus(400);
   
 }});
+
 
 // Sign up section -- need to convert this to work with mysql
 router.post('/signup', function(req, res, next) {

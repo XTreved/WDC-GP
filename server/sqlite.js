@@ -177,7 +177,6 @@ function CheckPassword(username, password) {
       }
       return false;
     });
-
 }
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
