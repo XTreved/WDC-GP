@@ -61,7 +61,7 @@ router.post('/signup', function(req, res, next) {
 
 
   if('username' in req.body && 'password' in req.body){
-    sqlFile.CreateNewUser(req.body.username, req.body.password);
+    var result = sqlFile.CreateNewUser(req.body.username, req.body.password);
 
     res.sendStatus(200);
   } else {
