@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var sqlFile = require('../sqlite.js');
+// const sqlFile = require('../sqlite.js');
+const { CreateNewUser, CheckPassword, db } = require('../sqlite');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -46,18 +47,16 @@ function afterCheck(correctPass) {
 }
 */
 
-router.post('/login', function(req, res, next) {
+router.post('/login', async (req, res) => {
 
   if('username' in req.body && 'password' in req.body){
-
-    var correctPass = false;
+    
+    const correctPass = await CheckPassword(req.body.username, req.body.password);
+    
 
     console.log(correctPass);
-    correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
 
-    console.log("Test " + correctPass);
-
-    if(correctPass == false){
+    if(correctPass == true){
       console.log("Login Successful");
       res.sendStatus(200);
     } else {
@@ -72,15 +71,18 @@ router.post('/login', function(req, res, next) {
 }});
 
 // Sign up section -- need to convert this to work with mysql
-router.post('/signup', function(req, res, next) {
+router.post('/signup', async (req, res) => {
 
 
   if('username' in req.body && 'password' in req.body){
-    var result = sqlFile.CreateNewUser(req.body.username, req.body.password);
+
+    var result = await CreateNewUser(req.body.username, req.body.password);
+    // console.log("result " + result);
 
     res.sendStatus(200);
   } else {
     console.log("ERROR");
+    res.sendStatus(403);
   }
 });
 
