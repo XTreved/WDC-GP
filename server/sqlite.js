@@ -4,7 +4,7 @@
 
 // npm install sqlite3
 
-//const hashes = require('jshashes');
+const hashes = require('jshashes');
 
 // import sqlite3 and load the database, or else it will create one it it doesnt exist
 const sqlite3 = require('sqlite3');
@@ -113,8 +113,6 @@ function Hash(password) {
   // salt the password
   var salt = sha256.hex(32); // random number for the salt
   var hashedP = sha256.hex(password + salt);
-
-
 
 return hashedP;
 }
@@ -268,7 +266,7 @@ function AddNewData(scrapeData, username) {
   db.run(sqlPrepare, [subjectArea, term, courseTitle, timestamp, username])
 
 
-  classTypes = ["Lecture", "Practical"]
+  classTypes = ["Lecture", "Practical", "Workshop"]
   for (var type in classTypes) {
     if (scrapeData['class_details'][classTypes[type]] != null) {
       var dataString = scrapeData['class_details'][classTypes[type]];
@@ -397,36 +395,5 @@ function Test() {
   AddNewData(data, "username");
 }
 
-
-function RouteTest(anything) {
-  return "This Worked YAYAYAYAYA" + anything;
-}
-
-
-//Test();
-
-
-
-/*
-Need a timestamp from web-scraper in the form of a long int easier to sort
-local storage 
-session storage
-
-
-ask ian about sql being on server so it needs routes from the client to be able to access the database
-
-does the password get incripted on the client side before being sent to the server, or does the plain text password get sent to the server and then encripted on ther server side
-
-sql has encription methods doesnt it
-*/
-
-function Testing(blah) {
-  console.log('testing');
-  console.log(blah);
-}
-
-
-module.exports.Testing = Testing;
 module.exports.CreateNewUser = CreateNewUser;
-module.exports.CheckPassword = CheckPassword
-module.exports.db = db;
+module.exports.CheckPassword = CheckPassword;
