@@ -32,24 +32,32 @@ router.post('/login', function(req, res, next) {
 });
 */
 
+/*
+function afterCheck(correctPass) {
+
+  if(correctPass){
+    console.log("Login Successful");
+    res.sendStatus(200);
+  } else {
+    console.log("Incorrect username or password");
+    res.sendStatus(401);
+  }
+
+}
+*/
+
 router.post('/login', function(req, res, next) {
+
   if('username' in req.body && 'password' in req.body){
 
     var correctPass = sqlFile.CheckPassword(req.body.username, req.body.password);
-
-    if(correctPass){
-      console.log("Login Successful");
-      res.sendStatus(200);
-    } else {
-      console.log("Incorrect username or password");
-      res.sendStatus(401);
-    }
+    afterCheck(correctPass);
 
   } else {
     console.log("bad request");
     res.sendStatus(400);
-  }
-});
+  
+}});
 
 // Sign up section -- need to convert this to work with mysql
 router.post('/signup', function(req, res, next) {
