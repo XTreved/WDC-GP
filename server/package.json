@@ -6,12 +6,22 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@azure/msal-node": "^1.9.1",
+    "@microsoft/microsoft-graph-client": "^3.0.2",
+    "axios": "^0.27.2",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.1",
     "express": "~4.16.1",
+    "express-session": "^1.17.3",
+    "got": "^12.1.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "microsoft-identity-express": "github:azure-samples/microsoft-identity-express",
     "morgan": "~1.9.1",
+    "node-powershell": "^5.0.1",
+    "passport-azure-ad": "^4.3.3",
     "sqlite3": "^5.0.8",
     "v-calendar": "^2.4.1"
   }

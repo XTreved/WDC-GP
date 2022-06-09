@@ -19,7 +19,7 @@ const SAMPLE_SUBJECTS = [
   { title: 'Hot Topics in IoT Security',          id: '4106', area: 'COMP SCI', availability: 'Trimester 3'   },
   { title: 'Biology I: Human Perspectives',       id: '1201', area: 'BIOLOGY',  availability: 'Semester 2'    },
   { title: 'Postgraduate Professions Internship', id: '7500', area: 'PROF',     availability: 'Trimester 1'   }
-]
+];
 
 const courseChoices = [ // this data was an can be scraped if new courses are added to university
     'ABORIG', 'ACCTFIN', 'ACCTING', 'ACUCARE', 'AGRIBUS', 'AGRIC',
@@ -48,7 +48,7 @@ const courseChoices = [ // this data was an can be scraped if new courses are ad
     'SPATIAL', 'SPEECH', 'STATS', 'SURGERY', 'TECH', 'TESOL',
     'TRADE', 'UAC', 'UACOL', 'VET SC', 'VET TECH', 'VITICULT',
     'WINE'
-]
+];
 
 
 /* GET home page. */
@@ -61,6 +61,13 @@ router.post('/addCourse', function(req, res, next) {
 
 });
 
+router.get('/login', function (req, res, next) {
+  res.render('login', {
+      title: 'MSAL Node & Express Web App',
+      isAuthenticated: req.session.isAuthenticated,
+      username: req.session.account.username,
+  });
+});
 
 /* Removing courses */
 router.post('/removeCourse', function(req, res, next) {
