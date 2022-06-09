@@ -449,4 +449,4 @@ function Testing(blah) {
 // module.exports.CreateNewUser = CreateNewUser;
 // module.exports.CheckPassword = CheckPassword;
 // module.exports.db = db;
-module.exports = { CreateNewUser, CheckPassword, db };
+module.exports = { CreateNewUser, CheckPassword };

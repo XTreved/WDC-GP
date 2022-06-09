@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 // const sqlFile = require('../sqlite.js');
-const { CreateNewUser, CheckPassword, db } = require('../sqlite');
+const { CreateNewUser, CheckPassword } = require('../sqlite');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -80,10 +80,15 @@ router.post('/signup', async (req, res) => {
     var result = await CreateNewUser(req.body.username, req.body.password);
     // console.log("result " + result);
 
-    res.sendStatus(200);
+	if (result == false){
+		res.sendStatus(200);
+	} else {
+		res.sendStatus(403);
+	}
+
+    
   } else {
-    console.log("ERROR");
-    res.sendStatus(403);
+    res.sendStatus(400);
   }
 });
 
