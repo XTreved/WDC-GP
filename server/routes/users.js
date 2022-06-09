@@ -80,7 +80,7 @@ router.post('/signup', async (req, res) => {
     var result = await CreateNewUser(req.body.username, req.body.password);
     // console.log("result " + result);
 
-	if (result == false){
+	if (result == true){
 		res.sendStatus(200);
 	} else {
 		res.sendStatus(403);
