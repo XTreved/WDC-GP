@@ -162,9 +162,14 @@ function CheckPassword(username, password) {
         db.get(sqlString, [username] , async (err, rows) => {
         if(err){
           console.log(err);
+          resolve(false);
         }
-        console.log(rows);
-  
+
+        if (rows == null) {
+          console.log("resolving False");
+          return resolve(false);
+        }
+        
         if (Object.keys(rows).length > 1){
             reject("Multiple Users found");
         }
@@ -173,9 +178,10 @@ function CheckPassword(username, password) {
         if (rows.Password == hashedPassword) {
           // console.log(rows.Password)
           // console.log(hashedPassword);
-          resolve(true);
+          return resolve(true);
         }
         return resolve(false);
+        
     });
     /*
     db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
