@@ -100,7 +100,6 @@ function signup() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Signup Successful");
             vueinst.selected = "login";
-            vueinst.loginErrorFormat();
         
         // This handles for when username has already been taken
         } else if (this.readyState == 4 && this.status == 403) {
