@@ -121,30 +121,34 @@ return hashedP;
 // this will take in a users names and id and create a spot in out database to save there data, 
 // login like username and password should be delt with using some form of secure login 
 async function CreateNewUser(username, password) {
-  var sqlPrepare = "INSERT INTO Login_Data (Username, Password) VALUES (?, ?);";
 
-  // check that the username isnt already in the database
-  uniqueUsername = true;
+  return new Promise((resolve, reject) => {
+    var sqlPrepare = "INSERT INTO Login_Data (Username, Password) VALUES (?, ?);";
 
-  sqlString = "SELECT Username \
-                  FROM Login_Data;";
-  db.all(sqlString, async (err, rows) => {
-    if(err){
-      console.log(err);
-    }
-    for (row of rows) {
-      if (row.Username == username) {
-        uniqueUsername = false;
-        console.log("Unique Username: " + uniqueUsername + " Create User Aborted");
-        return 1;
+    // check that the username isnt already in the database
+    uniqueUsername = true;
+
+    sqlString = "SELECT Username \
+                    FROM Login_Data;";
+    db.all(sqlString, async (err, rows) => {
+      if(err){
+        console.log(err);
       }
-    }
-    console.log("Unique Username: " + uniqueUsername);
-    // hash the password here
-    var hashedPassword = Hash(password);
+      for (row of rows) {
+        if (row.Username == username) {
+          uniqueUsername = false;
+          console.log("Unique Username: " + uniqueUsername + " Create User Aborted");
+          return resolve(false);
+        }
+      }
+      console.log("Unique Username: " + uniqueUsername);
+      // hash the password here
+      var hashedPassword = Hash(password);
 
-    db.run(sqlPrepare, [username, hashedPassword]);
-    return 0;
+      db.run(sqlPrepare, [username, hashedPassword]);
+      return resolve(true);
+    });
+
   });
 
 
@@ -335,12 +339,14 @@ function AddNewData(scrapeData, username) {
                           AND Class_Times.Beginning_Time = ? \
                           AND Class_Times.Ending_Time = ? \
                           AND Class_Times.Location = ?;";
+          
+          var ID;
           var result = db.all(sqlString, [startDate, endDate, day, startTime, endTime, location], (err, rows) => {
             if(err){
               console.log(err);
             }
             for (row of rows) {
-              var ID = row.ID;
+              ID = row.ID;
             }
           });
     
@@ -354,6 +360,9 @@ function AddNewData(scrapeData, username) {
   // will return void
 }
 
+function GetClassTimes() {
+
+}
 
 function Test() {
   console.log("Starting Test");
