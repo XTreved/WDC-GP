@@ -1,6 +1,7 @@
 // imports
 const fs = require("fs"); // used to write contents to json file
 const courseData = require("./scrapeData.js");
+const { AddNewData } = require('../sqlite.js');
 
 data = {Time: getTime()}; // global data to be exported
 
@@ -34,6 +35,8 @@ function geTime() {
 
 function transferJSON(jsonObject) {
   try {
+    AddNewData(jsonObject);
+    
     let jsonString = JSON.stringify(data, null, 4); // third parameter = spaces for formatting
     fs.writeFileSync("data.json", jsonString);
     console.log("JSON data is saved to data.json"); // console.log(jsonString);

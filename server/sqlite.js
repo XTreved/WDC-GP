@@ -5,6 +5,7 @@
 // npm install sqlite3
 
 const hashes = require('jshashes');
+var currentUser = "";
 
 // import sqlite3 and load the database, or else it will create one it it doesnt exist
 const sqlite3 = require('sqlite3');
@@ -182,6 +183,7 @@ function CheckPassword(username, password) {
         if (rows.Password == hashedPassword) {
           // console.log(rows.Password)
           // console.log(hashedPassword);
+          currentUser = username;
           return resolve(true);
         }
         return resolve(false);
@@ -262,8 +264,9 @@ function GetUsersSubjects(username) {
 }
 
 // this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
-function AddNewData(scrapeData, username) {
+function AddNewData(scrapeData) {
 
+  username = currentUser;
   //console.log(scrapeData);
 
   courseInfo = scrapeData['course_details'];
@@ -282,7 +285,8 @@ function AddNewData(scrapeData, username) {
   db.run(sqlPrepare, [subjectArea, term, courseTitle, timestamp, username])
 
 
-  classTypes = ["Lecture", "Practical", "Workshop"]
+  // get tbe keys as the types, eg, Lecturem prac, workshop
+  classTypes = scrapeData['class_details'].keys();
   for (var type in classTypes) {
     if (scrapeData['class_details'][classTypes[type]] != null) {
       var dataString = scrapeData['class_details'][classTypes[type]];
@@ -470,4 +474,4 @@ function Test() {
   AddNewData(data, "username");
 }
 
-module.exports = { CreateNewUser, CheckPassword, GetClassTimes };
+module.exports = { CreateNewUser, CheckPassword, GetClassTimes, AddNewData };
