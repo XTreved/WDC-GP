@@ -366,7 +366,18 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
     var hashedPassword = Hash(password);
 
     sqlString = "SELECT Class_Times.Beginning_Date, Class_Times.Ending_Date, Class_Times.Day, Class_Times.Beginning_Time, \
-                    Class_Times.Ending_Time, Class_Times.Location, Scrape_Timestamps.Class_Type, Class_Details.Class_Number;";
+                    Class_Times.Ending_Time, Class_Times.Location, Scrape_Timestamps.Class_Type, Class_Details.Class_Number, \
+                    Class_Data.Class_Number, Class_Data.Section, Class_Data.Size, Class_Data.Available, Class_Data.Notes, \
+                    FROM Class_Time, \
+                    INNER JOIN Class_Times.ID = Class_Data.ID, \
+                    INNER JOIN Class_Data.Class_Number = Class_Details.Class_Number, \
+                    INNER JOIN Class_Details.Class_Type = Scrape_Timestamps.Class_Type, \
+                    INNER JOIN Users_Subjects.Timestamp = Scrape_Timestamps.Scrape_Timestamps, \
+                    WHERE Users_Subjects.Username = ?, \
+                    AND Users_Subjects.Subject_Area = ?, \
+                    AND Users_Subjects.Course_Title = ?, \
+                    AND Users_Subjects.Term = ?, \
+                    AND Users_Subjects.Timestamp = ?;";
 
     /*
     Class_Data ( \
@@ -378,7 +389,7 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
     */
 
 
-      db.get(sqlString, [username] , async (err, rows) => {
+      db.get(sqlString, [Username, Subject, Course, Term, Timestamp] , async (err, rows) => {
       if(err){
         console.log(err);
         resolve(false);
@@ -458,12 +469,5 @@ function Test() {
 
   AddNewData(data, "username");
 }
-
-
-function Testing(blah) {
-  console.log('testing');
-  console.log(blah);
-}
-
 
 module.exports = { CreateNewUser, CheckPassword, GetClassTimes };

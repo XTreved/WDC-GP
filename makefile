@@ -1,7 +1,6 @@
 git:
 	clear
-	git fetch
 	git add .
 	git commit -m "Update"
+	git fetch
 	git merge origin/master
-	git push -u origin master
