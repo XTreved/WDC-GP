@@ -460,40 +460,10 @@ function Test() {
 }
 
 
-function RouteTest(anything) {
-  return "This Worked YAYAYAYAYA" + anything;
-}
-
-
-//Test();
-
-
-
-/*
-Need a timestamp from web-scraper in the form of a long int easier to sort
-local storage 
-session storage
-
-
-ask ian about sql being on server so it needs routes from the client to be able to access the database
-
-does the password get incripted on the client side before being sent to the server, or does the plain text password get sent to the server and then encripted on ther server side
-
-sql has encription methods doesnt it
-*/
-
 function Testing(blah) {
   console.log('testing');
   console.log(blah);
 }
 
 
-<<<<<<< HEAD
 module.exports = { CreateNewUser, CheckPassword, GetClassTimes };
-=======
-// module.exports.Testing = Testing;
-// module.exports.CreateNewUser = CreateNewUser;
-// module.exports.CheckPassword = CheckPassword;
-// module.exports.db = db;
-module.exports = { CreateNewUser, CheckPassword };
->>>>>>> origin/master
