@@ -35,9 +35,11 @@ function geTime() {
 
 function transferJSON(jsonObject) {
   try {
-    AddNewData(jsonObject);
+    
     
     let jsonString = JSON.stringify(data, null, 4); // third parameter = spaces for formatting
+
+    AddNewData(jsonObject);
     fs.writeFileSync("data.json", jsonString);
     console.log("JSON data is saved to data.json"); // console.log(jsonString);
   } catch (error) {
