@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 // const sqlFile = require('../sqlite.js');
-const { CreateNewUser, CheckPassword, db } = require('../sqlite');
+const { CreateNewUser, CheckPassword } = require('../sqlite');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

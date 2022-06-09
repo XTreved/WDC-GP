@@ -360,9 +360,52 @@ function AddNewData(scrapeData, username) {
   // will return void
 }
 
-function GetClassTimes() {
+
+function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
+  return new Promise((resolve, reject) => {
+    var hashedPassword = Hash(password);
+
+    sqlString = "SELECT Class_Times.Beginning_Date, Class_Times.Ending_Date, Class_Times.Day, Class_Times.Beginning_Time, \
+                    Class_Times.Ending_Time, Class_Times.Location, Scrape_Timestamps.Class_Type, Class_Details.Class_Number;";
+
+    /*
+    Class_Data ( \
+    Class_Number INTEGER PRIMARY KEY, \
+    Section TEXT, \
+    Size INTEGER, \
+    Available INTEGER, \
+    Notes TEXT,
+    */
+
+
+      db.get(sqlString, [username] , async (err, rows) => {
+      if(err){
+        console.log(err);
+        resolve(false);
+      }
+
+      if (rows == null) {
+        console.log("resolving False");
+        return resolve(false);
+      }
+      
+      if (Object.keys(rows).length > 1){
+          reject("Multiple Users found");
+      }
+
+      
+      if (rows.Password == hashedPassword) {
+        // console.log(rows.Password)
+        // console.log(hashedPassword);
+        return resolve(true);
+      }
+      return resolve(false);
+      
+    });
+  });
 
 }
+
 
 function Test() {
   console.log("Starting Test");
@@ -445,8 +488,4 @@ function Testing(blah) {
 }
 
 
-// module.exports.Testing = Testing;
-// module.exports.CreateNewUser = CreateNewUser;
-// module.exports.CheckPassword = CheckPassword;
-// module.exports.db = db;
-module.exports = { CreateNewUser, CheckPassword, db };
+module.exports = { CreateNewUser, CheckPassword, GetClassTimes };
