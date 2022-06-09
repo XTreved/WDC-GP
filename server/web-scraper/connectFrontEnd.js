@@ -1,4 +1,4 @@
-myJson = require("./courseSelection.json");
+// myJson = require("./courseSelection.json");
 LinkData = require("./linkController.js");
 
 module.exports.subjectTitles = LinkData.promiseA
@@ -12,14 +12,14 @@ module.exports.subjectTitles = LinkData.promiseA
 
 function getsubjectTitle(myJson) {
   arr = [];
-  for (name in myJson) {
+  for (n in myJson) {
     // console.log(name);
-    for (sem in myJson[name]) {
-      arr.push(myJson[name][sem]["subjectTitle"]);
+    for (sem in myJson[n]) {
+      arr.push(myJson[n][sem]["subjectTitle"]);
     }
   }
   res = new Set(arr);
-  console.log(res);
+  // console.log(res);
   return res;
 }
 

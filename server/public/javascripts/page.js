@@ -16,6 +16,7 @@ var vueinst = new Vue({
         // Scraper page testing
         sample_subjects:    [],
         courseArea:         [],
+        courseTitle:        [],
     
     }, methods: {
         // Display error texts on the login page
@@ -196,5 +197,20 @@ function getCourseArea() {
     };
 
     xhttp.open("GET", "/getCourseArea", true);
+    xhttp.send();
+}
+
+/* Get the course Title */
+function getCourseTitle() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            vueinst.courseTitle = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("GET", "/getCourseTitle", true);
     xhttp.send();
 }
