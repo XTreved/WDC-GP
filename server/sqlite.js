@@ -120,7 +120,7 @@ return hashedP;
 
 // this will take in a users names and id and create a spot in out database to save there data, 
 // login like username and password should be delt with using some form of secure login 
-function CreateNewUser(username, password) {
+async function CreateNewUser(username, password) {
   var sqlPrepare = "INSERT INTO Login_Data (Username, Password) VALUES (?, ?);";
 
   // check that the username isnt already in the database
@@ -128,7 +128,7 @@ function CreateNewUser(username, password) {
 
   sqlString = "SELECT Username \
                   FROM Login_Data;";
-  var result = db.all(sqlString, (err, rows) => {
+  db.all(sqlString, async (err, rows) => {
     if(err){
       console.log(err);
     }
@@ -147,13 +147,11 @@ function CreateNewUser(username, password) {
     return 0;
   });
 
-  
-  
 
   // will returns void
-}
+};
 
-function CheckPassword(username, password) {
+async function CheckPassword(username, password) {
     /*
     db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
       console.log(row.id + ": " + row.info);
@@ -163,21 +161,26 @@ function CheckPassword(username, password) {
 
     sqlString = "SELECT Password \
                     FROM Login_Data \
-                    WHERE Username = ?";
-    db.all(sqlString, [username], (err, rows) => {
+                    WHERE Username = ?;";
+      db.get(sqlString, [username] , async (err, rows) => {
       if(err){
         console.log(err);
       }
-      for (row of rows) {
-        if (row.Password == hashedPassword) {
-          console.log(row.Password)
-          console.log(hashedPassword);
-          return true;
-        }
+      console.log(rows);
+
+      if (Object.keys(rows).length > 1){
+        throw "Multiple Users found";
+      }
+
+      
+      if (rows.Password == hashedPassword) {
+        // console.log(rows.Password)
+        // console.log(hashedPassword);
+        return true;
       }
       return false;
     });
-}
+};
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
 // here i will get all if the data from the current timestamp and put it into a form that can be accessed buy our front end to be used
@@ -394,5 +397,37 @@ function Test() {
   AddNewData(data, "username");
 }
 
-module.exports.CreateNewUser = CreateNewUser;
-module.exports.CheckPassword = CheckPassword;
+
+function RouteTest(anything) {
+  return "This Worked YAYAYAYAYA" + anything;
+}
+
+
+//Test();
+
+
+
+/*
+Need a timestamp from web-scraper in the form of a long int easier to sort
+local storage 
+session storage
+
+
+ask ian about sql being on server so it needs routes from the client to be able to access the database
+
+does the password get incripted on the client side before being sent to the server, or does the plain text password get sent to the server and then encripted on ther server side
+
+sql has encription methods doesnt it
+*/
+
+function Testing(blah) {
+  console.log('testing');
+  console.log(blah);
+}
+
+
+// module.exports.Testing = Testing;
+// module.exports.CreateNewUser = CreateNewUser;
+// module.exports.CheckPassword = CheckPassword;
+// module.exports.db = db;
+module.exports = { CreateNewUser, CheckPassword, db };
