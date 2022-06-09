@@ -89,7 +89,7 @@ const promiseA = (async () => {
         return res;
     });
 
-    obj = partitionData(classes, links)
+    obj = partitionData(classes, links); // console.log(obj);
     transferJSON(obj);
     await browser.close();
 })();
@@ -104,9 +104,9 @@ function partitionData(classarr, linkarr) {
         jsonData[courseName][semester] = {
             link: linkarr[linkIndex],
             courseName: row[2],
-            units: row[2],
-            career: row[3],
-            campus: row[4],
+            units: row[3],
+            career: row[4],
+            location: row[5],
         }
         linkIndex++;
     }
@@ -117,7 +117,7 @@ function partitionData(classarr, linkarr) {
 function transferJSON(jsonObject) {
     try {
         let jsonString = JSON.stringify(jsonObject, null, 4); // third parameter = spaces for formatting
-        console.log(jsonString);
+        // console.log(jsonString);
         fs.writeFileSync("courseSelection.json", jsonString);
         console.log("JSON data is saved to courseSelection.json"); // console.log(jsonString);
     } catch (err) {
