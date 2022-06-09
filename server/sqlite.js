@@ -8,7 +8,7 @@ const hashes = require('jshashes');
 
 // import sqlite3 and load the database, or else it will create one it it doesnt exist
 const sqlite3 = require('sqlite3');
-let db = new sqlite3.Database('savedDatabase', (err) => {
+let db = new sqlite3.Database('savedDatabase.db', (err) => {
   if (err) 
   {
     console.log("Error occured: " + err.message);
