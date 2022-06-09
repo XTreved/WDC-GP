@@ -20,5 +20,7 @@ https://myuni.adelaide.edu.au/courses/75039/pages/2022-web-application-group-pro
 - Heading
 - Username/Password input box
 - Attempted styling
+- Made a start on home/overview page
+- got some basic vue going on to toggle between pages, need to do this from vue dev tool
 
 
