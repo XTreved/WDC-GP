@@ -4,29 +4,33 @@ const puppeteer = require("puppeteer");
 
 const { findProp } = require("@vue/compiler-core");
 const linkController = require("linkController");
- ==== TEMPORARY LINKS ====
+ ==== TEMPORARY LINKS FOR TESTING====
 var link = 'https://access.adelaide.edu.au/courses/details.asp?year=2022&course=107592+1+4210+1' // adds
-var link = 'https://access.adelaide.edu.au/courses/details.asp?year=2022&course=108277+1+4210+1' // analogue electronics
+var link = "https://access.adelaide.edu.au/courses/details.asp?year=2022&course=108960+1+4210+1"; // wdc
+var link = "https://access.adelaide.edu.au/courses/details.asp?year=2022&course=108277+1+4210+1"; // analogue electronics
+var link =
+  "https://access.adelaide.edu.au/courses/details.asp?year=2022&course=107592+1+4210+1"; // adds
 */
 
-var link = "https://access.adelaide.edu.au/courses/details.asp?year=2022&course=108960+1+4210+1"; // wdc
 
-const promiseA = (async () => { // handles workshops, lectures, practicals
+var link = "https://access.adelaide.edu.au/courses/details.asp?year=2022&course=108960+1+4210+1"; // wdc
+const promiseA = (async () => {
+  // handles workshops, lectures, practicals
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(link);
 
   var ClassDetails = await page.evaluate(() => {
-    headings = document.querySelectorAll('div#hidedata04_1 > table tr');
+    headings = document.querySelectorAll("div#hidedata04_1 > table tr");
 
     classes = [];
     for (var i = 0; i < headings.length; i++) {
-      if (headings[i].querySelector('th.course') !== null) {
-        let value = headings[i].querySelector('th.course').innerText;
-        if (value == 'Class Nbr') continue;
+      if (headings[i].querySelector("th.course") !== null) {
+        let value = headings[i].querySelector("th.course").innerText;
+        if (value == "Class Nbr") continue;
         try {
-          value = value.split(': ')[1]; // match what is after :
-          value = value.split(' ').join(""); // also split any spaces
+          value = value.split(": ")[1]; // match what is after :
+          value = value.split(" ").join(""); // also split any spaces
         } catch (err) {
           console.log(err);
         }
@@ -37,7 +41,7 @@ const promiseA = (async () => { // handles workshops, lectures, practicals
   }); // console.log(ClassDetails);
 
   var ClassData = await page.evaluate((ClassDetails) => {
-    headings = document.querySelectorAll('div#hidedata04_1 > table tr');
+    headings = document.querySelectorAll("div#hidedata04_1 > table tr");
     let data = {};
     let high = 0;
     for (let i = 0; i < ClassDetails.length - 1; i++) {
@@ -56,12 +60,12 @@ const promiseA = (async () => { // handles workshops, lectures, practicals
         temp.push(headings[i].textContent);
       }
       data[ClassDetails[ClassDetails.length - 1][0]] = temp;
-    } catch (e) { }
+    } catch (e) {}
     return data;
   }, ClassDetails); // console.log(ClassData);
 
-  // console.log(processObject(ClassData));
-  return processObject(ClassData)
+  console.log(processObject(ClassData));
+  return processObject(ClassData);
 
   await browser.close();
 })();
@@ -92,34 +96,45 @@ const promiseB = (async () => {
   });
   const CourseDetails = scrapedData.splice(0, 10); // get the first 10 data entries
   for (let i = 0; i < CourseDetails.length - 1; i += 2) {
-    title = CourseDetails[i].replace(':', '');
+    title = CourseDetails[i].replace(":", "");
     data = UpdateObj(title, CourseDetails[i + 1], data);
-    if (title == 'Campus') break; // stop updating after campus label
+    if (title == "Campus") break; // stop updating after campus label
   }
   await browser.close();
   return data;
 })();
 
+function printArray(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    console.log(i, arr[i]);
+  }
+}
+
 function processObject(data) {
   let res = {};
   for (var key of Object.keys(data)) {
-    data[key] = processArray(data[key]);
-    len = data[key].length;
-    // console.log(len, data[key])
+    data[key] = processArray(data[key]); // printArray(data[key]);
+    len = data[key].length; // console.log(len);
     if (len <= 14) {
       res[key] = formatArray_14(data[key]);
-    }
-    else if (len <= 21) { // should check for edge cases for two or three day a week classes 
-      res[key] = formatArray_21(data[key]);
-    }
-    // === ERROR : program can't differentiate whether course has two or three courses a week ===
-    else { // format big array on whether class has 2 sessions a week or 3 sessions a week (this might not be fool proof)
-      res[key] = FormatBigArrayTwoDay(data[key]); // assume 2 sessions per week (for now);
-      // res[key] = (len % 2 == 0) ? FormatBigArrayTwoDay(data[key]) : formatBigArrayThreeDay(data[key]);
+    } else if (len <= 30) {
+      res[key] = formatArray_30(data[key]);
+    } else {
+      // differentiate whether class has 2 or three sessions per week
+      if (Math.floor((len - 9) % 13) == 0) {
+        // two weekly sessions
+        // console.log(`${data[key][0]} has two sessions per week `);
+        res[key] = FormatBigArrayTwoDay(data[key]);
+      } else if (Math.floor((len - 9) % 17) == 0) {
+        // three weekly session
+        // console.log(`${data[key][0]} has three sessions per week `);
+        res[key] = formatBigArrayThreeDay(data[key]);
+      }
     }
   }
+  // console.log(res);
   return res;
-};
+}
 
 function processArray(array) {
   let len = array.length;
@@ -146,7 +161,8 @@ function formatArray_14(arr) {
   }
 }
 
-function formatArray_21(arr) {
+
+function formatArray_30(arr) {
   var classData = []; // contains lecture objects
   try {
     let init = {};
@@ -170,36 +186,37 @@ function formatArray_21(arr) {
   }
 }
 
-function FormatBigArrayTwoDay(arr) { // occurrs two days a week
-  console.log(arr[0] + " has two sessions a week");
+function FormatBigArrayTwoDay(arr) {
+  // occurrs two days a week
+  // console.log(arr[0] + " has two sessions a week");
   var classData = []; // contains lecture objects
   try {
-      for (let c = 9; c < arr.length - 13; c += 13) {
-          let init = {};
-          init = UpdateObj("Class Nbr", arr[c], init);
-          init = UpdateObj("Section", arr[c + 1], init);
-          init = UpdateObj("Size", arr[c + 2], init);
-          init = UpdateObj("Available", arr[c + 3], init);
+    for (let c = 9; c < arr.length - 13; c += 13) {
+      let init = {};
+      init = UpdateObj("Class Nbr", arr[c], init);
+      init = UpdateObj("Section", arr[c + 1], init);
+      init = UpdateObj("Size", arr[c + 2], init);
+      init = UpdateObj("Available", arr[c + 3], init);
 
-          for (let i = c + 4; i < c + 13 - 4; i += 4) {
-              let obj = init; // console.log(`range ${i} to ${i + 4}`)
-              obj = UpdateObj("Dates", arr[i], obj);
-              obj = UpdateObj("Days", arr[i + 1], obj);
-              obj = UpdateObj("Time", arr[i + 2], obj);
-              obj = UpdateObj("Location", arr[i + 3], obj);
-              classData.push(JSON.stringify(obj));
-          }
+      for (let i = c + 4; i < c + 13 - 4; i += 4) {
+        let obj = init; // console.log(`range ${i} to ${i + 4}`)
+        obj = UpdateObj("Dates", arr[i], obj);
+        obj = UpdateObj("Days", arr[i + 1], obj);
+        obj = UpdateObj("Time", arr[i + 2], obj);
+        obj = UpdateObj("Location", arr[i + 3], obj);
+        classData.push(JSON.stringify(obj));
       }
-      console.log(classData);
-      return classData;
+    }
+    return classData;
   } catch (err) {
-      console.log(err);
-      return [];
+    console.log(err);
+    return [];
   }
 }
 
-function formatBigArrayThreeDay(arr) { // occurrs three days a week
-  console.log(arr[0] + " has three sessions a week");
+function formatBigArrayThreeDay(arr) {
+  // occurrs three days a week
+  // console.log(arr[0] + " has three sessions a week");
   try {
     let classData = [];
     for (let c = 9; c < arr.length - 16; c += 17) {
@@ -209,7 +226,8 @@ function formatBigArrayThreeDay(arr) { // occurrs three days a week
       init = UpdateObj("Size", arr[c + 2], init);
       init = UpdateObj("Available", arr[c + 3], init);
 
-      for (let i = c + 4; i < c + 13 - 4; i += 4) { //  console.log(`range ${i} to ${i + 4}`)
+      for (let i = c + 4; i < c + 13 - 4; i += 4) {
+        //  console.log(`range ${i} to ${i + 4}`)
         let obj = init;
         obj = UpdateObj("Dates", arr[i], obj);
         obj = UpdateObj("Days", arr[i + 1], obj);
@@ -234,6 +252,5 @@ function UpdateObj(key, value, LectureObj) {
   return LectureObj;
 }
 
-module.exports.promiseA = promiseA;
-module.exports.promiseB = promiseB;
-
+// module.exports.promiseA = promiseA;
+// module.exports.promiseB = promiseB;
