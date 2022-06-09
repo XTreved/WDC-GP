@@ -151,34 +151,38 @@ async function CreateNewUser(username, password) {
   // will returns void
 };
 
-async function CheckPassword(username, password) {
+function CheckPassword(username, password) {
+
+    return new Promise((resolve, reject) => {
+      var hashedPassword = Hash(password);
+
+      sqlString = "SELECT Password \
+                      FROM Login_Data \
+                      WHERE Username = ?;";
+        db.get(sqlString, [username] , async (err, rows) => {
+        if(err){
+          console.log(err);
+        }
+        console.log(rows);
+  
+        if (Object.keys(rows).length > 1){
+            reject("Multiple Users found");
+        }
+  
+        
+        if (rows.Password == hashedPassword) {
+          // console.log(rows.Password)
+          // console.log(hashedPassword);
+          resolve(true);
+        }
+        return resolve(false);
+    });
     /*
     db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
       console.log(row.id + ": " + row.info);
     });
     */
-    var hashedPassword = Hash(password);
 
-    sqlString = "SELECT Password \
-                    FROM Login_Data \
-                    WHERE Username = ?;";
-      db.get(sqlString, [username] , async (err, rows) => {
-      if(err){
-        console.log(err);
-      }
-      console.log(rows);
-
-      if (Object.keys(rows).length > 1){
-        throw "Multiple Users found";
-      }
-
-      
-      if (rows.Password == hashedPassword) {
-        // console.log(rows.Password)
-        // console.log(hashedPassword);
-        return true;
-      }
-      return false;
     });
 };
 
