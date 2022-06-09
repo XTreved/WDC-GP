@@ -23,15 +23,15 @@ I recommend reading <a href="https://www.simplilearn.com/tutorials/git-tutorial/
 
 When your merge fails because of conflicts, git would have placed conflict markers in your files on this branch and told you which files it has done this for. You need to go back and edit these files, make the best decision about what to keep, then re `git add` the file which you have edited.
 
-10. Once all conflicts are resolved your branch is now merged with master, so run `git commit -m "[commit message]"` to save these changes.
+10. Once all conflicts are resolved, your branch is now merged with master. Now run `git commit -m "[commit message]"` to save these changes. This step is completed automatically if there were no merge conflicts.
 
 Congrats. You just made changes to our code base, checked what your teammates have done since your changes and integrated their new code with your new work before publishing to the rest of your team.
 Now you just need to push your changes to the remote origin.
 
-11. `git push -u origin master` this will push your changes upstream (-u) to the origin copy of master.
-    1. Alternatively, if you want to keep the work seperate from master for now (this is advised when work is incomplete), run `git push -u origin [your_branch]`. This pushes the local copy of your branch to the origin copy of your branch and does NOT update master. You will need to do step 12 if you do this.
+11. `git push origin [your_branch]:master` this will push all your changes to the origin copy of master, overriding origin/master. Make sure you only ever do this AFTER you merge with origin/master.
+    1. Alternatively, if you want to keep the work seperate from master for now (this is advised when code is incomplete or it doesn't make sense for everyone else to have your changes yet), run `git push -u origin [your_branch]`. This pushes the local copy of your branch to the origin copy of your branch and does NOT update master. You will need to do step 12 if you do this.
 
-12. Go to Github and make a pull request for your branch. This pulls your branch changes into master. Don't wait to long to do this or it might be a nightmare resolving new conflicts!
+12. Later when your code is complete, checkout to your development branch, then go from step 8 again (which is:)`fetch -> merge origin/master -> commit (when not done automatic by merge) -> push origin branch:master`
 
 ## Accessing Branches
 To view all branches on your local machine, run `git branch`

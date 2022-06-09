@@ -10,9 +10,15 @@
 #unignore makefiles
 !Makefile
 
+<<<<<<< HEAD
+**/node_modules # 
+**/.DS_Store
+
+=======
 #web scraper exclusions
 web-scraper/node_modules
 
 # Other exclusions
 **/.DS_Store
 **/node_modules
+>>>>>>> origin/master
