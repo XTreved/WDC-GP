@@ -488,4 +488,12 @@ function Testing(blah) {
 }
 
 
+<<<<<<< HEAD
 module.exports = { CreateNewUser, CheckPassword, GetClassTimes };
+=======
+// module.exports.Testing = Testing;
+// module.exports.CreateNewUser = CreateNewUser;
+// module.exports.CheckPassword = CheckPassword;
+// module.exports.db = db;
+module.exports = { CreateNewUser, CheckPassword };
+>>>>>>> origin/master
