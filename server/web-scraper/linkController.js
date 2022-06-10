@@ -231,8 +231,9 @@ const promiseA = (async () => {
   obj = partitionData(classes, links); // console.log(obj);
   // transferJSON(obj);
   // console.log(obj);
-  return obj;
   await browser.close();
+  return obj;
+  
 })();
 
 function partitionData(classarr, linkarr) {

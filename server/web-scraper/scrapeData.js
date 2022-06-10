@@ -64,10 +64,9 @@ const promiseA = (async () => {
     return data;
   }, ClassDetails); // console.log(ClassData);
 
-  console.log(processObject(ClassData));
-  return processObject(ClassData);
-
+  // console.log(processObject(ClassData));
   await browser.close();
+  return processObject(ClassData);
 })();
 
 const promiseB = (async () => {
