@@ -69,18 +69,18 @@ function login() {
         
         // This section handles incorrect username or password
         } else if (this.readyState == 4 && this.status == 401) {
-            vueinst.loginPageStatus = "Incorrect Username or Password"
+            vueinst.loginPageStatus = "Incorrect Username or Password";
             vueinst.loginErrorFormat();
 
         // This section handles bad request
         } else if (this.readyState == 4 && this.status == 400){
-            vueinst.loginPageStatus = "Bad Request"
+            vueinst.loginPageStatus = "Bad Request";
             vueinst.loginErrorFormat();
         }
     };
 
     xhttp.open("POST", "users/login", true);
-    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(login_form));
 }
 
@@ -105,18 +105,18 @@ function signup() {
         
         // This handles for when username has already been taken
         } else if (this.readyState == 4 && this.status == 403) {
-            vueinst.loginPageStatus = "Username Taken"
+            vueinst.loginPageStatus = "Username Taken";
             vueinst.loginErrorFormat();
 
         // This handles bad request
         } else if (this.readyState == 4 && this.status == 400){
-            vueinst.loginPageStatus = "Bad Request"
+            vueinst.loginPageStatus = "Bad Request";
             vueinst.loginErrorFormat();
         }
     };
 
     xhttp.open("POST", "users/signup", true);
-    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(signup_form));
 }
 
@@ -149,14 +149,14 @@ function addCourse() {
     };
 
     xhttp.open("POST", "/addCourse", true);
-    xhttp.setRequestHeader("Content-type", "application/json")
+    xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(subjectForm));
 }
 
 /* Function to remove course from the home page */
 function removeCourse(id){
 
-    var testing = {courseName: id}
+    var testing = {courseName: id};
 
     let xhttp = new XMLHttpRequest();
 

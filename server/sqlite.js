@@ -20,6 +20,8 @@ let db = new sqlite3.Database('savedDatabase', (err) => {
   }
 });
 
+// global decs
+var hashedPassword, password;
 
 // create or load in the tables
 db.serialize(() => {
@@ -127,15 +129,15 @@ async function CreateNewUser(username, password) {
     var sqlPrepare = "INSERT INTO Login_Data (Username, Password) VALUES (?, ?);";
 
     // check that the username isnt already in the database
-    uniqueUsername = true;
+    var uniqueUsername = true;
 
-    sqlString = "SELECT Username \
+    var sqlString = "SELECT Username \
                     FROM Login_Data;";
     db.all(sqlString, async (err, rows) => {
       if(err){
         console.log(err);
       }
-      for (row of rows) {
+      for (let row of rows) {
         if (row.Username == username) {
           uniqueUsername = false;
           console.log("Unique Username: " + uniqueUsername + " Create User Aborted");
@@ -154,14 +156,14 @@ async function CreateNewUser(username, password) {
 
 
   // will returns void
-};
+}
 
 function CheckPassword(username, password) {
 
     return new Promise((resolve, reject) => {
       var hashedPassword = Hash(password);
 
-      sqlString = "SELECT Password \
+      var sqlString = "SELECT Password \
                       FROM Login_Data \
                       WHERE Username = ?;";
         db.get(sqlString, [username] , async (err, rows) => {
@@ -170,7 +172,7 @@ function CheckPassword(username, password) {
           resolve(false);
         }
 
-        if (rows == null) {
+        if (rows === null) {
           console.log("resolving False");
           return resolve(false);
         }
@@ -196,25 +198,25 @@ function CheckPassword(username, password) {
     */
 
     });
-};
+}
 
 // may need to do something with user login here so i know which user probably just ID will do as it is unique
 // here i will get all if the data from the current timestamp and put it into a form that can be accessed buy our front end to be used
 function GetAllData(timestamp, subject, term, course) {
-  sqlString = "SELECT Scrape_Timestamps, \
+  var sqlString = "SELECT Scrape_Timestamps, \
                   FROM Users_Subjects, \
                   WHERE Users_Subjects.Subject_Area = ?, \
                   AND Users_Subjects.Term = ?, \
-                  AND Users_Subjects.Course_Title = ?;"
+                  AND Users_Subjects.Course_Title = ?;";
   var result = db.all(sqlString, [subject, term, course], (err, rows) => {
     if(err){
       console.log(err);
     }
-    for (row of rows) {
+    for (let row of rows) {
       if (row.Password == hashedPassword) {
-        console.log(row.Password)
+        console.log(row.Password);
         console.log(hashedPassword);
-        correctPass = true;
+        var correctPass = true;
       }
     }
     console.log(correctPass);
@@ -225,16 +227,16 @@ function GetAllData(timestamp, subject, term, course) {
 // this will get all of the timestamps for this specific subject so that the user can choose which one to use to do other things with
 function GetTimestamps(subject, term, course) {
   var timestampsArr = [];
-  sqlString = "SELECT Scrape_Timestamps, \
+  var sqlString = "SELECT Scrape_Timestamps, \
                   FROM Users_Subjects, \
                   WHERE Users_Subjects.Subject_Area = ?, \
                   AND Users_Subjects.Term = ?, \
-                  AND Users_Subjects.Course_Title = ?;"
+                  AND Users_Subjects.Course_Title = ?;";
   var result = db.all(sqlString, [subject, term, course], (err, rows) => {
     if(err){
       console.log(err);
     }
-    for (row of rows) {
+    for (let row of rows) {
       timestampsArr.push(row.Timestamp);
     }
     return timestampsArr;
@@ -244,20 +246,20 @@ function GetTimestamps(subject, term, course) {
 // this wil get all of the subjects the the user has previously scraped, this is to be able to show them on out front end
 function GetUsersSubjects(username) {
   var subjectsArr = [];
-  sqlString = "SELECT Subject_Area, Term, Course_Title, \
+  var sqlString = "SELECT Subject_Area, Term, Course_Title, \
                   FROM Users_Subjects, \
                   WHERE Users_Subjects.Username = ?;";
   var result = db.all(sqlString, [username], (err, rows) => {
     if(err){
       console.log(err);
     }
-    for (row of rows) {
+    for (let row of rows) {
       var obj = {};
       obj['Subject_Area'] = row.Subject_Area;
       obj['Term'] = row.Term;
       obj['Course_Title'] = row.Course_Title;
 
-      subjectsArr.push(obj)
+      subjectsArr.push(obj);
     }
     return subjectsArr;
   });
@@ -266,10 +268,10 @@ function GetUsersSubjects(username) {
 // this will take json which will come from the webscraper and ill unpack it here and add the new data to out database of the recent scrape
 function AddNewData(scrapeData) {
 
-  username = currentUser;
+  var username = currentUser;
   //console.log(scrapeData);
 
-  courseInfo = scrapeData['course_details'];
+  var courseInfo = scrapeData['course_details'];
 
   var subjectArea = courseInfo['Subject_Area'];
   var courseTitle = courseInfo['Course_Title'];
@@ -282,13 +284,13 @@ function AddNewData(scrapeData) {
 
   // NEEDS TO BE PREPARED
   var sqlPrepare = "INSERT INTO Users_Subjects (Subject_Area, Term, Course_Title, Timestamp, Username) VALUES (?, ?, ?, ?, ?);";
-  db.run(sqlPrepare, [subjectArea, term, courseTitle, timestamp, username])
+  db.run(sqlPrepare, [subjectArea, term, courseTitle, timestamp, username]);
 
 
   // get tbe keys as the types, eg, Lecturem prac, workshop
-  classTypes = scrapeData['class_details'].keys();
+  var classTypes = scrapeData['class_details'].keys();
   for (var type in classTypes) {
-    if (scrapeData['class_details'][classTypes[type]] != null) {
+    if (scrapeData['class_details'][classTypes[type]] !== null) {
       var dataString = scrapeData['class_details'][classTypes[type]];
       for (var row in dataString) {
         var data = JSON.stringify(dataString[row]);
@@ -300,7 +302,7 @@ function AddNewData(scrapeData) {
         var dates = data['Dates'];
         var day = data['Days'];
         var notes = data['Notes'];
-        var location = data['Location']
+        var location = data['Location'];
         var times = data['Time'];
   
         // may be more things i cant see
@@ -326,16 +328,16 @@ function AddNewData(scrapeData) {
           
     
           // Class_Details
-          var sqlPrepare = "INSERT INTO Class_Details (Class_Type, Class_Number) VALUES (?, ?);";
+          sqlPrepare = "INSERT INTO Class_Details (Class_Type, Class_Number) VALUES (?, ?);";
           db.run(sqlPrepare, [classTypes[type], classNum]);
     
     
           // Class_Times
-          var sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
+          sqlPrepare = "INSERT INTO Class_Times (Beginning_Date, Ending_Date, Day, Beginning_Time, Ending_Time, Location) VALUES (?, ?, ?, ?, ?, ?);";
           db.run(sqlPrepare, [startDate, endDate, day, startTime, endTime, location]);
     
           // now i need to get the id to insert into the class data table
-          sqlString = "SELECT ID, \
+          var sqlString = "SELECT ID, \
                           FROM Class_Times \
                           WHERE Class_Times.Beginning_Date = ? \
                           AND Class_Times.Ending_Date = ? \
@@ -355,7 +357,7 @@ function AddNewData(scrapeData) {
           });
     
           // Class_Data
-          var sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
+          sqlPrepare = "INSERT INTO Class_Data (Class_Number, Section, Size, Available, Notes, ID) VALUES (?, ?, ?, ?, ?, ?);";
           db.run(sqlPrepare, [classNum, section, size, available, notes, ID]);
         });
       }
@@ -383,11 +385,12 @@ function AddNewData(scrapeData) {
   classTimesObj["Notes"]
 }
 */
+
 function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
   return new Promise((resolve, reject) => {
-    var hashedPassword = Hash(password);
+    hashedPassword = Hash(password);
 
-    sqlString = "SELECT Class_Times.Beginning_Date, Class_Times.Ending_Date, Class_Times.Day, Class_Times.Beginning_Time, \
+    var sqlString = "SELECT Class_Times.Beginning_Date, Class_Times.Ending_Date, Class_Times.Day, Class_Times.Beginning_Time, \
                     Class_Times.Ending_Time, Class_Times.Location, Scrape_Timestamps.Class_Type, Class_Details.Class_Number, \
                     Class_Data.Section, Class_Data.Size, Class_Data.Available, Class_Data.Notes, \
                     FROM Class_Time, \
@@ -408,15 +411,15 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
         resolve(false);
       }
 
-      if (rows == null) {
+      if (rows === null) {
         console.log("resolving False");
         return resolve(false);
       }
       
-      var listOfTimes = []
+      var listOfTimes = [];
       // go through each of the rows and get all of the data and put it into an object to be returned
       // not all data will be needed by its is all here anyway
-      for (row of rows) {
+      for (let row of rows) {
         var classTimesObj = {};
         classTimesObj["Beginning_Date"] = row.Beginning_Date;
         classTimesObj["Ending_Date"] = row.Ending_Date;
