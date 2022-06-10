@@ -1,57 +1,6 @@
 var express = require('express');
-var router = express.Router();
 
-var fetch = require('../fetch');
-var { 
-  GRAPH_BASE,
-  GRAPH_ME_ENDPOINT,
-  GRAPH_TEAMS_LIST_ENDPOINT,
-  
-} = require('../authConfig');
-
-// custom middleware to check authentication state
-function isAuthenticated(req, res, next) {
-  if (!req.session.isAuthenticated) {
-      return res.redirect('/auth/signin'); // redirect to sign-in route if un-authenticated
-  }
-
-  next();
-}
-
-router.get('/id',
-  isAuthenticated, // check if user is authenticated
-  async function (req, res, next) {
-      // res.render('id', { idTokenClaims: req.session.account.idTokenClaims });
-      console.log(req.session.account.idTokenClaims);
-      res.send(req.session.account.idTokenClaims);
-  }
-);
-
-router.get('/profile',
-  isAuthenticated, // check if user is authenticated
-  async function (req, res, next) {
-      try {
-          const graphResponse = await fetch(GRAPH_ME_ENDPOINT, req.session.accessToken);
-          res.send(graphResponse);
-      } catch (error) {
-          next(error);
-      }
-  }
-);
-
-router.get('/joinedTeams',
-  isAuthenticated, // check if user is authenticated
-  async function (req, res, next) {
-      try {
-          const graphResponse = await fetch(GRAPH_TEAMS_LIST_ENDPOINT, req.session.accessToken);
-          res.send(graphResponse);
-      } catch (error) {
-          next(error);
-      }
-  }
-);
-
-/* ******************************** */
+const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

@@ -1,6 +1,6 @@
 var express = require('express');
-var router = express.Router();
 
+const router = express.Router();
 
 // This was used to test the overview page
 const TRACKED_SUBJECTS = [
@@ -85,10 +85,3 @@ router.get('/getCourseArea', function(req, res, next) {
 });
 
 module.exports = router;
-
-
-
-
-
-
-
