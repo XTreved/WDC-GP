@@ -3,7 +3,7 @@ var vueinst = new Vue({
     data: {
         
         // Show or hide each section
-        selected:           "signup",         // login, signup, home, calendar, scraper
+        selected:           "login",        // login, signup, home, calendar, scraper
         miniWindow:         "",             // This will be for the calendar/scraper screen
 
         // Login page login status
@@ -17,6 +17,7 @@ var vueinst = new Vue({
         sample_subjects:    [],
         courseArea:         [],
         courseTitle:        [],
+        courseAvailability: []
     
     }, methods: {
         // Display error texts on the login page
@@ -212,5 +213,20 @@ function getCourseTitle() {
     };
 
     xhttp.open("GET", "/getCourseTitle", true);
+    xhttp.send();
+}
+
+/* Get the course Title */
+function getCourseAvailability() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            vueinst.courseAvailability = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("GET", "/getCourseAvailability", true);
     xhttp.send();
 }

@@ -11,7 +11,7 @@
     <script src="/javascripts/page.js" defer></script>
   </head>
 
-  <body onload="showCourses(); getCourseArea(); getCourseTitle()">
+  <body onload="showCourses(); getCourseArea(); getCourseTitle(); getCourseAvailability();">
     <div id="app">
         <header>
             <h1>Time Table Planner</h1>
@@ -26,10 +26,10 @@
                   <h2 class="title">Login</h2>
                   <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
                   <form onsubmit="return false">
-                    <input class="inputBox" type="text"     placeholder="Username"  name="Username">    <br/>
-                    <input class="inputBox" type="password" placeholder="Password"  name="Password">    <br/>
+                    <input id="User" class="inputBox" type="text"     placeholder="Username"  name="Username">    <br/>
+                    <input id="Pass" class="inputBox" type="password" placeholder="Password"  name="Password">    <br/>
                     <input class="inputBox" type="submit"   value="Login"           onclick="login()">  <br/>
-                    <input class="options"  type="submit"   value="Signup Now"      v-on:click="selected = 'signup'">
+                    <input class="options"  type="submit"   value="Signup Now"      onclick="document.getElementById('User').value = '' ; document.getElementById('Pass').value = ''" v-on:click="selected = 'signup'">
                   </form>
                 </div>
 
@@ -38,10 +38,10 @@
                   <h2 class="title">Signup</h2>
                   <p v-bind:class="{ errorText : loginError }"> {{ loginPageStatus }} </p>
                   <form onsubmit="return false">
-                    <input class="inputBox" type="text"     placeholder="Username"  name="newUsername">  <br/>
-                    <input class="inputBox" type="password" placeholder="Password"  name="newPassword">  <br/>
+                    <input id="newUser" class="inputBox" type="text"     placeholder="Username"  name="newUsername">  <br/>
+                    <input id="newPass" class="inputBox" type="password" placeholder="Password"  name="newPassword">  <br/>
                     <input class="inputBox" type="submit"   value="Signup"          onclick="signup()">  <br/>
-                    <input class="options"  type="submit"   value="Login Now"       v-on:click="selected = 'login'">
+                    <input class="options"  type="submit"   value="Login Now"       onclick="document.getElementById('newUser').value = '' ; document.getElementById('newPass').value = ''" v-on:click="selected = 'login'">
                   </form>
                 </div>
             </div>
@@ -117,10 +117,10 @@
                 <datalist id="subjectTitle"> <option v-for="subject in courseTitle" :key="subject" :value="subject" /> </datalist>
                 <br/><br/>
 
-                <!-- <label>Subject Availability</label>
+                <label>Subject Availability</label>
                 <input list="subjectAvailability" type="text" placeholder="eg.....">
-                <datalist id="subjectAvailability"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.availability" /></datalist>
-                <br/><br/> -->
+                <datalist id="subjectAvailability"> <option v-for="subject in courseAvailability" :key="subject" :value="subject" /></datalist>
+                <br/><br/>
 
                 <input class="inputBox" type="submit" value="ADD SUBJECT">
 
