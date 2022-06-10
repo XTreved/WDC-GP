@@ -4,18 +4,16 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
+const MsIdExpress = require('microsoft-identity-express');
 
 require('dotenv').config();
 
 const appSettings = require('./appSettings');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var msRouter = require('./routes/ms');
-
+// initialise express
 var app = express();
 /**
- * Using express-session middleware for persistent user session
+ * Using express-session for persistent user session
  */
  app.use(session({
   secret: process.env.EXPRESS_SESSION_SECRET,
@@ -25,6 +23,19 @@ var app = express();
       secure: false, // set this to true on deployment
   }
 }));
+
+// create the msal wrapper
+const msid = new MsIdExpress.WebAppAuthClientBuilder(appSettings).build();
+
+// initialise the wrapper
+app.use(msid.initialize());
+
+// pass the instance to your routers
+const graphRouter = require('./routes/graph');
+app.use(graphRouter(msid));
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -38,7 +49,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/ms', msRouter);
+// app.use('/graph', graphRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,4 +68,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = {app};
+module.exports = {app, msid};

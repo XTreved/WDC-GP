@@ -11,7 +11,6 @@ const TRACKED_SUBJECTS = [
   { title:'WDC',          day:'Wednesday'}
 ];
 
-
 // This was used to test the scraper page
 const SAMPLE_SUBJECTS = [
   { title: 'Object Oriented Programming',         id: '1102', area: 'COMP SCI', availability: 'Semester 1'    },

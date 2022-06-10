@@ -1,6 +1,6 @@
 Implemenations
 
 
-A: check pushed checkpoint A, for msal-node implementation
+A: check pushed checkpoint A, for msal-node naked implementation
 B: using microsoft-identity-express
 C: using passport

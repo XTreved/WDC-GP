@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const appSettings = {
+var appSettings = {
     appCredentials: {
         clientId: process.env.CLIENT_ID, // Application (client) ID on Azure AD
         tenantId: process.env.TENANT_ID, // alt. "common" "organizations" "consumers"
@@ -13,10 +13,22 @@ const appSettings = {
         frontChannelLogout: "/logout" // front-channel logout path or the full URI configured on Azure AD
     },
     protectedResources: {
-        graphAPI: {
-            endpoint: "https://graph.microsoft.com/v1.0/", // Microsoft Graph API
-            scopes: ["User.Read","TeamSettings.ReadWrite.All","Schedule.ReadWrite.All"]
-        }
+        graph_BASE: {
+            endpoint: "https://graph.microsoft.com/v1.0",
+            scopes: []
+        },
+        profile: {
+            endpoint: "https://graph.microsoft.com/v1.0/me",
+            scopes: ["user.read"]
+        },
+        joinedTeams: {
+            endpoint: "https://graph.microsoft.com/v1.0/me/joinedTeams",
+            scopes: ["teamsettings.readwrite.all"]
+        },
+        myEvents: {
+            endpoint: "https://graph.microsoft.com/v1.0/me/events",
+            scopes: ["calendars.readwrite"]
+        },
     }
 };
 
