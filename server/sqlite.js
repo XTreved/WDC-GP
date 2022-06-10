@@ -365,13 +365,31 @@ function AddNewData(scrapeData) {
 }
 
 
+// this returns a list of objects, each object has all of the data for a single class time
+// the objects are in the form of:
+/*
+{
+  classTimesObj["Beginning_Date"]
+  classTimesObj["Ending_Date"]
+  classTimesObj["Day"]
+  classTimesObj["Beginning_Time"]
+  classTimesObj["Ending_Time"]
+  classTimesObj["Location"]
+  classTimesObj["Class_Type"]
+  classTimesObj["Class_Number"]
+  classTimesObj["Section"]
+  classTimesObj["Size"]
+  classTimesObj["Available"]
+  classTimesObj["Notes"]
+}
+*/
 function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
   return new Promise((resolve, reject) => {
     var hashedPassword = Hash(password);
 
     sqlString = "SELECT Class_Times.Beginning_Date, Class_Times.Ending_Date, Class_Times.Day, Class_Times.Beginning_Time, \
                     Class_Times.Ending_Time, Class_Times.Location, Scrape_Timestamps.Class_Type, Class_Details.Class_Number, \
-                    Class_Data.Class_Number, Class_Data.Section, Class_Data.Size, Class_Data.Available, Class_Data.Notes, \
+                    Class_Data.Section, Class_Data.Size, Class_Data.Available, Class_Data.Notes, \
                     FROM Class_Time, \
                     INNER JOIN Class_Times.ID = Class_Data.ID, \
                     INNER JOIN Class_Data.Class_Number = Class_Details.Class_Number, \
@@ -382,15 +400,6 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
                     AND Users_Subjects.Course_Title = ?, \
                     AND Users_Subjects.Term = ?, \
                     AND Users_Subjects.Timestamp = ?;";
-
-    /*
-    Class_Data ( \
-    Class_Number INTEGER PRIMARY KEY, \
-    Section TEXT, \
-    Size INTEGER, \
-    Available INTEGER, \
-    Notes TEXT,
-    */
 
 
       db.get(sqlString, [Username, Subject, Course, Term, Timestamp] , async (err, rows) => {
@@ -404,17 +413,30 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
         return resolve(false);
       }
       
-      if (Object.keys(rows).length > 1){
-          reject("Multiple Users found");
+      var listOfTimes = []
+      // go through each of the rows and get all of the data and put it into an object to be returned
+      // not all data will be needed by its is all here anyway
+      for (row of rows) {
+        var classTimesObj = {};
+        classTimesObj["Beginning_Date"] = row.Beginning_Date;
+        classTimesObj["Ending_Date"] = row.Ending_Date;
+        classTimesObj["Day"] = row.Day;
+        classTimesObj["Beginning_Time"] = row.Beginning_Time;
+        classTimesObj["Ending_Time"] = row.Ending_Time;
+        classTimesObj["Location"] = row.Location;
+        classTimesObj["Class_Type"] = row.Class_Type;
+        classTimesObj["Class_Number"] = row.Class_Number;
+        classTimesObj["Section"] = row.Section;
+        classTimesObj["Size"] = row.Size;
+        classTimesObj["Available"] = row.Available;
+        classTimesObj["Notes"] = row.Notes;
+
+        // add the object to the list of times
+        listOfTimes.push(classTimesObj);
       }
 
-      
-      if (rows.Password == hashedPassword) {
-        // console.log(rows.Password)
-        // console.log(hashedPassword);
-        return resolve(true);
-      }
-      return resolve(false);
+      // now that all of the data is in the list i can return the list
+      return resolve(listOfTimes);
       
     });
   });

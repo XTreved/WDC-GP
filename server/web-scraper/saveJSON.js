@@ -39,7 +39,8 @@ function transferJSON(jsonObject) {
     
     let jsonString = JSON.stringify(data, null, 4); // third parameter = spaces for formatting
 
-    AddNewData(jsonObject);
+    // save the jsonString to the database as well as the file
+    AddNewData(jsonString);
     fs.writeFileSync("data.json", jsonString);
     console.log("JSON data is saved to data.json"); // console.log(jsonString);
   } catch (error) {
