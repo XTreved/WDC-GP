@@ -16,14 +16,11 @@
     "express": "~4.16.1",
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
-    "isomorphic-fetch": "^3.0.0",
-    "microsoft-identity-express": "github:azure-samples/microsoft-identity-express",
+    "jade": "~1.11.0",
+    "jshashes": "^1.0.8",
     "morgan": "~1.9.1",
-    "node-powershell": "^5.0.1",
-    "passport": "^0.6.0",
-    "passport-azure-ad": "^4.3.3",
-    "passport-microsoft": "^1.0.0",
-    "pug": "^3.0.2",
+    "parse": "^3.4.2",
+    "puppeteer": "^14.3.0",
     "sqlite3": "^5.0.8",
     "v-calendar": "^2.4.1"
   }

@@ -3,7 +3,7 @@ var vueinst = new Vue({
     data: {
         
         // Show or hide each section
-        selected:           "home",         // login, signup, home, calendar, scraper
+        selected:           "login",        // login, signup, home, calendar, scraper
         miniWindow:         "",             // This will be for the calendar/scraper screen
 
         // Login page login status
@@ -16,6 +16,9 @@ var vueinst = new Vue({
         // Scraper page testing
         sample_subjects:    [],
         courseArea:         [],
+        courseTitle:        [],
+        courseAvailability: [],
+        courseData:         []
     
     }, methods: {
         // Display error texts on the login page
@@ -81,7 +84,6 @@ function login() {
     xhttp.send(JSON.stringify(login_form));
 }
 
-
 /* Login page signup function */
 function signup() {
 
@@ -100,7 +102,6 @@ function signup() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Signup Successful");
             vueinst.selected = "login";
-            vueinst.loginErrorFormat();
         
         // This handles for when username has already been taken
         } else if (this.readyState == 4 && this.status == 403) {
@@ -129,13 +130,13 @@ function signup() {
 function addCourse() {
 
     // Get the provided username or password
-    let subjectArea = document.getElementById('subjectArea')[0].value;
-    let subjectId = document.getElementById('subjectId')[0].value;
-    let subjectTitle = document.getElementById('subjectTitle')[0].value;
-    let subjectAvailability = document.getElementById('subjectAvailability')[0].value;
+    let subjectArea = document.getElementById('subjectArea').value;
+    console.log(subjectArea);
+    // let subjectId = document.getElementById('subjectId')[0].value;
+    let subjectTitle = document.getElementById('subjectTitle').value;
+    let subjectAvailability = document.getElementById('subjectAvailability').value;
 
-    let subjectForm = { Course_Title: subjectTitle, Subject_Area: subjectId, Term: subjectAvailability}; // Called subject Area but meant to be subject Id
-
+    let subjectForm = { subjectArea: subjectArea , subjectTitle: subjectTitle, subjectAvailability: subjectAvailability}; // Called subject Area but meant to be subject Id
     let xhttp = new XMLHttpRequest();
 
     xhttp.onload = function() {
@@ -153,7 +154,10 @@ function addCourse() {
 }
 
 /* Function to remove course from the home page */
-function removeCourse(){
+function removeCourse(id){
+
+    var testing = {courseName: id}
+
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -164,11 +168,8 @@ function removeCourse(){
 
     xhttp.open("POST", "/removeCourse");
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(newActor));
+    xhttp.send(JSON.stringify(testing));
 }
-
-
-
 
 /* Displays the courses on the home page */
 function showCourses(){
@@ -192,11 +193,54 @@ function getCourseArea() {
     xhttp.onload = function() {
 
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
             vueinst.courseArea = JSON.parse(this.responseText);
         }
     };
 
     xhttp.open("GET", "/getCourseArea", true);
+    xhttp.send();
+}
+
+/* Get the course Title */
+function getCourseTitle() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            vueinst.courseTitle = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("GET", "/getCourseTitle", true);
+    xhttp.send();
+}
+
+/* Get the course Title */
+function getCourseAvailability() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            vueinst.courseAvailability = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("GET", "/getCourseAvailability", true);
+    xhttp.send();
+}
+
+function getCourseData(){
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            vueinst.courseData = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("GET", "/getCourseData", true);
     xhttp.send();
 }

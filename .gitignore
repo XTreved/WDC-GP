@@ -10,10 +10,7 @@
 #unignore makefiles
 !Makefile
 
-#web scraper exclusions
-web-scraper/node_modules
-
-# Other exclusions
+**/node_modules 
 **/.DS_Store
 **/node_modules
 **/.env
