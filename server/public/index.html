@@ -40,8 +40,8 @@
                   <form onsubmit="return false">
                     <input id="newUser" class="inputBox" type="text"     placeholder="Username"  name="newUsername">  <br/>
                     <input id="newPass" class="inputBox" type="password" placeholder="Password"  name="newPassword">  <br/>
-                    <input class="inputBox" type="submit"   value="Signup"          onclick="signup()">  <br/>
-                    <input class="options"  type="submit"   value="Login Now"       onclick="document.getElementById('newUser').value = '' ; document.getElementById('newPass').value = ''" v-on:click="selected = 'login'">
+                    <input class="inputBox" type="submit"   value="Signup"      onclick="signup()">  <br/>
+                    <input class="options"  type="submit"   value="Login Now"   onclick="document.getElementById('newUser').value = '' ; document.getElementById('newPass').value = ''" v-on:click="selected = 'login'">
                   </form>
                 </div>
             </div>
@@ -57,11 +57,11 @@
               <ul class="listStyling">
                 <!-- Displaying current subjects -->
                 <li v-for="subject in tracked_subjects">
-                  <div v-bind:id="subject.title" class="cardList borderStyling">
-                    <button class="deleteButton" onclick="alert('delete')"></button>
+                  <div class="cardList borderStyling">
+                    <button v-bind:id="subject.title" class="deleteButton" onclick="removeCourse(this.id)"></button>
                     <div v-on:click="miniWindow = 'calendar'" onclick="changeBackgroundColor('rgba(0, 0, 0, 0.5)')">
                       <h3> {{ subject.title }}</h3>
-                      <p> Last Scraped: {{ subject.timestamp }} </p>
+                      <p> {{ subject.timestamp }} </p>
                     </div>
                   </div>
                 </li>

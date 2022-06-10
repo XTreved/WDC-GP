@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router()
-var sqlFile = require('../sqlite.js')
+const { CreateNewUser, CheckPassword } = require('../sqlite');
 // const subjectTitles = require('../web-scraper/connectFrontEnd');
 
 // This was used to test the overview page
@@ -168,24 +168,34 @@ router.get('/', function(req, res, next) {
 router.post('/addCourse', function(req, res, next) {
   // res.send( {title: req.body.subjectTitles} )
 
-  TRACKED_SUBJECTS.push({title: req.body.subjectTitle});
-  res.sendStatus(200);
+  if('subjectArea' in req.body && 'subjectTitle' in req.body && 'subjectAvailability' in req.body ){
+
+    TRACKED_SUBJECTS.push({title: req.body.subjectTitle, timestamp: new Date()});
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(403);
+  }
+
+
 });
 
 
 /* Removing courses */
 router.post('/removeCourse', function(req, res, next) {
+  console.log(TRACKED_SUBJECTS);
+  console.log(req.body);
 
+  for(let i in TRACKED_SUBJECTS){
+    if (req.body.courseName == TRACKED_SUBJECTS[i].title){
+      TRACKED_SUBJECTS.splice(i, 1);
+    }
+    i--;
+  }
+  res.sendStatus(200);
 });
 
 /* Get courses - this request is for displaying courses on the home page */
 router.get('/getCourses', function(req, res, next) {
-  
-  // console.log(new date());
-  
-  for (let i of Object.keys(TRACKED_SUBJECTS)){
-      TRACKED_SUBJECTS[i].timestamp = new Date();
-  }
   
   res.send(JSON.stringify(TRACKED_SUBJECTS));
 });

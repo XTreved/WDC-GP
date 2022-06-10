@@ -155,7 +155,10 @@ function addCourse() {
 }
 
 /* Function to remove course from the home page */
-function removeCourse(){
+function removeCourse(id){
+
+    var testing = {courseName: id}
+
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -166,7 +169,7 @@ function removeCourse(){
 
     xhttp.open("POST", "/removeCourse");
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(newActor));
+    xhttp.send(JSON.stringify(testing));
 }
 
 
