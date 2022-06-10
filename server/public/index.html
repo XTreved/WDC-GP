@@ -11,7 +11,7 @@
     <script src="/javascripts/page.js" defer></script>
   </head>
 
-  <body onload="showCourses(); getCourseArea(); getCourseTitle(); getCourseAvailability();">
+  <body onload="showCourses(); getCourseArea(); getCourseTitle(); getCourseAvailability(); getCourseData();">
     <div id="app">
         <header>
             <h1>Time Table Planner</h1>
@@ -61,7 +61,7 @@
                     <button v-bind:id="subject.title" class="deleteButton" onclick="removeCourse(this.id)"></button>
                     <div v-on:click="miniWindow = 'calendar'" onclick="changeBackgroundColor('rgba(0, 0, 0, 0.5)')">
                       <h3> {{ subject.title }}</h3>
-                      <p> {{ subject.timestamp }} </p>
+                      <p> Scrape Time: {{ subject.timestamp }} </p>
                     </div>
                   </div>
                 </li>
@@ -82,15 +82,8 @@
             <!-- Calendar Page -->
             <div id="calendar" class="center popupMenu borderStyling" v-if="miniWindow === 'calendar'">
               <button class="closeButton" v-on:click="hidePopUpMenu()" onclick="changeBackgroundColor('plum')"></button>
-              <h2>Testing Calendar</h2>
-              <!-- <v-calendar class="calendar"
-              :masks="masks"
-              :attributes = "attributes"
-              is-expanded>c
-                
-              </v-calendar> -->
-
-
+              <h2>Schedule</h2>
+              <p class="scheduleFormat" v-for="data in courseData"><b>Class Number:</b>  {{ data.Class_Nbr }}  <b>Dates:</b>  {{ data.Dates }}  <b>Days:</b>  {{ data.Days }}  <b>Time:</b>  {{ data.Time }}  <b>Location:</b>  {{ data.Location }}</p>
             </div>
 
 

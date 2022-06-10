@@ -3,18 +3,31 @@ var router = express.Router()
 const { CreateNewUser, CheckPassword } = require('../sqlite');
 // const subjectTitles = require('../web-scraper/connectFrontEnd');
 
-// This was used to test the overview page
+// WDC
 const TRACKED_SUBJECTS = [];
 
-
-// This was used to test the scraper page
-const SAMPLE_SUBJECTS = [
-  { title: 'Object Oriented Programming',         id: '1102', area: 'COMP SCI', availability: 'Semester 1'    },
-  { title: 'Algorithm Design & Data Structures',  id: '2103', area: 'COMP SCI', availability: 'Semester 2'    },
-  { title: 'Hot Topics in IoT Security',          id: '4106', area: 'COMP SCI', availability: 'Trimester 3'   },
-  { title: 'Biology I: Human Perspectives',       id: '1201', area: 'BIOLOGY',  availability: 'Semester 2'    },
-  { title: 'Postgraduate Professions Internship', id: '7500', area: 'PROF',     availability: 'Trimester 1'   }
-]
+const courseTimes = [
+  { Class_Nbr: '11564', Dates: '9 Mar -  6 Apr',    Days: 'Wednesday',  Time: '1pm - 2pm',    Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  { Class_Nbr: '11564', Dates: '27 Apr -  8 Jun',   Days: 'Wednesday',  Time: '1pm - 2pm',    Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  
+  { Class_Nbr: '11566', Dates: '10 Mar -  7 Apr',   Days: 'Thursday',   Time: '10am - 11am',  Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  { Class_Nbr: '11566', Dates: '28 Apr -  9 Jun',   Days: 'Thursday',   Time: '10am - 11am',  Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  
+  { Class_Nbr: '11567', Dates: '11 Mar -  8 Apr',   Days: 'Friday',     Time: '2pm - 3pm',    Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  { Class_Nbr: '11567', Dates: '29 Apr -  10 Jun',  Days: 'Friday',     Time: '2pm - 3pm',    Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  
+  { Class_Nbr: '11568', Dates: '10 Mar -  7 Apr',   Days: 'Thursday',   Time: '9am - 10am',   Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  { Class_Nbr: '11568', Dates: '28 Apr -  9 Jun',   Days: 'Thursday',   Time: '9am - 10am',   Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  
+  { Class_Nbr: '11569', Dates: '9 Mar -  6 Apr',    Days: 'Wednesday',  Time: '12pm - 1pm',   Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  { Class_Nbr: '11569', Dates: '27 Apr -  8 Jun',   Days: 'Wednesday',  Time: '12pm - 1pm',   Location: 'Ingkarni Wardli, 218, Teaching Room' },
+  
+  { Class_Nbr: '11570', Dates: '11 Mar -  8 Apr',   Days: 'Friday',     Time: '12pm - 1pm',   Location: 'Ingkarni Wardli, B18, Teaching Room' },
+  { Class_Nbr: '11570', Dates: '29 Apr -  10 Jun',  Days: 'Friday',     Time: '12pm - 1pm',   Location: 'Ingkarni Wardli, B18, Teaching Room' },
+  
+  { Class_Nbr: '19529', Dates: '10 Mar -  7 Apr',   Days: 'Thursday',   Time: '3pm - 4pm',    Location: 'MyUni, OL, Online Class'             },
+  { Class_Nbr: '19529', Dates: '28 Apr -  9 Jun',   Days: 'Thursday',   Time: '3pm - 4pm',    Location: 'MyUni, OL, Online Class'             },
+];
 
 const courseChoices = [ // this data was an can be scraped if new courses are added to university
     'ABORIG', 'ACCTFIN', 'ACCTING', 'ACUCARE', 'AGRIBUS', 'AGRIC',
@@ -43,7 +56,7 @@ const courseChoices = [ // this data was an can be scraped if new courses are ad
     'SPATIAL', 'SPEECH', 'STATS', 'SURGERY', 'TECH', 'TESOL',
     'TRADE', 'UAC', 'UACOL', 'VET SC', 'VET TECH', 'VITICULT',
     'WINE'
-]
+];
 
 const subjectTitles = [
   'Puzzle Based Learning',
@@ -143,7 +156,7 @@ const subjectTitles = [
   'Applied Machine Learning',
   'Applied Natural Language Processing',
   'Research Methods for Cyber Security'
-]
+];
 
 const subjectAvailability = [
   'Semester 1',
@@ -157,7 +170,7 @@ const subjectAvailability = [
   'Online Teaching Period 4',
   'Online Teaching Period 5',
   'Online Teaching Period 6',
-]
+];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -175,16 +188,11 @@ router.post('/addCourse', function(req, res, next) {
   } else {
     res.sendStatus(403);
   }
-
-
 });
 
 
 /* Removing courses */
 router.post('/removeCourse', function(req, res, next) {
-  console.log(TRACKED_SUBJECTS);
-  console.log(req.body);
-
   for(let i in TRACKED_SUBJECTS){
     if (req.body.courseName == TRACKED_SUBJECTS[i].title){
       TRACKED_SUBJECTS.splice(i, 1);
@@ -196,31 +204,39 @@ router.post('/removeCourse', function(req, res, next) {
 
 /* Get courses - this request is for displaying courses on the home page */
 router.get('/getCourses', function(req, res, next) {
-  
   res.send(JSON.stringify(TRACKED_SUBJECTS));
 });
 
-
+/* Get course area */
 router.get('/getCourseArea', function(req, res, next) {
   res.send(JSON.stringify(courseChoices));
 });
 
-
+/* Get course title */
 router.get('/getCourseTitle', function(req, res, next) {
   res.send(JSON.stringify(subjectTitles));
 });
 
+/* Get course availability */
 router.get('/getCourseAvailability', function(req, res, next) {
   res.send(JSON.stringify(subjectAvailability));
 });
 
+/* Get course workshop times */
+router.get('/getCourseData', function(req, res, next) {
+  res.send(JSON.stringify(courseTimes));
+});
 
 
 module.exports = router;
 
-
-
-
-
-
-
+/*
+// This was used to test the scraper page
+const SAMPLE_SUBJECTS = [
+  { title: 'Object Oriented Programming',         id: '1102', area: 'COMP SCI', availability: 'Semester 1'    },
+  { title: 'Algorithm Design & Data Structures',  id: '2103', area: 'COMP SCI', availability: 'Semester 2'    },
+  { title: 'Hot Topics in IoT Security',          id: '4106', area: 'COMP SCI', availability: 'Trimester 3'   },
+  { title: 'Biology I: Human Perspectives',       id: '1201', area: 'BIOLOGY',  availability: 'Semester 2'    },
+  { title: 'Postgraduate Professions Internship', id: '7500', area: 'PROF',     availability: 'Trimester 1'   }
+]
+*/

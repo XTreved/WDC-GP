@@ -17,7 +17,8 @@ var vueinst = new Vue({
         sample_subjects:    [],
         courseArea:         [],
         courseTitle:        [],
-        courseAvailability: []
+        courseAvailability: [],
+        courseData:         []
     
     }, methods: {
         // Display error texts on the login page
@@ -83,7 +84,6 @@ function login() {
     xhttp.send(JSON.stringify(login_form));
 }
 
-
 /* Login page signup function */
 function signup() {
 
@@ -137,7 +137,6 @@ function addCourse() {
     let subjectAvailability = document.getElementById('subjectAvailability').value;
 
     let subjectForm = { subjectArea: subjectArea , subjectTitle: subjectTitle, subjectAvailability: subjectAvailability}; // Called subject Area but meant to be subject Id
-    console.log(subjectForm);
     let xhttp = new XMLHttpRequest();
 
     xhttp.onload = function() {
@@ -171,9 +170,6 @@ function removeCourse(id){
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(testing));
 }
-
-
-
 
 /* Displays the courses on the home page */
 function showCourses(){
@@ -232,5 +228,19 @@ function getCourseAvailability() {
     };
 
     xhttp.open("GET", "/getCourseAvailability", true);
+    xhttp.send();
+}
+
+function getCourseData(){
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            vueinst.courseData = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("GET", "/getCourseData", true);
     xhttp.send();
 }
