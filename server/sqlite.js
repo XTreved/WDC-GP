@@ -365,13 +365,31 @@ function AddNewData(scrapeData) {
 }
 
 
+// this returns a list of objects, each object has all of the data for a single class time
+// the objects are in the form of:
+/*
+{
+  classTimesObj["Beginning_Date"]
+  classTimesObj["Ending_Date"]
+  classTimesObj["Day"]
+  classTimesObj["Beginning_Time"]
+  classTimesObj["Ending_Time"]
+  classTimesObj["Location"]
+  classTimesObj["Class_Type"]
+  classTimesObj["Class_Number"]
+  classTimesObj["Section"]
+  classTimesObj["Size"]
+  classTimesObj["Available"]
+  classTimesObj["Notes"]
+}
+*/
 function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
   return new Promise((resolve, reject) => {
     var hashedPassword = Hash(password);
 
     sqlString = "SELECT Class_Times.Beginning_Date, Class_Times.Ending_Date, Class_Times.Day, Class_Times.Beginning_Time, \
                     Class_Times.Ending_Time, Class_Times.Location, Scrape_Timestamps.Class_Type, Class_Details.Class_Number, \
-                    Class_Data.Class_Number, Class_Data.Section, Class_Data.Size, Class_Data.Available, Class_Data.Notes, \
+                    Class_Data.Section, Class_Data.Size, Class_Data.Available, Class_Data.Notes, \
                     FROM Class_Time, \
                     INNER JOIN Class_Times.ID = Class_Data.ID, \
                     INNER JOIN Class_Data.Class_Number = Class_Details.Class_Number, \
@@ -382,15 +400,6 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
                     AND Users_Subjects.Course_Title = ?, \
                     AND Users_Subjects.Term = ?, \
                     AND Users_Subjects.Timestamp = ?;";
-
-    /*
-    Class_Data ( \
-    Class_Number INTEGER PRIMARY KEY, \
-    Section TEXT, \
-    Size INTEGER, \
-    Available INTEGER, \
-    Notes TEXT,
-    */
 
 
       db.get(sqlString, [Username, Subject, Course, Term, Timestamp] , async (err, rows) => {
@@ -404,17 +413,30 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
         return resolve(false);
       }
       
-      if (Object.keys(rows).length > 1){
-          reject("Multiple Users found");
+      var listOfTimes = []
+      // go through each of the rows and get all of the data and put it into an object to be returned
+      // not all data will be needed by its is all here anyway
+      for (row of rows) {
+        var classTimesObj = {};
+        classTimesObj["Beginning_Date"] = row.Beginning_Date;
+        classTimesObj["Ending_Date"] = row.Ending_Date;
+        classTimesObj["Day"] = row.Day;
+        classTimesObj["Beginning_Time"] = row.Beginning_Time;
+        classTimesObj["Ending_Time"] = row.Ending_Time;
+        classTimesObj["Location"] = row.Location;
+        classTimesObj["Class_Type"] = row.Class_Type;
+        classTimesObj["Class_Number"] = row.Class_Number;
+        classTimesObj["Section"] = row.Section;
+        classTimesObj["Size"] = row.Size;
+        classTimesObj["Available"] = row.Available;
+        classTimesObj["Notes"] = row.Notes;
+
+        // add the object to the list of times
+        listOfTimes.push(classTimesObj);
       }
 
-      
-      if (rows.Password == hashedPassword) {
-        // console.log(rows.Password)
-        // console.log(hashedPassword);
-        return resolve(true);
-      }
-      return resolve(false);
+      // now that all of the data is in the list i can return the list
+      return resolve(listOfTimes);
       
     });
   });
@@ -425,49 +447,37 @@ function GetClassTimes(Username, Subject, Course, Term, Timestamp) {
 function Test() {
   console.log("Starting Test");
 
-  data = {
-    "Time": "2022-06-06T12:32:49.857Z",
+  var data = {
+    "Time": "2022-06-09T06:00:37.762Z",
     "course_details": {
-        "Subject_Area": "COMP SCI 2103 ",
-        "Course_Title": " Algorithm Design & Data Structures",
+        "Subject_Area": "COMP SCI 2207 ",
+        "Course_Title": " Web & Database Computing",
         "Career": "Undergraduate",
         "Units": "3",
         "Term": "Semester 1",
-        "Campus": "North Terrace",
-        "Contact": "Up to 6 hours per week",
-        "Restriction": "Not available to B. Information Technology students",
-        "Available for Study Abroad and Exchange": "Yes",
-        "Available for Non-Award Study": "No",
-        "Pre-Requisite": "COMP SCI 1102 or COMP SCI 1202",
-        "Incompatible": "COMP SCI 1103, COMP SCI 1203, COMP SCI 2004, COMP SCI 2202, COMP SCI 2202B"
+        "Campus": "North Terrace"
     },
     "class_details": {
         "Lecture": [
-            "{\"Class Nbr\":\"Location\",\"Section\":\"15519\",\"Size\":\"LE01\",\"Available\":\"410\",\"Dates\":\"37\",\"Days\":\"28 Feb -  6 Apr\",\"Time\":\"Monday, Wednesday\",\"Location\":\"3pm - 4pm\"}",
-            "{\"Class Nbr\":\"Location\",\"Section\":\"15519\",\"Size\":\"LE01\",\"Available\":\"410\",\"Dates\":\"The Braggs, G60, Bragg Lecture Theatre\",\"Days\":\"1 Mar -  5 Apr\",\"Time\":\"Tuesday\",\"Location\":\"10am - 11am\"}"
+            "{\"Class Nbr\":\"11571\",\"Section\":\"LE01\",\"Size\":\"520\",\"Available\":\"57\",\"Dates\":\"1 Mar -  5 Apr\",\"Days\":\"Tuesday\",\"Time\":\"2pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}",
+            "{\"Class Nbr\":\"11571\",\"Section\":\"LE01\",\"Size\":\"520\",\"Available\":\"57\",\"Dates\":\"26 Apr -  31 May\",\"Days\":\"Tuesday\",\"Time\":\"2pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}"
         ],
-        "Practical": [
-            "{\"Class Nbr\":\"Location\",\"Section\":\"15520\",\"Size\":\"PR10\",\"Available\":\"40\",\"Dates\":\"2\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"1pm - 3pm\"}",
-            "{\"Class Nbr\":\"Location\",\"Section\":\"15520\",\"Size\":\"PR10\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"1pm - 3pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15521\",\"Size\":\"PR09\",\"Available\":\"40\",\"Dates\":\"1\",\"Days\":\"3 Mar -  7 Apr\",\"Time\":\"Thursday\",\"Location\":\"3pm - 5pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15521\",\"Size\":\"PR09\",\"Available\":\"40\",\"Dates\":\"Engineering & Mathematics, EM105, CAT Suite\",\"Days\":\"28 Apr -  2 Jun\",\"Time\":\"Thursday\",\"Location\":\"3pm - 5pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15522\",\"Size\":\"PR08\",\"Available\":\"40\",\"Dates\":\"4\",\"Days\":\"2 Mar -  6 Apr\",\"Time\":\"Wednesday\",\"Location\":\"9am - 11am\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15522\",\"Size\":\"PR08\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"27 Apr -  1 Jun\",\"Time\":\"Wednesday\",\"Location\":\"9am - 11am\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15523\",\"Size\":\"PR07\",\"Available\":\"40\",\"Dates\":\"4\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15523\",\"Size\":\"PR07\",\"Available\":\"40\",\"Dates\":\"Engineering & Mathematics, EM105, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15524\",\"Size\":\"PR06\",\"Available\":\"40\",\"Dates\":\"5\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15524\",\"Size\":\"PR06\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B16, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15525\",\"Size\":\"PR05\",\"Available\":\"40\",\"Dates\":\"3\",\"Days\":\"4 Mar -  8 Apr\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15525\",\"Size\":\"PR05\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"29 Apr -  3 Jun\",\"Time\":\"Friday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15526\",\"Size\":\"PR04\",\"Available\":\"40\",\"Dates\":\"2\",\"Days\":\"2 Mar -  6 Apr\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15526\",\"Size\":\"PR04\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B16, CAT Suite\",\"Days\":\"27 Apr -  1 Jun\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15528\",\"Size\":\"PR02\",\"Available\":\"40\",\"Dates\":\"1\",\"Days\":\"2 Mar -  6 Apr\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15528\",\"Size\":\"PR02\",\"Available\":\"40\",\"Dates\":\"Ingkarni Wardli, B15, CAT Suite\",\"Days\":\"27 Apr -  1 Jun\",\"Time\":\"Wednesday\",\"Location\":\"11am - 1pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15529\",\"Size\":\"PR01\",\"Available\":\"39\",\"Dates\":\"5\",\"Days\":\"3 Mar -  7 Apr\",\"Time\":\"Thursday\",\"Location\":\"9am - 11am\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"15529\",\"Size\":\"PR01\",\"Available\":\"39\",\"Dates\":\"Engineering & Mathematics, EM105, CAT Suite\",\"Days\":\"28 Apr -  2 Jun\",\"Time\":\"Thursday\",\"Location\":\"9am - 11am\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"19524\",\"Size\":\"PR11\",\"Available\":\"35\",\"Dates\":\"FULL\",\"Days\":\"3 Mar -  7 Apr\",\"Time\":\"Thursday\",\"Location\":\"12pm - 2pm\"}",
-            "{\"Class Nbr\":\"Note: This class is only available for face-to-face (on-campus) students.\",\"Section\":\"19524\",\"Size\":\"PR11\",\"Available\":\"35\",\"Dates\":\"MyUni, OL, Online Class\",\"Days\":\"28 Apr -  2 Jun\",\"Time\":\"Thursday\",\"Location\":\"12pm - 2pm\"}"
-      ]
+        "Workshop": [
+            "{\"Class Nbr\":\"11564\",\"Section\":\"WR07\",\"Size\":\"80\",\"Available\":\"FULL\",\"Dates\":\"9 Mar -  6 Apr\",\"Days\":\"Wednesday\",\"Time\":\"1pm - 2pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11564\",\"Section\":\"WR07\",\"Size\":\"80\",\"Available\":\"FULL\",\"Dates\":\"27 Apr -  8 Jun\",\"Days\":\"Wednesday\",\"Time\":\"1pm - 2pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11566\",\"Section\":\"WR05\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"10 Mar -  7 Apr\",\"Days\":\"Thursday\",\"Time\":\"10am - 11am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11566\",\"Section\":\"WR05\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"28 Apr -  9 Jun\",\"Days\":\"Thursday\",\"Time\":\"10am - 11am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11567\",\"Section\":\"WR04\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"11 Mar -  8 Apr\",\"Days\":\"Friday\",\"Time\":\"2pm - 3pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11567\",\"Section\":\"WR04\",\"Size\":\"80\",\"Available\":\"4\",\"Dates\":\"29 Apr -  10 Jun\",\"Days\":\"Friday\",\"Time\":\"2pm - 3pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11568\",\"Section\":\"WR03\",\"Size\":\"80\",\"Available\":\"63\",\"Dates\":\"10 Mar -  7 Apr\",\"Days\":\"Thursday\",\"Time\":\"9am - 10am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11568\",\"Section\":\"WR03\",\"Size\":\"80\",\"Available\":\"63\",\"Dates\":\"28 Apr -  9 Jun\",\"Days\":\"Thursday\",\"Time\":\"9am - 10am\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11569\",\"Section\":\"WR02\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"9 Mar -  6 Apr\",\"Days\":\"Wednesday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11569\",\"Section\":\"WR02\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"27 Apr -  8 Jun\",\"Days\":\"Wednesday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, 218, Teaching Room\"}",
+            "{\"Class Nbr\":\"11570\",\"Section\":\"WR01\",\"Size\":\"80\",\"Available\":\"59\",\"Dates\":\"11 Mar -  8 Apr\",\"Days\":\"Friday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, B18, Teaching Room\"}",
+            "{\"Class Nbr\":\"11570\",\"Section\":\"WR01\",\"Size\":\"80\",\"Available\":\"59\",\"Dates\":\"29 Apr -  10 Jun\",\"Days\":\"Friday\",\"Time\":\"12pm - 1pm\",\"Location\":\"Ingkarni Wardli, B18, Teaching Room\"}",
+            "{\"Class Nbr\":\"19529\",\"Section\":\"WR08\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"10 Mar -  7 Apr\",\"Days\":\"Thursday\",\"Time\":\"3pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}",
+            "{\"Class Nbr\":\"19529\",\"Section\":\"WR08\",\"Size\":\"80\",\"Available\":\"5\",\"Dates\":\"28 Apr -  9 Jun\",\"Days\":\"Thursday\",\"Time\":\"3pm - 4pm\",\"Location\":\"MyUni, OL, Online Class\"}"
+        ]
     }
   };
 
