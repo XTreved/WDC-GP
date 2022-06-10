@@ -177,17 +177,22 @@ function CheckPassword(username, password) {
           return resolve(false);
         }
         
-        if (Object.keys(rows).length > 1){
-            reject("Multiple Users found");
+        try {
+          if (Object.keys(rows).length > 1){
+              reject("Multiple Users found");
+          }
+          if (rows.Password == hashedPassword) {
+            // console.log(rows.Password)
+            // console.log(hashedPassword);
+            currentUser = username;
+            return resolve(true);
+          }
+        } catch (error) {
+          resolve(false);
         }
-  
         
-        if (rows.Password == hashedPassword) {
-          // console.log(rows.Password)
-          // console.log(hashedPassword);
-          currentUser = username;
-          return resolve(true);
-        }
+
+
         return resolve(false);
         
     });
