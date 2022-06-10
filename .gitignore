@@ -16,4 +16,4 @@ web-scraper/node_modules
 # Other exclusions
 **/.DS_Store
 **/node_modules
-server/.env
+**/.env
