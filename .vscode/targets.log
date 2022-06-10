@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Thu Jun  9 20:55:41 2022
+# Make data base, printed on Fri Jun 10 18:47:47 2022
 
 # Variables
 
@@ -38,7 +38,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/hl/9k_b70nj73sfzdwmsctt2l5c0000gn/T/vscode-ipc-6bc6e673-3942-4cd0-b937-026700b6b306.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/hl/9k_b70nj73sfzdwmsctt2l5c0000gn/T/vscode-ipc-9c7afd16-b888-47a4-9050-afaa8ec418de.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -68,7 +68,7 @@ HOME = /Users/jamescoldwell
 # default
 MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/jamescoldwell/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /Users/jamescoldwell/Library/Application Support/Code/CachedData/4af164ea3a06f701fe3e89a2bcbb421d2026b68f
 # environment
 LOGNAME = jamescoldwell
 # environment
@@ -108,7 +108,7 @@ TMPDIR = /var/folders/hl/9k_b70nj73sfzdwmsctt2l5c0000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/jamescoldwell/Library/Application Support/Code/1.67.2-main.sock
+VSCODE_IPC_HOOK = /Users/jamescoldwell/Library/Application Support/Code/1.68.0-main.sock
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -116,7 +116,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.58752604.58752610
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.62535665.62535671
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
@@ -146,7 +146,7 @@ MAKELEVEL := 0
 # environment
 CONDA_PREFIX = /Users/jamescoldwell/miniforge3
 # environment
-VSCODE_PID = 5081
+VSCODE_PID = 8996
 # environment
 _CE_CONDA = 
 # environment
@@ -160,9 +160,9 @@ LANG = C
 
 # Directories
 
-# . (device 16777233, inode 57294550): 16 files, no impossibilities.
+# . (device 16777233, inode 57294550): 14 files, no impossibilities.
 
-# 16 files, no impossibilities in 1 directories.
+# 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -225,7 +225,7 @@ makefile:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Thu Jun  9 20:55:41 2022
+# Finished Make data base on Fri Jun 10 18:47:47 2022
 
  
 make: *** No rule to make target `all'.  Stop.
