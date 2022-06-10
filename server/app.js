@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const express = require('express');
-const MsIdExpress = require('microsoft-identity-express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -9,8 +8,6 @@ const session = require('express-session');
 require('dotenv').config();
 
 const appSettings = require('./appSettings');
-// const cache = require('./utils/cachePlugin');
-// const router = require('./routes/router');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -39,12 +36,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const msid = new MsIdExpress.WebAppAuthClientBuilder(appSettings).build();
-
-app.use(msid.initialize()); // initialise default routes
-
-app.use(msRouter(msid)); // use MsalWebAppAuthClient in routers downstream
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/ms', msRouter);
@@ -65,4 +56,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = {app, msid};
+module.exports = {app};
