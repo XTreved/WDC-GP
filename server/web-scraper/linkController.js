@@ -176,7 +176,7 @@ const promiseA = (async () => {
 
   await page.goto(masterLink, { waitUntil: "networkidle2" }); // master link
   await page.waitForSelector("select[name=subject]");
-  console.log("point 0");
+  // console.log("point 0");
 
   // page.waitForNavigation(),
   // page.click('input[name=action]'),
@@ -193,7 +193,7 @@ const promiseA = (async () => {
     page.click('input[name="action"]'),
   ]);
 
-  console.log("point 1");
+  // console.log("point 1");
   const sublink = await page.url();
   console.log("current page url is: " + sublink);
   await page.goto(sublink, { waitUntil: "networkidle2" });
@@ -219,7 +219,7 @@ const promiseA = (async () => {
     }
     return res;
   });
-  console.log("point 2");
+  // console.log("point 2");
   const links = await page.evaluate(() => {
     const linkArray = document.querySelectorAll("div.content > p > table tr");
     let res = [];
@@ -228,20 +228,27 @@ const promiseA = (async () => {
     }
     return res;
   });
-  console.log("point 3");
   obj = partitionData(classes, links); // console.log(obj);
-  transferJSON(obj);
+  // transferJSON(obj);
+  // console.log(obj);
+  return obj;
   await browser.close();
 })();
 
 function partitionData(classarr, linkarr) {
   let jsonData = {};
   let linkIndex = 0;
+
+  for (row of classarr) {
+    let courseName = row[1];
+    jsonData[courseName] = {};
+  }
+
   for (row of classarr) {
     let courseName = row[1];
     let semester = row[0];
-    jsonData[courseName] = {};
     jsonData[courseName][semester] = {
+      semester: semester,
       link: linkarr[linkIndex],
       subjectTitle: row[2],
       units: row[3],
@@ -250,9 +257,13 @@ function partitionData(classarr, linkarr) {
     };
     linkIndex++;
   }
+  // console.log(jsonData);
   return jsonData;
 }
 
+module.exports.promiseA = promiseA;
+
+/*
 // WARNING constantly reading and writing to json file may burn disk, export data directly to needed file
 function transferJSON(jsonObject) {
   try {
@@ -264,6 +275,8 @@ function transferJSON(jsonObject) {
     console.error(err);
   }
 }
+
+*/
 
 // module.exports.promiseA = promiseA;
 

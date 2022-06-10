@@ -11,7 +11,7 @@
     <script src="/javascripts/page.js" defer></script>
   </head>
 
-  <body onload="showCourses(); getCourseArea()">
+  <body onload="showCourses(); getCourseArea(); getCourseTitle()">
     <div id="app">
         <header>
             <h1>Time Table Planner</h1>
@@ -107,20 +107,20 @@
                 <datalist id="subjectArea"> <option v-for="subject in courseArea" :key="subject" :value="subject" /></datalist>
                 <br/><br/>
 
-                <label>Subject Id</label>
+                <!-- <label>Subject Id</label>
                 <input list="subjectId" type="text" placeholder="eg.....">
                 <datalist id="subjectId"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.id" /></datalist>
-                <br/><br/>
+                <br/><br/> -->
 
                 <label>Subject Title</label>
                 <input list="subjectTitle" type="text" placeholder="eg.....">
-                <datalist id="subjectTitle"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.title" /> </datalist>
+                <datalist id="subjectTitle"> <option v-for="subject in courseTitle" :key="subject" :value="subject" /> </datalist>
                 <br/><br/>
 
-                <label>Subject Availability</label>
+                <!-- <label>Subject Availability</label>
                 <input list="subjectAvailability" type="text" placeholder="eg.....">
                 <datalist id="subjectAvailability"> <option v-for="subject in sample_subjects" :key="subject" :value="subject.availability" /></datalist>
-                <br/><br/>
+                <br/><br/> -->
 
                 <input class="inputBox" type="submit" value="ADD SUBJECT">
 

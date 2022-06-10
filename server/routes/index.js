@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router()
 var sqlFile = require('../sqlite.js')
-
+const subjectTitles = require('../web-scraper/connectFrontEnd');
 
 // This was used to test the overview page
 const TRACKED_SUBJECTS = [
@@ -77,6 +77,17 @@ router.get('/getCourses', function(req, res, next) {
 router.get('/getCourseArea', function(req, res, next) {
   res.send(JSON.stringify(courseChoices));
 });
+
+
+router.get('/getCourseTitle', function(req, res, next) {
+  
+  var arr = subjectTitles;
+  // console.log(arr);
+  // console.log(arr);
+  res.send(JSON.stringify(arr));
+});
+
+
 
 module.exports = router;
 
