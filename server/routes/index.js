@@ -4,11 +4,7 @@ var sqlFile = require('../sqlite.js')
 // const subjectTitles = require('../web-scraper/connectFrontEnd');
 
 // This was used to test the overview page
-const TRACKED_SUBJECTS = [
-  { title:'ADDS',         day:'Monday'},
-  { title:'SPC',          day:'Tuesday'},
-  { title:'WDC',          day:'Wednesday'}
-];
+const TRACKED_SUBJECTS = [];
 
 
 // This was used to test the scraper page
@@ -155,7 +151,12 @@ const subjectAvailability = [
   'Trisemester 1',
   'Trisemester 2',
   'Trisemester 3',
-  'Online Only'
+  'Online Teaching Period 1',
+  'Online Teaching Period 2',
+  'Online Teaching Period 3',
+  'Online Teaching Period 4',
+  'Online Teaching Period 5',
+  'Online Teaching Period 6',
 ]
 
 /* GET home page. */
@@ -165,7 +166,10 @@ router.get('/', function(req, res, next) {
 
 /* Adding courses */
 router.post('/addCourse', function(req, res, next) {
+  // res.send( {title: req.body.subjectTitles} )
 
+  TRACKED_SUBJECTS.push({title: req.body.subjectTitle});
+  res.sendStatus(200);
 });
 
 
@@ -176,6 +180,13 @@ router.post('/removeCourse', function(req, res, next) {
 
 /* Get courses - this request is for displaying courses on the home page */
 router.get('/getCourses', function(req, res, next) {
+  
+  // console.log(new date());
+  
+  for (let i of Object.keys(TRACKED_SUBJECTS)){
+      TRACKED_SUBJECTS[i].timestamp = new Date();
+  }
+  
   res.send(JSON.stringify(TRACKED_SUBJECTS));
 });
 

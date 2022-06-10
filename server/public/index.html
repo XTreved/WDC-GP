@@ -61,7 +61,7 @@
                     <button class="deleteButton" onclick="alert('delete')"></button>
                     <div v-on:click="miniWindow = 'calendar'" onclick="changeBackgroundColor('rgba(0, 0, 0, 0.5)')">
                       <h3> {{ subject.title }}</h3>
-                      <p> {{ subject.day }} </p>
+                      <p> Last Scraped: {{ subject.timestamp }} </p>
                     </div>
                   </div>
                 </li>
@@ -100,11 +100,11 @@
             <div id="scraper" class="center popupMenu borderStyling" v-if="miniWindow === 'scraper'">
               <button class="closeButton" v-on:click="hidePopUpMenu()" onclick="changeBackgroundColor('plum')"></button>
               <h2 class="title">Track a New Course</h2>
-              <form onsubmit="return false">
+              <!-- <form onsubmit="return false"> -->
 
                 <label>Subject Area</label>
-                <input list="subjectArea" type="text" placeholder="eg.....">
-                <datalist id="subjectArea"> <option v-for="subject in courseArea" :key="subject" :value="subject" /></datalist>
+                <input id="subjectArea" list="subjectAreaList" type="text" placeholder="eg.....">
+                <datalist id="subjectAreaList"> <option v-for="subject in courseArea" :key="subject" :value="subject" /></datalist>
                 <br/><br/>
 
                 <!-- <label>Subject Id</label>
@@ -113,18 +113,18 @@
                 <br/><br/> -->
 
                 <label>Subject Title</label>
-                <input list="subjectTitle" type="text" placeholder="eg.....">
-                <datalist id="subjectTitle"> <option v-for="subject in courseTitle" :key="subject" :value="subject" /> </datalist>
+                <input id="subjectTitle" list="subjectTitleList" type="text" placeholder="eg.....">
+                <datalist id="subjectTitleList"> <option v-for="subject in courseTitle" :key="subject" :value="subject" /> </datalist>
                 <br/><br/>
 
                 <label>Subject Availability</label>
-                <input list="subjectAvailability" type="text" placeholder="eg.....">
-                <datalist id="subjectAvailability"> <option v-for="subject in courseAvailability" :key="subject" :value="subject" /></datalist>
+                <input id="subjectAvailability" list="subjectAvailabilityList" type="text" placeholder="eg.....">
+                <datalist id="subjectAvailabilityList"> <option v-for="subject in courseAvailability" :key="subject" :value="subject" /></datalist>
                 <br/><br/>
+                  
+                <input class="inputBox" type="submit" value="ADD SUBJECT" onclick="addCourse()">
 
-                <input class="inputBox" type="submit" value="ADD SUBJECT">
-
-              </form>
+              <!-- </form> -->
             </div>
         </main>
     </div>

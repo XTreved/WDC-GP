@@ -3,7 +3,7 @@ var vueinst = new Vue({
     data: {
         
         // Show or hide each section
-        selected:           "login",        // login, signup, home, calendar, scraper
+        selected:           "home",        // login, signup, home, calendar, scraper
         miniWindow:         "",             // This will be for the calendar/scraper screen
 
         // Login page login status
@@ -130,13 +130,14 @@ function signup() {
 function addCourse() {
 
     // Get the provided username or password
-    let subjectArea = document.getElementById('subjectArea')[0].value;
-    let subjectId = document.getElementById('subjectId')[0].value;
-    let subjectTitle = document.getElementById('subjectTitle')[0].value;
-    let subjectAvailability = document.getElementById('subjectAvailability')[0].value;
+    let subjectArea = document.getElementById('subjectArea').value;
+    console.log(subjectArea);
+    // let subjectId = document.getElementById('subjectId')[0].value;
+    let subjectTitle = document.getElementById('subjectTitle').value;
+    let subjectAvailability = document.getElementById('subjectAvailability').value;
 
-    let subjectForm = { Course_Title: subjectTitle, Subject_Area: subjectId, Term: subjectAvailability}; // Called subject Area but meant to be subject Id
-
+    let subjectForm = { subjectArea: subjectArea , subjectTitle: subjectTitle, subjectAvailability: subjectAvailability}; // Called subject Area but meant to be subject Id
+    console.log(subjectForm);
     let xhttp = new XMLHttpRequest();
 
     xhttp.onload = function() {
