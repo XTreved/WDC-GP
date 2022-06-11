@@ -32,11 +32,6 @@ var settings = {
     }
 };
 
-const MsIdExpress = require('microsoft-identity-express');
-
-// create the msal wrapper
-const msid = new MsIdExpress.WebAppAuthClientBuilder(settings).build();
-
 // wrapper is uninitialised and will be initilised in app.js when server is launched
 
 module.exports = {settings,msid};
