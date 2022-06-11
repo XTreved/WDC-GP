@@ -200,14 +200,6 @@ router.post('/addCourse', function(req, res, next) {
   }
 });
 
-router.get('/login', function (req, res, next) {
-  res.render('login', {
-      title: 'MSAL Node & Express Web App',
-      isAuthenticated: req.session.isAuthenticated,
-      username: req.session.account.username,
-  });
-});
-
 /* Removing courses */
 router.post('/removeCourse', function(req, res, next) {
   for(let i in TRACKED_SUBJECTS){

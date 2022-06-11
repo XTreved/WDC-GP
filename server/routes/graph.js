@@ -1,6 +1,6 @@
 const express = require('express');
 const fetchManager = require('../utils/fetchManager');
-const appSettings = require('../appSettings');
+const appSettings = require('../msid');
 const graphManager = require('../utils/graphManager');
 
 const shifts = require('../bin/shifts');
@@ -11,11 +11,11 @@ module.exports = (msid) => {
     const router = express.Router();
 
     // authentication routes
-    router.get('/graph/signin', msid.signIn({ postLoginRedirect: '/' }));
-    router.get('/graph/signout', msid.signOut({ postLogoutRedirect: '/' }));
+    router.get('/signin', msid.signIn({ postLoginRedirect: '/' }));
+    router.get('/signout', msid.signOut({ postLogoutRedirect: '/' }));
 
     // secure routes
-    router.get('/graph/id', msid.isAuthenticated(), (req,res,next) => {
+    router.get('/id', msid.isAuthenticated(), (req,res,next) => {
         let claims = {
             name: req.session.account.idTokenClaims.name,
             preferred_username: req.session.account.idTokenClaims.preferred_username,
@@ -26,10 +26,10 @@ module.exports = (msid) => {
         res.send({ isAuthenticated: req.session.isAuthenticated, claims: claims });
     });
 
-    router.get('/graph/profile',
+    router.get('/profile',
         msid.isAuthenticated(), 
         msid.getToken({
-            resource: appSettings.protectedResources.profile
+            resource: appSettings.settings.protectedResources.profile
         }),
         async (req,res,next) => {
             let output;
@@ -49,10 +49,10 @@ module.exports = (msid) => {
         }
     );
     
-    router.get('/graph/joinedTeams',
+    router.get('/joinedTeams',
         msid.isAuthenticated(),
         msid.getToken({
-            resource: appSettings.protectedResources.joinedTeams
+            resource: appSettings.settings.protectedResources.joinedTeams
         }),
         async (req,res,next) => {
             let output;
@@ -72,7 +72,7 @@ module.exports = (msid) => {
         }
     );
 
-    router.post('/graph/shift',
+    router.post('/shift',
         msid.isAuthenticated(),
         async (req,res,next) => {
             shifts.shiftHandler(req);

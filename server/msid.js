@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-var appSettings = {
+var settings = {
     appCredentials: {
         clientId: process.env.CLIENT_ID, // Application (client) ID on Azure AD
         tenantId: process.env.TENANT_ID, // alt. "common" "organizations" "consumers"
@@ -32,4 +32,11 @@ var appSettings = {
     }
 };
 
-module.exports = appSettings;
+const MsIdExpress = require('microsoft-identity-express');
+
+// create the msal wrapper
+const msid = new MsIdExpress.WebAppAuthClientBuilder(settings).build();
+
+// wrapper is uninitialised and will be initilised in app.js when server is launched
+
+module.exports = {settings,msid};

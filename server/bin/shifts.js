@@ -1,5 +1,4 @@
-const msid = require('../app').msid;
-const appSettings = require('../appSettings');
+const appSettings = require('../msid');
 const graphManager = require('../utils/graphManager');
 
 /**
@@ -59,16 +58,15 @@ module.exports = {
             send.scopes.push("Schedule.ReadWrite.All"); // add permission scope
             
             // make path accessible
-            appSettings.protectedResources[uri] = send;
+            appSettings.settings.protectedResources[uri] = send;
     
             // get token
-            msid.getToken({
+            appSettings.msid.getToken({
                 resource: send
             });
 
             // create the graph client, will be reused
             const graphClient = graphManager.getAuthenticatedClient(req.session.protectedResources[uri].accessToken);
-
 
             // call function
             createClass(
@@ -78,7 +76,7 @@ module.exports = {
                 req.body.end
             );
 
-            delete appSettings.protectedResources[uri]; // remove unique path from protectedResources
+            delete appSettings.settings.protectedResources[uri]; // remove unique path from protectedResources
 
         } else if (req.body.action == "delete") {
             const uri = `/teams/${req.body.teamId}/schedule/openShifts/$${req.body.shiftId}`;
@@ -138,15 +136,13 @@ function deleteClass(req,uri) {
     return true;
 }
 
-function getAllShifts(graph,uri,cls,endDate) {
-    const end = new Date(endDate);
-
+function getAllShifts(graph,uri) {
     // immediately invoked
-    return (async (graph,uri,cls,end) => {
+    return (async (graph,uri) => {
         // make the API call and await response
         return await graph
             .api(uri)
             .headers({"Content-type": "application/json"})
             .get();
-    })(graph,uri,cls,end);
+    })(graph,uri);
 }

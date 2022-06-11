@@ -4,11 +4,10 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
-const MsIdExpress = require('microsoft-identity-express');
 
 require('dotenv').config();
 
-const appSettings = require('./appSettings');
+const appSettings = require('./msid');
 
 // initialise express
 var app = express();
@@ -24,22 +23,24 @@ var app = express();
   }
 }));
 
-// create the msal wrapper
-const msid = new MsIdExpress.WebAppAuthClientBuilder(appSettings).build();
-
 // initialise the wrapper
-app.use(msid.initialize());
+app.use(appSettings.msid.initialize());
 
-// pass the instance to your routers
+// pass the instance of msid to the routers which need it
+/**
+ * Note that the below definition of graphRouter is NOT formatted
+ * in the same way as Express manages index and user routers normally.
+ * For the msid object to be passed by VALUE properly, it must be passed in through the function call.
+ */
 const graphRouter = require('./routes/graph');
-app.use(graphRouter(msid));
+app.use('/graph', graphRouter(appSettings.msid)); // graph requests passed to graphRouter
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'pug'); // NOTE: update from jade to pug
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -68,4 +69,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = {app, msid};
+module.exports = app;

@@ -2,7 +2,7 @@ const graph = require('@microsoft/microsoft-graph-client');
 require('isomorphic-fetch');
 
 /**
- * Creating a Graph client instance via options method. For more information, visit:
+ * Creating a Graph client instance via options method.
  */
 const getAuthenticatedClient = (accessToken) => {
     // Initialize Graph client

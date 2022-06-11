@@ -1,20 +1,22 @@
 ## Design:
 **SEE CRITERIA**
 
-https://myuni.adelaide.edu.au/courses/75039/pages/2022-web-application-group-project-specification
-
 ## To-Do
 - [x] task completed
-- [ ] Working web scraper (person delegated to task)
+- [x] Working web scraper (person delegated to task)
 - [x] front end interface mock
-- [ ] Fix up UI for front end and develop colour scheme
+- [x] Fix up UI for front end and develop colour scheme
+- [ ] Smoothen the MS login management. Currently, you will be 'logged out' from our front-end after a successful login on microsoft.
 
 ## Web scraper
 - [x] created json templates 
 - [ ] 
 
-## Power Shell
-- task 1
+## Teams Interface
+- [x] Basic Azure and MS identity service authentication
+- [ ] Full endpoint authorisation management (incomplete)
+- [ ] Re-write for naked msal or passport. Do not use msid wrapper!
+- [x] Implement get, add and delete shifts helpers
 
 ## Front End
 - Heading
