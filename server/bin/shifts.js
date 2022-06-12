@@ -1,104 +1,65 @@
-const appSettings = require('../msid');
-const graphManager = require('../utils/graphManager');
+const graph = require('./graph');
 
-/**
- * reqest format eg for shift:
- * const shift = {
-  id: 'SHFT_577b75d2-a927-48c0-a5d1-dc984894e7b8',
-  userId: 'c5d0c76b-80c4-481c-be50-923cd8d680a1',
-  schedulingGroupId: 'TAG_228940ed-ff84-4e25-b129-1b395cf78be0',
-  sharedShift: {
-    displayName: 'Day shift',
-    notes: 'Please do inventory as part of your shift.',
-    startDateTime: '2019-03-11T15:00:00Z',
-    endDateTime: '2019-03-12T00:00:00Z',
-    theme: 'blue',
-    activities: [
-      {
-        isPaid: true,
-        startDateTime: '2019-03-11T15:00:00Z',
-        endDateTime: '2019-03-11T15:15:00Z',
-        code: '',
-        displayName: 'Lunch'
-      }
-    ]
-  },
-  draftShift: {
-    displayName: 'Day shift',
-    notes: 'Please do inventory as part of your shift.',
-    startDateTime: '2019-03-11T15:00:00Z',
-    endDateTime: '2019-03-12T00:00:00Z',
-    theme: 'blue',
-    activities: [
-      {
-        isPaid: true,
-        startDateTime: '2019-03-11T15:00:00Z',
-        endDateTime: '2019-03-11T15:30:00Z',
-        code: '',
-        displayName: 'Lunch'
-      }
-    ]
-  }
-};
- * 
- * 
- */
 
 module.exports = {
-    shiftHandler: (req) => {
-
-        var send = appSettings.protectedResources.graph_BASE; // copy the resource object from base definition
-        var base = appSettings.protectedResources.graph_BASE.endpoint;
+    shiftReqHandler: (req) => {
         
         if (req.body.action == "create"){
 
             const uri = `/teams/${req.body.teamId}/schedule/openShifts`;
-            const url = base + uri;
-            send.endpoint = url; // define url
-            send.scopes.push("Schedule.ReadWrite.All"); // add permission scope
             
-            // make path accessible
-            appSettings.settings.protectedResources[uri] = send;
-    
-            // get token
-            appSettings.msid.getToken({
-                resource: send
-            });
-
-            // create the graph client, will be reused
-            const graphClient = graphManager.getAuthenticatedClient(req.session.protectedResources[uri].accessToken);
-
             // call function
-            createClass(
-                graphClient,
+            createShift(
+                req,
                 uri,
                 req.body.shiftData,
                 req.body.end
             );
 
-            delete appSettings.settings.protectedResources[uri]; // remove unique path from protectedResources
-
-        } else if (req.body.action == "delete") {
+        } 
+        else if (req.body.action == "delete") {
             const uri = `/teams/${req.body.teamId}/schedule/openShifts/$${req.body.shiftId}`;
-            deleteClass(req,uri);
-        } else if (req.body.action == "get") {
-            getAllShifts();
+            deleteShift(req,uri);
+        } 
+        else if (req.body.action == "get") {
+            return getShifts(req, req.body.teamId, {
+                shared: true,
+                open: true
+            });
         }
 
+    },
+    getAllShifts: (req,teamId) => {
+        return getShifts(
+            req, teamId, 
+            {
+            shared: true,
+            open: true
+            }
+        );
+    },
+    getTeams: async (req) => {
+        const client = graph.getAuthClient(req.app.locals.msalClient, req.session.userId,["team.readbasic.all"]);
+
+        return await client
+            .api('/me/joinedTeams')
+            .headers({'Accept': 'application/json'})
+            .get();
     }
 };
 
-function createClass(graph,uri,cls,endDate){
+function createShift(req,uri,cls,endDate) {
     
+    cls.date = new Date(cls.date);
     const end = new Date(endDate);
-
+    const client = graph.getAuthClient(req.app.locals.msalClient,req.session.userId,["Schedule.ReadWrite.All"]);
     // immediately invoked
         
-    (async (graph,uri,cls,end) => {
+    (async (client,uri,cls,end) => {
         while (cls.date<=end) {
 
             // make the API call using the provided graph client
-            await graph
+            await client
                 .api(uri)
                 .headers({"Content-type": "application/json"})
                 .post(cls);
@@ -107,42 +68,56 @@ function createClass(graph,uri,cls,endDate){
             let newDate = cls.date.setDate(cls.date.getDate() + 7);
             cls.date = new Date(newDate); // update the date in the class data for next request
         }
-    })(graph,uri,cls,end);
+    })(client,uri,cls,end);
 
     return true;
 }
-function deleteClass(req,uri) {
+function deleteShift(req,uri) {
     const end = new Date(req.endDate);
 
-    // immediately invoked
-
-    let graph = uri;
-        
-    (async (graph,uri,cls,end) => {
-        while (cls.date<=end) {
-
-            // make the API call using the provided graph client
-            await graph
-                .api(uri)
-                .headers({"Content-type": "application/json"})
-                .post(cls);
-
-            // increment by 1 week
-            let newDate = cls.date.setDate(cls.date.getDate() + 7);
-            cls.date = new Date(newDate); // update the date in the class data for next request
-        }
-    })(graph,uri,req.body.cls,end);
-
-    return true;
 }
 
-function getAllShifts(graph,uri) {
-    // immediately invoked
-    return (async (graph,uri) => {
-        // make the API call and await response
-        return await graph
-            .api(uri)
-            .headers({"Content-type": "application/json"})
-            .get();
-    })(graph,uri);
+function getShifts(req,teamId,conf) {
+    // store results of both API calls
+    let result = {};
+
+    // confirm a configuration object was passed
+    // to control what shifts are requested
+    if (conf == undefined){
+        console.log("No config provided for getShifts request");
+        throw "No config object passed";
+    } 
+
+    const client = graph.getAuthClient(
+        req.app.locals.msalClient,
+        req.session.userId,
+        ["schedule.read.all"]
+    );
+
+    if (conf.shared){
+        result = Object.assign(result, 
+            (async (teamId) => {
+                let uri = `/teams/${teamId}/schedule/shifts`;
+                // make the API call and await response
+                return await client
+                    .api(uri)
+                    // .filter('sharedShift/startDateTime ge 2019-03-11T00:00:00.000Z and sharedShift/endDateTime le 2019-03-18T00:00:00.000Z and draftShift/startDateTime ge 2019-03-11T00:00:00.000Z and draftShift/endDateTime le 2019-03-18T00:00:00.000Z')
+                    .get();
+            })(teamId)
+        );
+    }
+    if (conf.open){
+        result = Object.assign(result, 
+            (async (teamId) => {
+                let uri = `/teams/${teamId}/schedule/openShifts`;
+                // make the API call and await response
+                return await client
+                    .api(uri)
+                    // .filter('sharedShift/startDateTime ge 2019-03-11T00:00:00.000Z and sharedShift/endDateTime le 2019-03-18T00:00:00.000Z and draftShift/startDateTime ge 2019-03-11T00:00:00.000Z and draftShift/endDateTime le 2019-03-18T00:00:00.000Z')
+                    .get();
+            })(teamId)
+        );
+    }
+
+    return result;
 }

@@ -1,5 +1,5 @@
 /*
- * Adapted from a Microsoft example of axios implementation integrating with msal
+ * Adapted from a Microsoft example of axios-based 
  */
 
 const { default: axios } = require('axios');

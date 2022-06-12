@@ -59,7 +59,7 @@ app.use(session({
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-const graphRouter = require('./routes/graph');
+const shiftsRouter = require('./routes/shifts');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -74,7 +74,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/auth', authRouter); // all msal authentication
 app.use('/users', usersRouter);
-app.use('graph', graphRouter);
+app.use('/shifts', shiftsRouter);
 
 
 // catch 404 and forward to error handler

@@ -20,6 +20,7 @@
   - [x] Graph SDK client implementation - basic endpoints ('/me')
   - [ ] Graph SDK Teams calls
   - [ ] Storage of user identification in database instead of system memory cache
+  - [ ] Write a middleware for checking authentication quickly, reliably and universally
 - [ ] Implement get, add and delete shifts helpers
 
 ## Front End
