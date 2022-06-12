@@ -45,8 +45,6 @@ function changeBackgroundColor(color){
 }
 
 
-
-
 /*                                  REQUESTS SENT TO THE USER.JS                                  */
 
 /* Login page login function */

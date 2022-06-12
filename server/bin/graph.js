@@ -7,7 +7,6 @@ module.exports = {
 
     const user = await client
       .api('/me')
-      .select('displayName,mail,mailboxSettings,userPrincipalName')
       .get();
     return user;
   },

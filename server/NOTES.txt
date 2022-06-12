@@ -3,4 +3,8 @@ Implemenations
 
 A: check pushed checkpoint A, for msal-node naked implementation
 B: using microsoft-identity-express
-C: using passport
+
+-- -- --
+
+msal-node: https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-node#usage
+msal-node express app with custom lightweight TS wrapper: https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/samples/msal-node-samples/ExpressTestApp

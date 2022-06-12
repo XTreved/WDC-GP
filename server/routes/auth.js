@@ -5,12 +5,12 @@
 
 // initialize router using the promise router module
 const router = require('express-promise-router')();
-require('dotenv').config();
+// require('dotenv').config();
 const graph = require('../bin/graph');
 
 /* GET auth callback. */
 router.get('/signin',
-  async function (req, res) {
+  async (req, res)=>{
     const urlParameters = {
       scopes: process.env.OAUTH_SCOPES.split(','),
       redirectUri: process.env.REDIRECT_URI
@@ -23,17 +23,19 @@ router.get('/signin',
     }
     catch (error) {
       console.log(`Error: ${error}`);
-      req.flash('error_msg', {
-        message: 'Error getting auth URL',
-        debug: JSON.stringify(error, Object.getOwnPropertyNames(error))
-      });
+      // Create an error here to display in the front-end. Not getting Auth URL
       res.redirect('/');
     }
   }
 );
 
+/**
+ * callback runs after a successful signin.
+ * All logic and database operations which follow should be contained in this router
+ * Eventually, sqlite should be used for data storage
+ */
 router.get('/callback',
-  async function(req, res) {
+  async (req, res)=>{
     const tokenRequest = {
       code: req.query.code,
       scopes: process.env.OAUTH_SCOPES.split(','),
@@ -55,11 +57,12 @@ router.get('/callback',
       // Add the user to user storage
       req.app.locals.users[req.session.userId] = {
         displayName: user.displayName,
-        email: user.mail || user.userPrincipalName,
-        timeZone: user.mailboxSettings.timeZone
+        msId: user.id,
       };
+      console.log("Authentication successful");
     } catch(error) {
-      console.log("Failed to authenticate user\n"+error);
+      console.log("Failed to finalise authentication of user\n"+error);
+      // do something here to properly show the user that authentication has failed
     }
 
     res.redirect('/');
@@ -69,11 +72,11 @@ router.get('/callback',
 router.get('/id',
     (req,res) => {
         res.send(req.app.locals.users[req.session.userId]);
-    }    
+    }
 );
 
 router.get('/signout',
-  async function(req, res) {
+  async (req, res)=>{
     // Sign out
     if (req.session.userId) {
       // Look up the user's account in the cache
@@ -92,7 +95,7 @@ router.get('/signout',
     }
 
     // Destroy the user's session
-    req.session.destroy(function (err) {
+    req.session.destroy( (err)=>{
       res.redirect('/');
     });
   }

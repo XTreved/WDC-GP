@@ -15,8 +15,12 @@
 ## Teams Interface
 - [x] Basic Azure and MS identity service authentication
 - [ ] Full endpoint authorisation management (incomplete)
-- [ ] Re-write for naked msal or passport. Do not use msid wrapper!
-- [x] Implement get, add and delete shifts helpers
+- [ ] Re-write authentication flow to use naked msal and Graph flow to use MS-Graph SDK. Do not use msid wrapper (too inflexible)
+  - [x] Generate valid msalClient
+  - [x] Graph SDK client implementation - basic endpoints ('/me')
+  - [ ] Graph SDK Teams calls
+  - [ ] Storage of user identification in database instead of system memory cache
+- [ ] Implement get, add and delete shifts helpers
 
 ## Front End
 - Heading
